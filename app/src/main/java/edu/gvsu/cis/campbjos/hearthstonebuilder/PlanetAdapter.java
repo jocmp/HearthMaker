@@ -29,25 +29,6 @@ public class PlanetAdapter extends RecyclerView.Adapter<PlanetAdapter.ViewHolder
   private String[] dataset;
   private OnItemClickListener listener;
 
-  /**
-   * Interface for receiving click events from cells.
-   */
-  interface OnItemClickListener {
-    void onClick(View view, int position);
-  }
-
-  /**
-   * Custom viewholder for our planet views.
-   */
-  public static class ViewHolder extends RecyclerView.ViewHolder {
-    public final TextView textView;
-
-    public ViewHolder(TextView myTextView) {
-      super(myTextView);
-      textView = myTextView;
-    }
-  }
-
   public PlanetAdapter(String[] myDataset, OnItemClickListener myListener) {
     dataset = myDataset;
     listener = myListener;
@@ -75,5 +56,24 @@ public class PlanetAdapter extends RecyclerView.Adapter<PlanetAdapter.ViewHolder
   @Override
   public int getItemCount() {
     return dataset.length;
+  }
+
+  /**
+   * Interface for receiving click events from cells.
+   */
+  interface OnItemClickListener {
+    void onClick(View view, int position);
+  }
+
+  /**
+   * Custom viewholder for our planet views.
+   */
+  public static class ViewHolder extends RecyclerView.ViewHolder {
+    public final TextView textView;
+
+    public ViewHolder(TextView myTextView) {
+      super(myTextView);
+      textView = myTextView;
+    }
   }
 }

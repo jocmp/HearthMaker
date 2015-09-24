@@ -16,7 +16,6 @@
 
 package edu.gvsu.cis.campbjos.hearthstonebuilder;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -30,15 +29,10 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.Toast;
-
-import java.util.Locale;
 
 /**
  * This example illustrates a common usage of the DrawerLayout widget in the Android support
@@ -67,7 +61,6 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Plane
 
   private CharSequence mDrawerTitle;
   private CharSequence mTitle;
-  private String[] mPlanetTitles;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +68,6 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Plane
     setContentView(R.layout.activity_navigation_drawer);
 
     mTitle = mDrawerTitle = getTitle();
-    mPlanetTitles = getResources().getStringArray(R.array.planets_array);
     mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
     mDrawerList = (RecyclerView) findViewById(R.id.left_drawer);
     mToolbar = (Toolbar) findViewById(R.id.activity_toolbar);
@@ -170,7 +162,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Plane
 
   private void selectItem(int position) {
     // update the main content by replacing fragments
-    Fragment fragment = PlanetFragment.newInstance(position);
+    Fragment fragment = CardViewFragment.newInstance();
 
     FragmentManager fragmentManager = getFragmentManager();
     FragmentTransaction ft = fragmentManager.beginTransaction();
@@ -207,38 +199,4 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Plane
     mDrawerToggle.onConfigurationChanged(newConfig);
   }
 
-  /**
-   * Fragment that appears in the "content_frame", shows a planet
-   */
-  public static class PlanetFragment extends Fragment {
-    public static final String ARG_PLANET_NUMBER = "planet_number";
-
-    public PlanetFragment() {
-      // Empty constructor required for fragment subclasses
-    }
-
-    public static Fragment newInstance(int position) {
-      Fragment fragment = new PlanetFragment();
-      Bundle args = new Bundle();
-      args.putInt(PlanetFragment.ARG_PLANET_NUMBER, position);
-      fragment.setArguments(args);
-      return fragment;
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-      View rootView = inflater.inflate(R.layout.fragment_planet, container, false);
-      int i = getArguments().getInt(ARG_PLANET_NUMBER);
-      String planet = getResources().getStringArray(R.array.planets_array)[i];
-
-      int imageId = getResources().getIdentifier(planet.toLowerCase(Locale.getDefault()),
-          "drawable", getActivity().getPackageName());
-      ImageView iv = ((ImageView) rootView.findViewById(R.id.image));
-      iv.setImageResource(imageId);
-
-      getActivity().setTitle(planet);
-      return rootView;
-    }
-  }
 }

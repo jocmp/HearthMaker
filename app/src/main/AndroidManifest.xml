@@ -16,6 +16,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <meta-data
+            android:name="hearthstone_api_key"
+            android:value="bexJwbUuYPmshc9PHODsSl9ToBo6p1qjKxojsn2mTw1utrOlqo" />
     </application>
 
 </manifest>

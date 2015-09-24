@@ -31,8 +31,7 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/activity_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            />
+            android:layout_height="?attr/actionBarSize" />
         <!-- As the main content view, the view below consumes the entire
              space available using match_parent in both dimensions. -->
         <FrameLayout

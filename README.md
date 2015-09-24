@@ -13,8 +13,7 @@ Pre-requisites
 Getting Started
 ---------------
 
-This sample uses the Gradle build system. To build this project, use the
-"gradlew build" command or use "Import Project" in Android Studio.
+Group project for CIS350: Software Engineering.  
 
 License
 -------

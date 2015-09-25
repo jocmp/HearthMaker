@@ -62,6 +62,9 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Plane
   private CharSequence mDrawerTitle;
   private CharSequence mTitle;
 
+  //just to make it build. CT 9/25/2015
+  String[]mPlanetTitles = {"HearthBuilder"};
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);

@@ -36,8 +36,8 @@ public class LoadCardJsonTask extends AsyncTask<Object, Void, Void> {
   protected Void doInBackground(Object... params) {
     HttpResponse<JsonNode> response = null;
     String key = (String) params[0];
-    ArrayList<?> cardList = (ArrayList<?>) params[2];
-    adapter = (CardAdapter) params[3];
+    ArrayList<?> cardList = (ArrayList<?>) params[1];
+    adapter = (CardAdapter) params[2];
 
     try {
       response = Unirest

@@ -53,7 +53,7 @@ import android.widget.Toast;
  * operation performed on the current contents of the window, for example enabling or disabling a
  * data overlay on top of the current content.</p>
  */
-public class NavigationDrawerActivity extends AppCompatActivity implements PlanetAdapter.OnItemClickListener {
+public class NavigationDrawerActivity extends AppCompatActivity implements DrawerAdapter.OnItemClickListener {
   private DrawerLayout mDrawerLayout;
   private RecyclerView mDrawerList;
   private ActionBarDrawerToggle mDrawerToggle;
@@ -78,7 +78,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Plane
     mDrawerList.setHasFixedSize(true);
 
     // set up the drawer's list view with items and click listener
-    mDrawerList.setAdapter(new PlanetAdapter(mPlanetTitles, this));
+    mDrawerList.setAdapter(new DrawerAdapter(mPlanetTitles, this));
     // enable ActionBar app icon to behave as action to toggle nav drawer
     if (getSupportActionBar() != null) {
       getSupportActionBar().setDisplayHomeAsUpEnabled(true);

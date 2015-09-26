@@ -7,12 +7,16 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
+
+import edu.gvsu.cis.campbjos.hearthstonebuilder.CustomAdapters.CardAdapter;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
+
 import org.json.JSONException;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 
-import edu.gvsu.cis.campbjos.hearthstonebuilder.CustomAdapters.CardAdapter;
 
 /**
  * @author HearthBuilder Team
@@ -28,31 +32,27 @@ public class LoadCardJsonTask extends AsyncTask<Object, Void, Void> {
   }
 
   @Override
-  protected void onProgressUpdate(Void... values) {
-    super.onProgressUpdate(values);
-  }
-
-  @Override
   protected Void doInBackground(Object... params) {
     HttpResponse<JsonNode> response = null;
     String key = (String) params[0];
-    ArrayList<?> cardList = (ArrayList<?>) params[2];
-    adapter = (CardAdapter) params[3];
+    ArrayList<Card> cardList = (ArrayList<Card>) params[2];
 
     try {
       response = Unirest
           .get("https://omgvamp-hearthstone-v1.p.mashape.com/cards?collectible=1")
-          .header("X-Mashape-Key",key)
+          .header("X-Mashape-Key", key)
           .asJson();
-      //JsonNode body = response.getBody();
-      //body.toString();
-      InputStream rawBody = response.getRawBody();
-      JsonUtil.parseCardJson(cardList, rawBody);
+      JsonNode body = response.getBody();
+      JsonUtil.parseJsonResponse(cardList, body.toString());
     } catch (UnirestException e) {
       e.printStackTrace();
     } catch (JSONException e) {
       e.printStackTrace();
     }
     return null;
+  }
+
+  interface CardResponseListenener {
+    void onTaskComplete();
   }
 }

@@ -25,11 +25,11 @@ import android.widget.TextView;
 /**
  * Adapter for the planet data used in our drawer menu.
  */
-public class PlanetAdapter extends RecyclerView.Adapter<PlanetAdapter.ViewHolder> {
+public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.ViewHolder> {
   private String[] dataset;
   private OnItemClickListener listener;
 
-  public PlanetAdapter(String[] myDataset, OnItemClickListener myListener) {
+  public DrawerAdapter(String[] myDataset, OnItemClickListener myListener) {
     dataset = myDataset;
     listener = myListener;
   }

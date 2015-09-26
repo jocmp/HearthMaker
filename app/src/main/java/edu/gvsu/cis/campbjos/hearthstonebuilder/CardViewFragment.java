@@ -23,7 +23,7 @@ import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
  * Use the {@link CardViewFragment#newInstance} factory method to create an instance of this
  * fragment.
  */
-public class CardViewFragment extends Fragment {
+public class CardViewFragment extends Fragment implements LoadCardJsonTask.CardResponseListenener {
   private ArrayList<Card> cards;
   private CardAdapter adapter;
   private LoadCardJsonTask jsonTask;
@@ -74,7 +74,7 @@ public class CardViewFragment extends Fragment {
             })
     );
     jsonTask = new LoadCardJsonTask();
-    jsonTask.execute(getStringFromManifest("hearthstone_api_key"), cards, adapter);
+    jsonTask.execute(getStringFromManifest("hearthstone_api_key"), cards);
     return view;
   }
 
@@ -89,6 +89,11 @@ public class CardViewFragment extends Fragment {
   public void onDetach() {
     super.onDetach();
     mListener = null;
+  }
+
+  @Override
+  public void onTaskComplete() {
+    adapter.notifyDataSetChanged();
   }
 
   /**

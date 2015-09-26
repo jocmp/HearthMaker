@@ -8,7 +8,7 @@ package edu.gvsu.cis.campbjos.hearthstonebuilder.Entity;
  */
 public class Card {
   private String cardId;
-  private String cardName;
+  private String name;
   private String cardSet;
   private String type;
   private String faction;
@@ -17,12 +17,12 @@ public class Card {
   private int attack;
   private int health;
   private int durability;
-  private String textDescription;
+  private String text;
   private String flavor;
   private String artist;
   private boolean isCollectible;
-  private String imageUrl;
-  private String goldImageUrl;
+  private String img;
+  private String imgGold;
 
   /**
    * @param cardId          The card id
@@ -47,7 +47,7 @@ public class Card {
               int durability, String textDescription, String flavor, String artist,
               boolean isCollectible, String imageUrl, String goldImageUrl) {
     this.cardId = cardId;
-    this.cardName = cardName;
+    this.name = cardName;
     this.cardSet = cardSet;
     this.type = type;
     this.faction = faction;
@@ -56,12 +56,12 @@ public class Card {
     this.attack = attack;
     this.health = health;
     this.durability = durability;
-    this.textDescription = textDescription;
+    this.text = textDescription;
     this.flavor = flavor;
     this.artist = artist;
     this.isCollectible = isCollectible;
-    this.imageUrl = imageUrl;
-    this.goldImageUrl = goldImageUrl;
+    this.img = imageUrl;
+    this.imgGold = imgGold;
   }
 
   public int getDurability() {
@@ -81,11 +81,11 @@ public class Card {
   }
 
   public String getCardName() {
-    return cardName;
+    return name;
   }
 
   public void setCardName(String cardName) {
-    this.cardName = cardName;
+    this.name = cardName;
   }
 
   public String getCardSet() {
@@ -145,11 +145,11 @@ public class Card {
   }
 
   public String getTextDescription() {
-    return textDescription;
+    return text;
   }
 
   public void setTextDescription(String textDescription) {
-    this.textDescription = textDescription;
+    this.text = textDescription;
   }
 
   public String getFlavor() {
@@ -177,18 +177,18 @@ public class Card {
   }
 
   public String getImageUrl() {
-    return imageUrl;
+    return img;
   }
 
   public void setImageUrl(String imageUrl) {
-    this.imageUrl = imageUrl;
+    this.img = imageUrl;
   }
 
   public String getGoldImageUrl() {
-    return goldImageUrl;
+    return imgGold;
   }
 
   public void setGoldImageUrl(String goldImageUrl) {
-    this.goldImageUrl = goldImageUrl;
+    this.imgGold = goldImageUrl;
   }
 }

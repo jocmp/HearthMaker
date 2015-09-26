@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -24,7 +25,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                                                    int viewType) {
     return new ViewHolder(LayoutInflater
         .from(parent.getContext())
-        .inflate(R.layout.item_two_line, parent, false), parent.getContext());
+        .inflate(R.layout.item_two_line, parent, false));
   }
 
   @Override
@@ -38,15 +39,18 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
   }
 
   public static class ViewHolder extends RecyclerView.ViewHolder {
+    TextView itemTitle;
+    TextView itemSubtitle;
 
-
-    public ViewHolder(View v, Context context) {
+    public ViewHolder(View v) {
       super(v);
-
+      itemTitle = (TextView) v.findViewById(R.id.item_title);
+      itemSubtitle = (TextView) v.findViewById(R.id.item_subtitle);
     }
 
     public void setEntry(Card card) {
-
+      itemTitle.setText(card.getCardName());
+      itemSubtitle.setText(card.getCardSet());
     }
   }
 }

@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -23,7 +24,9 @@ import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
  * Use the {@link CardViewFragment#newInstance} factory method to create an instance of this
  * fragment.
  */
-public class CardViewFragment extends Fragment implements LoadCardJsonTask.CardResponseListenener {
+public class CardViewFragment extends Fragment {
+  private static final String URL = "https://omgvamp-hearthstone-v1.p.mashape.com/cards?";
+  private static final String COLLECT_PARAM = "collectible=1";
   private ArrayList<Card> cards;
   private CardAdapter adapter;
   private LoadCardJsonTask jsonTask;
@@ -52,6 +55,14 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.CardR
   }
 
   @Override
+  public void onViewCreated(View view, Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
+    jsonTask = new LoadCardJsonTask();
+    jsonTask.execute(adapter, URL + COLLECT_PARAM,
+        getStringFromManifest("hearthstone_api_key"), cards);
+  }
+
+  @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_card_view, container, false);
@@ -73,8 +84,6 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.CardR
               }
             })
     );
-    jsonTask = new LoadCardJsonTask();
-    jsonTask.execute(getStringFromManifest("hearthstone_api_key"), cards);
     return view;
   }
 
@@ -91,11 +100,6 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.CardR
     mListener = null;
   }
 
-  @Override
-  public void onTaskComplete() {
-    adapter.notifyDataSetChanged();
-  }
-
   /**
    * This interface must be implemented by activities that contain this fragment to allow an
    * interaction in this fragment to be communicated to the activity and potentially other fragments
@@ -105,15 +109,15 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.CardR
    */
   public interface OnFragmentInteractionListener {
     // TODO: Update argument type and name
-    public void onFragmentInteraction(Uri uri);
+    void onFragmentInteraction(Uri uri);
   }
 
   private String getStringFromManifest(String key) {
     String results = "";
     try {
       Context context = getActivity().getBaseContext();
-      ApplicationInfo ai = context.getPackageManager().
-          getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+      ApplicationInfo ai = context.getPackageManager()
+          .getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
       results = (String) ai.metaData.get(key);
     } catch (PackageManager.NameNotFoundException e) {
       e.printStackTrace();

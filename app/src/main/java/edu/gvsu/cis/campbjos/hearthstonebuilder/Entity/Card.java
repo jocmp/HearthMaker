@@ -40,12 +40,12 @@ public class Card {
    * @param artist          flavor
    * @param isCollectible   Boolean indicates if the card is collectible.
    * @param imageUrl        URL to image of the card on Hearthhead.
-   * @param goldImageUrl    URL to image of the golden card on Hearthhead
+   * @param imgGold    URL to image of the golden card on Hearthhead
    */
   public Card(String cardId, String cardName, String cardSet, String type,
               String faction, String rarity, int cost, int attack, int health,
               int durability, String textDescription, String flavor, String artist,
-              boolean isCollectible, String imageUrl, String goldImageUrl) {
+              boolean isCollectible, String imageUrl, String imgGold) {
     this.cardId = cardId;
     this.name = cardName;
     this.cardSet = cardSet;
@@ -62,6 +62,10 @@ public class Card {
     this.isCollectible = isCollectible;
     this.img = imageUrl;
     this.imgGold = imgGold;
+  }
+
+  public Card() {
+
   }
 
   public int getDurability() {

@@ -24,6 +24,8 @@ import android.widget.TextView;
 
 /**
  * Adapter for the planet data used in our drawer menu.
+ * @author HeartBuilder Team
+ * @version Fall 2015
  */
 public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.ViewHolder> {
   private String[] dataset;

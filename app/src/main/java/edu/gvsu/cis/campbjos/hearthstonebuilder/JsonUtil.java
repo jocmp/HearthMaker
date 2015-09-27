@@ -32,29 +32,32 @@ public class JsonUtil {
       while (keys.hasNext()) {
         key = (String) keys.next();
         jsonArray = jsonObj.getJSONArray(key);
-        //Starts at 9 to ignore Heros
-        for (int k = 9; k < jsonArray.length(); k++) {
+        //Check type "Hero" before adding
+        for (int k = 0; k < jsonArray.length(); k++) {
           jsonCard = jsonArray.getJSONObject(k);
-          // Create our card instance
-          Card card = new Card();
-          card.setCardId(checkKeyToString(jsonCard,"cardId"));
-          card.setCardName(checkKeyToString(jsonCard,"name"));
-          card.setCardSet(checkKeyToString(jsonCard,"cardSet"));
-          card.setType(checkKeyToString(jsonCard,"type"));
-          card.setRarity(checkKeyToString(jsonCard,"rarity"));
-          card.setAttack(checkKeyToInt(jsonCard, "attack"));
-          card.setDurability(checkKeyToInt(jsonCard,"durability"));
-          card.setTextDescription(checkKeyToString(jsonCard,"text"));
-          card.setFlavor(checkKeyToString(jsonCard, "flavor"));
-          card.setArtist(checkKeyToString(jsonCard,"artist"));
-          card.setIsCollectible(jsonCard.getBoolean("collectible"));
-          card.setImageUrl(checkKeyToString(jsonCard,"img"));
-          card.setGoldImageUrl(checkKeyToString(jsonCard,"imgGold"));
-          card.setCost(checkKeyToInt(jsonCard, "cost"));
-          card.setFaction(checkKeyToString(jsonCard, "faction"));
-          card.setHealth(checkKeyToInt(jsonCard, "health"));
-          // Add to deck
-          deck.add(card);
+          // Check type "Hero" before adding
+          if (!checkKeyToString(jsonCard,"type").equals("Hero")){
+            // Create our card instance
+            Card card = new Card();
+            card.setCardId(checkKeyToString(jsonCard,"cardId"));
+            card.setCardName(checkKeyToString(jsonCard,"name"));
+            card.setCardSet(checkKeyToString(jsonCard,"cardSet"));
+            card.setType(checkKeyToString(jsonCard,"type"));
+            card.setRarity(checkKeyToString(jsonCard,"rarity"));
+            card.setAttack(checkKeyToInt(jsonCard, "attack"));
+            card.setDurability(checkKeyToInt(jsonCard,"durability"));
+            card.setTextDescription(checkKeyToString(jsonCard,"text"));
+            card.setFlavor(checkKeyToString(jsonCard, "flavor"));
+            card.setArtist(checkKeyToString(jsonCard,"artist"));
+            card.setIsCollectible(jsonCard.getBoolean("collectible"));
+            card.setImageUrl(checkKeyToString(jsonCard,"img"));
+            card.setGoldImageUrl(checkKeyToString(jsonCard,"imgGold"));
+            card.setCost(checkKeyToInt(jsonCard, "cost"));
+            card.setFaction(checkKeyToString(jsonCard, "faction"));
+            card.setHealth(checkKeyToInt(jsonCard, "health"));
+            // Add to deck
+            deck.add(card);
+          }
         }
       }
     } catch (JSONException j) {

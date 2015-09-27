@@ -32,7 +32,8 @@ public class JsonUtil {
       while (keys.hasNext()) {
         key = (String) keys.next();
         jsonArray = jsonObj.getJSONArray(key);
-        for (int k = 0; k < jsonArray.length(); k++) {
+        //Starts at 9 to ignore Heros
+        for (int k = 9; k < jsonArray.length(); k++) {
           jsonCard = jsonArray.getJSONObject(k);
           // Create our card instance
           Card card = new Card();

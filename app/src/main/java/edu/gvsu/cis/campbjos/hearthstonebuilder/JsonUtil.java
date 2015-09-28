@@ -19,10 +19,10 @@ public class JsonUtil {
 
   /**
    * @param jsonResponse Json response
-   * @param deck         Deck to put cards in
+   * @param cardList     Master list of all the collectible cards
    * @throws JSONException if we can't parse through the Json response
    */
-  public static void parse(String jsonResponse, ArrayList<Card> deck) throws IOException {
+  public static void parse(String jsonResponse, ArrayList<Card> cardList) throws IOException {
     try {
       JSONObject jsonObj = new JSONObject(jsonResponse);
       Iterator keys = jsonObj.keys();
@@ -56,7 +56,7 @@ public class JsonUtil {
             card.setFaction(checkKeyToString(jsonCard, "faction"));
             card.setHealth(checkKeyToInt(jsonCard, "health"));
             // Add to deck
-            deck.add(card);
+            cardList.add(card);
           }
         }
       }

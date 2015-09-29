@@ -32,7 +32,6 @@ public class JsonUtil {
       while (keys.hasNext()) {
         key = (String) keys.next();
         jsonArray = jsonObj.getJSONArray(key);
-        //Check type "Hero" before adding
         for (int k = 0; k < jsonArray.length(); k++) {
           jsonCard = jsonArray.getJSONObject(k);
           // Check type "Hero" before adding

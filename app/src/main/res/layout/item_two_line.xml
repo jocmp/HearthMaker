@@ -22,10 +22,15 @@
     android:paddingLeft="?attr/listPreferredItemPaddingLeft"
     android:paddingRight="?attr/listPreferredItemPaddingRight">
 
+   <!-- <TextView android:id="@+id/item_manaCost"
+        android:layout_width="40px"
+        android:layout_height="40px"
+        android:background="@drawable/mana_crystal"
+        android:layout_alignParentStart="true" />-->
+
     <TextView android:id="@+id/item_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:textAppearance="?attr/textAppearanceListItem"
         tools:text="you are here"
         android:textColor="?android:attr/textColorPrimary"
@@ -40,6 +45,8 @@
         tools:text="you are here"
         android:textColor="?android:attr/textColorSecondary"
         android:maxLines="1" />
+
+
 
 </RelativeLayout>
 

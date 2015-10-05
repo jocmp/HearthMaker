@@ -11,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -28,6 +27,7 @@ public class CardViewFragment extends Fragment {
   private static final String URL = "https://omgvamp-hearthstone-v1.p.mashape.com/cards?";
   private static final String COLLECT_PARAM = "collectible=1";
   private ArrayList<Card> cards;
+  private ArrayList<Card> visibleCards;
   private CardAdapter adapter;
   private LoadCardJsonTask jsonTask;
 
@@ -39,6 +39,7 @@ public class CardViewFragment extends Fragment {
   public CardViewFragment() {
     // Required empty public constructor
     cards = new ArrayList<>();
+    visibleCards = new ArrayList<>();
   }
 
   // TODO: Rename and change types and number of parameters
@@ -59,7 +60,7 @@ public class CardViewFragment extends Fragment {
     super.onViewCreated(view, savedInstanceState);
     jsonTask = new LoadCardJsonTask();
     jsonTask.execute(adapter, URL + COLLECT_PARAM,
-        getStringFromManifest("hearthstone_api_key"), cards);
+        getStringFromManifest("hearthstone_api_key"), cards, visibleCards);
   }
 
   @Override
@@ -73,7 +74,7 @@ public class CardViewFragment extends Fragment {
     categoryRecycler.setHasFixedSize(true);
     categoryRecycler.isVerticalScrollBarEnabled();
     categoryRecycler.setLayoutManager(mLayoutManager);
-    adapter = new CardAdapter(cards);
+    adapter = new CardAdapter(visibleCards);
     categoryRecycler.setAdapter(adapter);
     categoryRecycler.addOnItemTouchListener(
         new RecyclerItemClickListener(getActivity(),

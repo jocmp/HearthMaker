@@ -63,7 +63,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
   private CharSequence mTitle;
 
   //just to make it build. CT 9/25/2015
-  String[]mPlanetTitles = {"HearthBuilder"};
+  String[]mPlanetTitles = {"HearthMaker"};
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {

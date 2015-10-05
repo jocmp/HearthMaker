@@ -21,6 +21,7 @@ public class Card {
   private String flavor;
   private String artist;
   private boolean isCollectible;
+  private String playerClass;
   private String img;
   private String imgGold;
 
@@ -40,7 +41,7 @@ public class Card {
    * @param artist          flavor
    * @param isCollectible   Boolean indicates if the card is collectible.
    * @param imageUrl        URL to image of the card on Hearthhead.
-   * @param imgGold    URL to image of the golden card on Hearthhead
+   * @param imgGold         URL to image of the golden card on Hearthhead
    */
   public Card(String cardId, String cardName, String cardSet, String type,
               String faction, String rarity, int cost, int attack, int health,
@@ -194,5 +195,13 @@ public class Card {
 
   public void setGoldImageUrl(String goldImageUrl) {
     this.imgGold = goldImageUrl;
+  }
+
+  public String getPlayerClass() {
+    return playerClass;
+  }
+
+  public void setPlayerClass(String playerClass) {
+    this.playerClass = playerClass;
   }
 }

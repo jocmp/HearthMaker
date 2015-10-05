@@ -54,6 +54,7 @@ public class JsonUtil {
             card.setCost(checkKeyToInt(jsonCard, "cost"));
             card.setFaction(checkKeyToString(jsonCard, "faction"));
             card.setHealth(checkKeyToInt(jsonCard, "health"));
+            card.setPlayerClass(checkKeyToString(jsonCard,"playerClass"));
             // Add to deck
             cardList.add(card);
           }

@@ -115,48 +115,6 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
     }
   }
 
-
-  @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
-    // Inflate the menu; this adds items to the action bar if it is present.
-    getMenuInflater().inflate(R.menu.navigation_drawer, menu);
-    return true;
-  }
-
-  /* Called whenever we call invalidateOptionsMenu() */
-  @Override
-  public boolean onPrepareOptionsMenu(Menu menu) {
-    // If the nav drawer is open, hide action items related to the content view
-    boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-    menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
-    return super.onPrepareOptionsMenu(menu);
-  }
-
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
-    // The action bar home/up action should open or close the drawer.
-    // ActionBarDrawerToggle will take care of this.
-    if (mDrawerToggle.onOptionsItemSelected(item)) {
-      return true;
-    }
-    // Handle action buttons
-    switch (item.getItemId()) {
-      case R.id.action_websearch:
-        // create intent to perform web search for this planet
-        Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
-        intent.putExtra(SearchManager.QUERY, getSupportActionBar().getTitle());
-        // catch event that there's no activity to handle intent
-        if (intent.resolveActivity(getPackageManager()) != null) {
-          startActivity(intent);
-        } else {
-          Toast.makeText(this, R.string.app_not_available, Toast.LENGTH_LONG).show();
-        }
-        return true;
-      default:
-        return super.onOptionsItemSelected(item);
-    }
-  }
-
   /* The click listener for RecyclerView in the navigation drawer */
   @Override
   public void onClick(View view, int position) {

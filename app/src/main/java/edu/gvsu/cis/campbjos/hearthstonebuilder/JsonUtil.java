@@ -13,7 +13,7 @@ import java.util.Iterator;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
 
 /**
- * Created by josiah on 9/24/15.
+ * @author HearthMaker Team
  */
 public class JsonUtil {
 

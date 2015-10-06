@@ -23,10 +23,9 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
   @Override
   public CardAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                    int viewType) {
-      context = parent.getContext();
       return new ViewHolder(LayoutInflater
         .from(parent.getContext())
-        .inflate(R.layout.item_two_line, parent, false));
+        .inflate(R.layout.item_two_line, parent, false), parent.getContext());
   }
 
   @Override
@@ -47,8 +46,10 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     TextView itemRarity;
     TextView itemAttack;
     TextView itemHealthDurability;
+    private Context context;
+    private Card currentCard;
 
-    public ViewHolder(View v) {
+    public ViewHolder(View v, Context parent) {
       super(v);
       itemTitle = (TextView) v.findViewById(R.id.item_title);
       itemSubtitle = (TextView) v.findViewById(R.id.item_subtitle);
@@ -56,16 +57,18 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
       itemRarity = (TextView) v.findViewById(R.id.rarity);
       itemAttack = (TextView) v.findViewById(R.id.attack);
       itemHealthDurability = (TextView) v.findViewById(R.id.health);
+      context = parent;
     }
 
     public void setEntry(Card card) {
         //sets text values. These are used by all cards
-        itemTitle.setText(card.getCardName());
-        itemSubtitle.setText(card.getTextDescription());
+        currentCard = card;
+        itemTitle.setText(currentCard.getCardName());
+        itemSubtitle.setText(currentCard.getTextDescription());
         itemManaCost.setText(Integer.toString(card.getCost()));
 
         //switch rarity
-        switch(card.getRarity()) {
+        switch(currentCard.getRarity()) {
             case "Common":
                 itemRarity.setBackground(context.getResources().getDrawable(R.drawable.rarity_common));
                 break;
@@ -81,10 +84,12 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             case "Legendary":
                 itemRarity.setBackground(context.getResources().getDrawable(R.drawable.rarity_legendary));
                 break;
+            default:
+              break;
          }
 
         //hides and sets based on types
-        switch (card.getType()){
+        switch (currentCard.getType()){
             case "Minion":
                 itemHealthDurability.setText(Integer.toString(card.getHealth()));
                 itemAttack.setText(Integer.toString(card.getAttack()));
@@ -101,7 +106,9 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                 itemHealthDurability.setVisibility(itemView.INVISIBLE);
                 itemAttack.setVisibility(itemView.INVISIBLE);
                 break;
-        }
+            default:
+                break;
+         }
     }
   }
 }

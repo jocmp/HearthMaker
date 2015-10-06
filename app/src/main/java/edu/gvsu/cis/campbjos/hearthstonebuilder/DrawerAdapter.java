@@ -68,9 +68,6 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.ViewHolder
     void onClick(View view, int position);
   }
 
-  /**
-   * Custom viewholder for our planet views.
-   */
   public static class ViewHolder extends RecyclerView.ViewHolder {
     public final TextView textView;
 

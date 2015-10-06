@@ -29,7 +29,8 @@
         tools:text="you are here"
         android:textColor="?android:attr/textColorPrimary"
         android:maxLines="1"
-        android:layout_alignParentTop="true"/>
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/icon_grid" />
 
     <TextView android:id="@+id/item_subtitle"
         android:layout_width="match_parent"
@@ -38,7 +39,9 @@
         tools:text="you are here"
         android:textColor="?android:attr/textColorSecondary"
         android:maxLines="1"
-        android:layout_below="@+id/item_title"/>
+        android:ellipsize="end"
+        android:layout_below="@+id/item_title"
+        android:layout_toStartOf="@+id/icon_grid" />
 
     <GridLayout android:id="@+id/icon_grid"
         android:layout_alignParentRight="true"

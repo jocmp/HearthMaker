@@ -7,7 +7,8 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary">
+        android:background="?attr/colorPrimary"
+        android:visibility="invisible">
         <Spinner
             android:id="@+id/spinner_class"
             android:layout_width="match_parent"

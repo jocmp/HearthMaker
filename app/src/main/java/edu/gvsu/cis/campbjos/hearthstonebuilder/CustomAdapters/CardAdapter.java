@@ -1,5 +1,6 @@
 package edu.gvsu.cis.campbjos.hearthstonebuilder.CustomAdapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,13 +19,14 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
   public CardAdapter(ArrayList<Card> myDataset) {
     cardData = myDataset;
   }
-
+    private static Context context;
   @Override
   public CardAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                    int viewType) {
     return new ViewHolder(LayoutInflater
         .from(parent.getContext())
         .inflate(R.layout.item_two_line, parent, false));
+      context = parent.getContext();
   }
 
   @Override
@@ -56,8 +58,21 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     }
 
     public void setEntry(Card card) {
-      itemTitle.setText(card.getCardName());
-      itemSubtitle.setText(card.getTextDescription());
+        itemTitle.setText(card.getCardName());
+        itemSubtitle.setText(card.getTextDescription());
+        itemManaCost.setText(card.getCost());
+        switch(card.getRarity()) {
+            case "Common":
+                itemRarity.setBackground(context.getResources().getDrawable(R.drawable.rarity_common));
+                break;
+            case "Rare":
+                itemRarity.setBackground(context.getResources().getDrawable(R.drawable.rarity_rare));
+                break;
+            case "Epic":
+
+        }
+        itemRarity
+
 
     }
   }

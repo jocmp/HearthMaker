@@ -1,14 +1,11 @@
 package edu.gvsu.cis.campbjos.hearthstonebuilder;
 
 import android.app.Fragment;
-import android.app.SearchManager;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,7 +14,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 
 import java.util.ArrayList;
 
@@ -47,9 +47,42 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
   private String cardSetFilter = "CLEAR";
   //END
 
-  // TODO: Rename parameter arguments, choose names that match
-  // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+  private static Spinner classSpinner;
+  private static Spinner costSpinner;
+  private static Spinner typeSpinner;
+  private static Spinner rareSpinner;
+  private static Spinner setSpinner;
 
+  private static ArrayAdapter classAdapter;
+  private static ArrayAdapter costAdapter;
+  private static ArrayAdapter typeAdapter;
+  private static ArrayAdapter rareAdapter;
+  private static ArrayAdapter setAdapter;
+
+
+  private static ArrayList<Spinner> allSpinners;
+  private static ArrayList<ArrayAdapter> allAdapters;
+  private static int[] idArray;
+  static {
+    allSpinners = new ArrayList<>();
+    allAdapters = new ArrayList<>();
+    idArray = new int[]{R.array.card_class, 
+        R.array.cost, R.array.card_type, R.array.rarity, R.array.card_set};
+    
+    allSpinners.add(classSpinner);
+    allSpinners.add(costSpinner);
+    allSpinners.add(typeSpinner);
+    allSpinners.add(rareSpinner);
+    allSpinners.add(setSpinner);
+
+    allAdapters.add(classAdapter);
+    allAdapters.add(costAdapter);
+    allAdapters.add(typeAdapter);
+    allAdapters.add(rareAdapter);
+    allAdapters.add(setAdapter);
+
+
+  }
   private OnFragmentInteractionListener mListener;
 
   // TODO: Rename and change types and number of parameters
@@ -97,7 +130,30 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
             })
     );
     setHasOptionsMenu(true);
+
+    findSpinnerViews();
+
+    for (int i = 0; i < 5; i++) {
+      setSpinner(allSpinners.get(i), allAdapters.get(i), idArray[i]); 
+    }
+
     return cardFragmentView;
+  }
+
+  private void findSpinnerViews() {
+    classSpinner = (Spinner) cardFragmentView.findViewById(R.id.spinner_class);
+    costSpinner = (Spinner) cardFragmentView.findViewById(R.id.spinner_cost);
+    typeSpinner = (Spinner) cardFragmentView.findViewById(R.id.spinner_type);
+    rareSpinner = (Spinner) cardFragmentView.findViewById(R.id.spinner_rarity);
+    setSpinner = (Spinner) cardFragmentView.findViewById(R.id.spinner_set);
+  }
+  
+  private void setSpinner(Spinner currentSpinner, ArrayAdapter adapter, int arrayId) {
+    adapter = new ArrayAdapter<>(getActivity(),
+        android.R.layout.simple_spinner_item,
+        getResources().getStringArray(arrayId));
+    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    classSpinner.setAdapter(adapter);
   }
 
   // TODO: Rename method, update argument and hook method into UI event

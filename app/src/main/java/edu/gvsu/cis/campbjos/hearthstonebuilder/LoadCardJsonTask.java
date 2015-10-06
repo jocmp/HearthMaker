@@ -77,9 +77,12 @@ public class LoadCardJsonTask extends AsyncTask<Object, Void, Void> {
               && typeFilterCard(typeFilter,currentCard)&& rarityFilterCard(rarityFilter,currentCard)
               && cardSetFilterCard(cardSetFilter,currentCard)) {
 
+        //add to array list
+        //sort array list
+
+        //--------------TEMPORARY LOGIC TO SORT BY MANA COST--------------------
         //index in filteredCards to add the currentCard
         int costIndex = currentCard.getCost();
-
         //if this cost has not been initialized then initialize it
         if (filteredCards.size() <= costIndex){
           for (int c = filteredCards.size(); c <= costIndex; c++){
@@ -87,7 +90,6 @@ public class LoadCardJsonTask extends AsyncTask<Object, Void, Void> {
             filteredCards.add(new ArrayList<Card>());
           }
         }
-
         //get the arrayList at the mana cost index and add the current card
         filteredCards.get(costIndex).add(currentCard);
       }
@@ -96,6 +98,7 @@ public class LoadCardJsonTask extends AsyncTask<Object, Void, Void> {
     for (int k = 0; k < filteredCards.size(); k++) {
       sortedCards.addAll(filteredCards.get(k));
     }
+    //--------------TEMPORARY LOGIC TO SORT BY MANA COST-------------------------
     return sortedCards;
   }
 

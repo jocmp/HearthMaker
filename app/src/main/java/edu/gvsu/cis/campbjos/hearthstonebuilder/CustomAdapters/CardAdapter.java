@@ -1,6 +1,5 @@
 package edu.gvsu.cis.campbjos.hearthstonebuilder.CustomAdapters;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,16 +40,25 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
   public static class ViewHolder extends RecyclerView.ViewHolder {
     TextView itemTitle;
     TextView itemSubtitle;
+    TextView itemManaCost;
+    TextView itemRarity;
+    TextView itemAttack;
+    TextView itemHealthDurability;
 
     public ViewHolder(View v) {
       super(v);
       itemTitle = (TextView) v.findViewById(R.id.item_title);
       itemSubtitle = (TextView) v.findViewById(R.id.item_subtitle);
+      itemManaCost = (TextView) v.findViewById(R.id.mana_cost);
+      itemRarity = (TextView) v.findViewById(R.id.rarity);
+      itemAttack = (TextView) v.findViewById(R.id.attack);
+      itemHealthDurability = (TextView) v.findViewById(R.id.health);
     }
 
     public void setEntry(Card card) {
       itemTitle.setText(card.getCardName());
-      itemSubtitle.setText(card.getCardSet());
+      itemSubtitle.setText(card.getTextDescription());
+
     }
   }
 }

@@ -53,35 +53,19 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
   private static Spinner rareSpinner;
   private static Spinner setSpinner;
 
-  private static ArrayAdapter classAdapter;
-  private static ArrayAdapter costAdapter;
-  private static ArrayAdapter typeAdapter;
-  private static ArrayAdapter rareAdapter;
-  private static ArrayAdapter setAdapter;
-
-
-  private static ArrayList<Spinner> allSpinners;
-  private static ArrayList<ArrayAdapter> allAdapters;
+  private static ArrayList<Spinner> spinners;
   private static int[] idArray;
   static {
-    allSpinners = new ArrayList<>();
-    allAdapters = new ArrayList<>();
+    spinners = new ArrayList<>();
+
     idArray = new int[]{R.array.card_class, 
         R.array.cost, R.array.card_type, R.array.rarity, R.array.card_set};
     
-    allSpinners.add(classSpinner);
-    allSpinners.add(costSpinner);
-    allSpinners.add(typeSpinner);
-    allSpinners.add(rareSpinner);
-    allSpinners.add(setSpinner);
-
-    allAdapters.add(classAdapter);
-    allAdapters.add(costAdapter);
-    allAdapters.add(typeAdapter);
-    allAdapters.add(rareAdapter);
-    allAdapters.add(setAdapter);
-
-
+    spinners.add(classSpinner);
+    spinners.add(costSpinner);
+    spinners.add(typeSpinner);
+    spinners.add(rareSpinner);
+    spinners.add(setSpinner);
   }
   private OnFragmentInteractionListener mListener;
 
@@ -134,7 +118,7 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
     findSpinnerViews();
 
     for (int i = 0; i < 5; i++) {
-      setSpinner(allSpinners.get(i), allAdapters.get(i), idArray[i]); 
+      setSpinner(spinners.get(i), idArray[i]);
     }
 
     return cardFragmentView;
@@ -147,13 +131,13 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
     rareSpinner = (Spinner) cardFragmentView.findViewById(R.id.spinner_rarity);
     setSpinner = (Spinner) cardFragmentView.findViewById(R.id.spinner_set);
   }
-  
-  private void setSpinner(Spinner currentSpinner, ArrayAdapter adapter, int arrayId) {
-    adapter = new ArrayAdapter<>(getActivity(),
+
+  private void setSpinner(Spinner currentSpinner, int arrayId) {
+    ArrayAdapter<String> currentAdapter = new ArrayAdapter<>(getActivity(),
         android.R.layout.simple_spinner_item,
         getResources().getStringArray(arrayId));
-    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-    classSpinner.setAdapter(adapter);
+    currentAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    currentSpinner.setAdapter(currentAdapter);
   }
 
   // TODO: Rename method, update argument and hook method into UI event

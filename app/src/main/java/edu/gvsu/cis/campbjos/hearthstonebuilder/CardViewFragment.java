@@ -14,10 +14,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 
 import java.util.ArrayList;
 
@@ -60,12 +58,6 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
 
     idArray = new int[]{R.array.card_class, 
         R.array.cost, R.array.card_type, R.array.rarity, R.array.card_set};
-    
-    spinners.add(classSpinner);
-    spinners.add(costSpinner);
-    spinners.add(typeSpinner);
-    spinners.add(rareSpinner);
-    spinners.add(setSpinner);
   }
   private OnFragmentInteractionListener mListener;
 
@@ -116,12 +108,21 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
     setHasOptionsMenu(true);
 
     findSpinnerViews();
+    addSpinners();
 
     for (int i = 0; i < 5; i++) {
       setSpinner(spinners.get(i), idArray[i]);
     }
 
     return cardFragmentView;
+  }
+
+  private void addSpinners() {
+    spinners.add(classSpinner);
+    spinners.add(costSpinner);
+    spinners.add(typeSpinner);
+    spinners.add(rareSpinner);
+    spinners.add(setSpinner);
   }
 
   private void findSpinnerViews() {

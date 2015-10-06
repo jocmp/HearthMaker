@@ -17,7 +17,6 @@
     android:clickable="true"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="?attr/listPreferredItemHeight"
     android:mode="twoLine"
     android:paddingLeft="?attr/listPreferredItemPaddingLeft"
     android:paddingRight="?attr/listPreferredItemPaddingRight">
@@ -29,8 +28,9 @@
         tools:text="you are here"
         android:textColor="?android:attr/textColorPrimary"
         android:maxLines="1"
+        android:paddingTop="5dp"
         android:layout_alignParentTop="true"
-        android:layout_toStartOf="@+id/icon_grid" />
+        android:layout_alignParentStart="true" />
 
     <TextView android:id="@+id/item_subtitle"
         android:layout_width="match_parent"
@@ -39,14 +39,16 @@
         tools:text="you are here"
         android:textColor="?android:attr/textColorSecondary"
         android:maxLines="1"
+        android:paddingBottom="8dp"
         android:ellipsize="end"
         android:layout_below="@+id/item_title"
-        android:layout_toStartOf="@+id/icon_grid" />
+        android:layout_alignParentStart="true" />
 
     <GridLayout android:id="@+id/icon_grid"
         android:layout_alignParentRight="true"
         android:rowCount="2"
         android:columnCount="2"
+        android:paddingTop="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/item_title"
@@ -71,8 +73,7 @@
             android:layout_columnSpan="1"
             android:layout_rowSpan="1"
             android:layout_height="20dp"
-            android:layout_width="15dp"
-            android:background="@drawable/rarity_common"/>
+            android:layout_width="15dp" />
         <TextView android:id="@+id/attack"
             android:text="4"
             android:textStyle="bold"
@@ -85,8 +86,7 @@
             android:layout_columnSpan="1"
             android:layout_rowSpan="1"
             android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:background="@drawable/attack_minion"/>
+            android:layout_width="20dp" />
         <TextView android:id="@+id/health"
             android:text="4"
             android:textStyle="bold"
@@ -99,8 +99,7 @@
             android:layout_columnSpan="1"
             android:layout_rowSpan="1"
             android:layout_height="20dp"
-            android:layout_width="15dp"
-            android:background="@drawable/health_minion"/>
+            android:layout_width="15dp" />
     </GridLayout>
 
 </RelativeLayout>

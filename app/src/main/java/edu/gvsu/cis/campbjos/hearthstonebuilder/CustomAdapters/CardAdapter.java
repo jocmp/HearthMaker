@@ -15,11 +15,11 @@ import edu.gvsu.cis.campbjos.hearthstonebuilder.R;
 public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
   private ArrayList<Card> cardData;
+    private static Context context;
 
   public CardAdapter(ArrayList<Card> myDataset) {
     cardData = myDataset;
   }
-    private static Context context;
   @Override
   public CardAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                    int viewType) {
@@ -27,12 +27,12 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
       return new ViewHolder(LayoutInflater
         .from(parent.getContext())
         .inflate(R.layout.item_two_line, parent, false));
-
   }
 
   @Override
   public void onBindViewHolder(ViewHolder holder, int position) {
     holder.setEntry(cardData.get(position));
+
   }
 
   @Override
@@ -69,6 +69,9 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             case "Common":
                 itemRarity.setBackground(context.getResources().getDrawable(R.drawable.rarity_common));
                 break;
+            case "Free":
+                itemRarity.setBackground(context.getResources().getDrawable(R.drawable.rarity_common));
+                break;
             case "Rare":
                 itemRarity.setBackground(context.getResources().getDrawable(R.drawable.rarity_rare));
                 break;
@@ -85,16 +88,18 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             case "Minion":
                 itemHealthDurability.setText(Integer.toString(card.getHealth()));
                 itemAttack.setText(Integer.toString(card.getAttack()));
-                break;
-            case "Spell":
-                itemHealthDurability.setVisibility(itemView.INVISIBLE);
-                itemAttack.setVisibility(itemView.INVISIBLE);
+                itemHealthDurability.setBackground(context.getResources().getDrawable(R.drawable.health_minion));
+                itemAttack.setBackground(context.getResources().getDrawable(R.drawable.attack_minion));
                 break;
             case "Weapon":
                 itemHealthDurability.setText(Integer.toString(card.getDurability()));
                 itemHealthDurability.setBackground(context.getResources().getDrawable(R.drawable.durability_weapon));
                 itemAttack.setBackground(context.getResources().getDrawable(R.drawable.attack_weapon));
                 itemAttack.setText(Integer.toString(card.getAttack()));
+                break;
+            case "Spell":
+                itemHealthDurability.setVisibility(itemView.INVISIBLE);
+                itemAttack.setVisibility(itemView.INVISIBLE);
                 break;
         }
     }

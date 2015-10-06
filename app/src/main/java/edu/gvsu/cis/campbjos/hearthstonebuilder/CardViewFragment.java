@@ -38,7 +38,7 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
   private View cardFragmentView;
 
   //TEMP VARIABLES. WILL COME FROM DRAWER IN THE FUTURE.
-  private String classFilter = "Neutral";
+  private String classFilter = "Warrior";
   private String manaCostFilter = "CLEAR";
   private String typeFilter = "CLEAR";
   private String rarityFilter = "CLEAR";
@@ -56,7 +56,7 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
   static {
     spinners = new ArrayList<>();
 
-    idArray = new int[]{R.array.card_class, 
+    idArray = new int[]{R.array.card_class,
         R.array.cost, R.array.card_type, R.array.rarity, R.array.card_set};
   }
   private OnFragmentInteractionListener mListener;
@@ -80,7 +80,7 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
     super.onViewCreated(view, savedInstanceState);
     jsonTask = new LoadCardJsonTask(this);
     jsonTask.execute(URL + COLLECT_PARAM,
-        getStringFromManifest("hearthstone_api_key"), cards);
+            getStringFromManifest("hearthstone_api_key"), cards);
   }
 
   @Override
@@ -97,13 +97,13 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
     adapter = new CardAdapter(visibleCards);
     categoryRecycler.setAdapter(adapter);
     categoryRecycler.addOnItemTouchListener(
-        new RecyclerItemClickListener(getActivity(),
-            new RecyclerItemClickListener.OnItemClickListener() {
-              @Override
-              public void onItemClick(View view, int position) {
+            new RecyclerItemClickListener(getActivity(),
+                    new RecyclerItemClickListener.OnItemClickListener() {
+                      @Override
+                      public void onItemClick(View view, int position) {
 
-              }
-            })
+                      }
+                    })
     );
     setHasOptionsMenu(true);
 

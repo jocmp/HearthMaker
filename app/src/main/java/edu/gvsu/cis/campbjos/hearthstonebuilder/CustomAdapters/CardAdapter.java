@@ -59,9 +59,12 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     }
 
     public void setEntry(Card card) {
+        //sets text values. These are used by all cards
         itemTitle.setText(card.getCardName());
         itemSubtitle.setText(card.getTextDescription());
-        itemManaCost.setText(card.getCost());
+        itemManaCost.setText(Integer.toString(card.getCost()));
+
+        //switch rarity
         switch(card.getRarity()) {
             case "Common":
                 itemRarity.setBackground(context.getResources().getDrawable(R.drawable.rarity_common));
@@ -74,6 +77,24 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                 break;
             case "Legendary":
                 itemRarity.setBackground(context.getResources().getDrawable(R.drawable.rarity_legendary));
+                break;
+         }
+
+        //hides and sets based on types
+        switch (card.getType()){
+            case "Minion":
+                itemHealthDurability.setText(Integer.toString(card.getHealth()));
+                itemAttack.setText(Integer.toString(card.getAttack()));
+                break;
+            case "Spell":
+                itemHealthDurability.setVisibility(itemView.INVISIBLE);
+                itemAttack.setVisibility(itemView.INVISIBLE);
+                break;
+            case "Weapon":
+                itemHealthDurability.setText(Integer.toString(card.getDurability()));
+                itemHealthDurability.setBackground(context.getResources().getDrawable(R.drawable.durability_weapon));
+                itemAttack.setBackground(context.getResources().getDrawable(R.drawable.attack_weapon));
+                itemAttack.setText(Integer.toString(card.getAttack()));
                 break;
         }
     }

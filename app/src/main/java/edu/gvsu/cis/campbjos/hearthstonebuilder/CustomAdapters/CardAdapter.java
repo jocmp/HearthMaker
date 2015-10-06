@@ -23,10 +23,11 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
   @Override
   public CardAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                    int viewType) {
-    return new ViewHolder(LayoutInflater
+      context = parent.getContext();
+      return new ViewHolder(LayoutInflater
         .from(parent.getContext())
         .inflate(R.layout.item_two_line, parent, false));
-      context = parent.getContext();
+
   }
 
   @Override
@@ -69,11 +70,12 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                 itemRarity.setBackground(context.getResources().getDrawable(R.drawable.rarity_rare));
                 break;
             case "Epic":
-
+                itemRarity.setBackground(context.getResources().getDrawable(R.drawable.rarity_epic));
+                break;
+            case "Legendary":
+                itemRarity.setBackground(context.getResources().getDrawable(R.drawable.rarity_legendary));
+                break;
         }
-        itemRarity
-
-
     }
   }
 }

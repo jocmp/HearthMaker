@@ -32,51 +32,51 @@
     <string name="navigation_sub_item_2">Subitem 2</string>
 
     <string-array name="card_class">
-        <string>Neutral</string>
-        <string>Druid</string>
-        <string>Hunter</string>
-        <string>Mage</string>
-        <string>Paladin</string>
-        <string>Priest</string>
-        <string>Rogue</string>
-        <string>Shaman</string>
-        <string>Warlock</string>
-        <string>Warrior</string>
+        <item>Neutral</item>
+        <item>Druid</item>
+        <item>Hunter</item>
+        <item>Mage</item>
+        <item>Paladin</item>
+        <item>Priest</item>
+        <item>Rogue</item>
+        <item>Shaman</item>
+        <item>Warlock</item>
+        <item>Warrior</item>
     </string-array>
 
     <string-array name="cost">
-        <string>0</string>
-        <string>1</string>
-        <string>2</string>
-        <string>3</string>
-        <string>4</string>
-        <string>5</string>
-        <string>6</string>
-        <string>7+</string>
-        <string>CLEAR</string>
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7+</item>
+        <item>CLEAR</item>
     </string-array>
 
     <string-array name="card_type">
-        <string>Minion</string>
-        <string>Spell</string>
-        <string>Weapon</string>
-        <string>CLEAR</string>
+        <item>Minion</item>
+        <item>Spell</item>
+        <item>Weapon</item>
+        <item>CLEAR</item>
     </string-array>
 
     <string-array name="rarity">
-        <string>Common</string>
-        <string>Rare</string>
-        <string>Epic</string>
-        <string>Legendary</string>
-        <string>CLEAR</string>
+        <item>Common</item>
+        <item>Rare</item>
+        <item>Epic</item>
+        <item>Legendary</item>
+        <item>CLEAR</item>
     </string-array>
 
     <string-array name="card_set">
-        <string>Basic</string>
-        <string>Naxxramas</string>
-        <string>Goblins vs. Gnomes</string>
-        <string>Blackrock Mountain</string>
-        <string>The Argent Tournament</string>
-        <string>CLEAR</string>
+        <item>Basic</item>
+        <item>Naxxramas</item>
+        <item>Goblins vs. Gnomes</item>
+        <item>Blackrock Mountain</item>
+        <item>The Argent Tournament</item>
+        <item>CLEAR</item>
     </string-array>
 </resources>

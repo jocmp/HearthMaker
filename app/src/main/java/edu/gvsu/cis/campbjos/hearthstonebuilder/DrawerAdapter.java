@@ -39,6 +39,7 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.ViewHolder
   @Override
   public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     LayoutInflater vi = LayoutInflater.from(parent.getContext());
+
     View view = vi.inflate(R.layout.drawer_list_item, parent, false);
     TextView tv = (TextView) view.findViewById(android.R.id.text1);
     return new ViewHolder(tv);

@@ -163,9 +163,6 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
         visibleCards.addAll(filterCards(cards,
             classFilter, manaCostFilter, typeFilter, rarityFilter, cardSetFilter));
         adapter.notifyDataSetChanged();
-        Snackbar.make(cardFragmentView, "Filtered", Snackbar.LENGTH_INDEFINITE).setAction(
-
-        )
         return true;
       default:
         return super.onOptionsItemSelected(item);

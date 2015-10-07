@@ -73,20 +73,24 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
             //switch rarity
             switch (currentCard.getRarity()) {
+                case "Free":
+                    itemRarity.setVisibility(itemView.INVISIBLE);
+                    break;
                 case "Common":
                     itemRarity.setBackground(context.getResources().getDrawable(R.drawable.rarity_common));
-                    break;
-                case "Free":
-                    itemRarity.setBackground(context.getResources().getDrawable(R.drawable.rarity_common));
+                    itemRarity.setVisibility(itemView.VISIBLE);
                     break;
                 case "Rare":
                     itemRarity.setBackground(context.getResources().getDrawable(R.drawable.rarity_rare));
+                    itemRarity.setVisibility(itemView.VISIBLE);
                     break;
                 case "Epic":
                     itemRarity.setBackground(context.getResources().getDrawable(R.drawable.rarity_epic));
+                    itemRarity.setVisibility(itemView.VISIBLE);
                     break;
                 case "Legendary":
                     itemRarity.setBackground(context.getResources().getDrawable(R.drawable.rarity_legendary));
+                    itemRarity.setVisibility(itemView.VISIBLE);
                     break;
                 default:
                     break;

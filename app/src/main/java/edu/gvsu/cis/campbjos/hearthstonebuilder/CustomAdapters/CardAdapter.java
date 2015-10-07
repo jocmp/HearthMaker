@@ -95,12 +95,16 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                 itemAttack.setText(Integer.toString(card.getAttack()));
                 itemHealthDurability.setBackground(context.getResources().getDrawable(R.drawable.health_minion));
                 itemAttack.setBackground(context.getResources().getDrawable(R.drawable.attack_minion));
+                itemHealthDurability.setVisibility(itemView.VISIBLE);
+                itemAttack.setVisibility(itemView.VISIBLE);
                 break;
             case "Weapon":
                 itemHealthDurability.setText(Integer.toString(card.getDurability()));
                 itemHealthDurability.setBackground(context.getResources().getDrawable(R.drawable.durability_weapon));
                 itemAttack.setBackground(context.getResources().getDrawable(R.drawable.attack_weapon));
                 itemAttack.setText(Integer.toString(card.getAttack()));
+                itemHealthDurability.setVisibility(itemView.VISIBLE);
+                itemAttack.setVisibility(itemView.VISIBLE);
                 break;
             case "Spell":
                 itemHealthDurability.setVisibility(itemView.INVISIBLE);

@@ -63,9 +63,7 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
 
   // TODO: Rename and change types and number of parameters
   public static CardViewFragment newInstance() {
-    CardViewFragment fragment = new CardViewFragment();
-    Bundle args = new Bundle();
-    return fragment;
+    return new CardViewFragment();
   }
 
   @Override
@@ -87,7 +85,8 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
     cardFragmentView = inflater.inflate(R.layout.fragment_card_view, container, false);
-    RecyclerView categoryRecycler = (RecyclerView) cardFragmentView.findViewById(R.id.card_recyclerview);
+    RecyclerView categoryRecycler
+        = (RecyclerView) cardFragmentView.findViewById(R.id.card_recyclerview);
 
     RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity(),
         LinearLayoutManager.VERTICAL, false);

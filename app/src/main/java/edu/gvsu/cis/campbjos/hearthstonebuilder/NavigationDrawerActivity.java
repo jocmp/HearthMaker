@@ -19,8 +19,6 @@ package edu.gvsu.cis.campbjos.hearthstonebuilder;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.app.SearchManager;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
@@ -29,35 +27,16 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 /**
  * This example illustrates a common usage of the DrawerLayout widget in the Android support
- * library. <p/> <p>When a navigation (left) drawer is present, the host activity should detect
- * presses of the action bar's Up affordance as a signal to open and close the navigation drawer.
- * The ActionBarDrawerToggle facilitates this behavior. Items within the drawer should fall into one
- * of two categories:</p> <p/> <ul> <li><strong>View switches</strong>. A view switch follows the
- * same basic policies as list or tab navigation in that a view switch does not create navigation
- * history. This pattern should only be used at the root activity of a task, leaving some form of Up
- * navigation active for activities further down the navigation hierarchy.</li>
- * <li><strong>Selective Up</strong>. The drawer allows the user to choose an alternate parent for
- * Up navigation. This allows a user to jump across an app's navigation hierarchy at will. The
- * application should treat this as it treats Up navigation from a different task, replacing the
- * current task stack using TaskStackBuilder or similar. This is the only form of navigation drawer
- * that should be used outside of the root activity of a task.</li> </ul> <p/> <p>Right side drawers
- * should be used for actions, not navigation. This follows the pattern established by the Action
- * Bar that navigation should be to the left and actions to the right. An action should be an
- * operation performed on the current contents of the window, for example enabling or disabling a
- * data overlay on top of the current content.</p>
+ * library.
  */
 public class NavigationDrawerActivity extends AppCompatActivity implements DrawerAdapter.OnItemClickListener {
   private DrawerLayout mDrawerLayout;
   private RecyclerView mDrawerList;
   private ActionBarDrawerToggle mDrawerToggle;
-  private Toolbar mToolbar;
 
   private CharSequence mDrawerTitle;
   private CharSequence mTitle;
@@ -73,7 +52,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
     mTitle = mDrawerTitle = getTitle();
     mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
     mDrawerList = (RecyclerView) findViewById(R.id.left_drawer);
-    mToolbar = (Toolbar) findViewById(R.id.activity_toolbar);
+    Toolbar mToolbar = (Toolbar) findViewById(R.id.activity_toolbar);
     setSupportActionBar(mToolbar);
     // set a custom shadow that overlays the main content when the drawer opens
     mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
@@ -138,7 +117,9 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
   @Override
   public void setTitle(CharSequence title) {
     mTitle = title;
-    getSupportActionBar().setTitle(mTitle);
+    if (getSupportActionBar() != null) {
+      getSupportActionBar().setTitle(mTitle);
+    }
   }
 
   /**

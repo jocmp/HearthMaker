@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.CustomAdapters.CardAdapter;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
 
+import org.json.JSONException;
+
 /**
  * AsyncTask responsible for gathering the HS card information from the
  * MashApe API.
@@ -17,7 +19,6 @@ import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
  * @version Fall 2015
  */
 public class LoadCardJsonTask extends AsyncTask<Object, Void, Void> {
-  private CardAdapter adapter;
 
   private WeakReference<CardViewFragment> fragmentWeakRef;
   private JsonTaskListener host;
@@ -50,15 +51,19 @@ public class LoadCardJsonTask extends AsyncTask<Object, Void, Void> {
     String key = (String) params[1];
     ArrayList<Card> cardList = (ArrayList<Card>) params[2];
 
-    //initial load
-    if (cardList.size() == 0) {
+    if (NetworkUtil.isOnline(fragmentWeakRef.get().getActivity().getApplicationContext())) {
       try {
         String response = NetworkUtil.get(url, "X-Mashape-Key", key);
         JsonUtil.parse(response, cardList);
       } catch (IOException e) {
-        e.printStackTrace();
+        host.onMessage("Error loading cards");
+      } catch (JSONException e) {
+        host.onMessage("Error retrieving cards");
       }
+    } else {
+      host.onMessage("No network connection. Reconnect to try again.");
     }
+
     return null;
   }
 
@@ -67,6 +72,7 @@ public class LoadCardJsonTask extends AsyncTask<Object, Void, Void> {
    */
   public interface JsonTaskListener {
     void onTaskComplete();
+    void onMessage(String s);
   }
   // We should only use this class for the network task - Josiah 2015/10/05
 }

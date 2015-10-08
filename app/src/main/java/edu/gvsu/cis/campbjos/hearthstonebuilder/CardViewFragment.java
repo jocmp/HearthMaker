@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,7 +17,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -34,8 +38,10 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
   private ArrayList<Card> cards;
   private ArrayList<Card> visibleCards;
   private CardAdapter adapter;
-  private LoadCardJsonTask jsonTask;
+  private AsyncTask jsonTask;
   private View cardFragmentView;
+  private View loadingView;
+  private View emptyText;
 
   //TEMP VARIABLES. WILL COME FROM DRAWER IN THE FUTURE.
   private String classFilter = "Warrior";
@@ -79,6 +85,7 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
     jsonTask = new LoadCardJsonTask(this);
     jsonTask.execute(URL + COLLECT_PARAM,
             getStringFromManifest("hearthstone_api_key"), cards);
+    loadingView.setVisibility(View.VISIBLE);
   }
 
   @Override
@@ -87,6 +94,8 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
     cardFragmentView = inflater.inflate(R.layout.fragment_card_view, container, false);
     RecyclerView categoryRecycler
         = (RecyclerView) cardFragmentView.findViewById(R.id.card_recyclerview);
+    loadingView = cardFragmentView.findViewById(R.id.loading_spinner);
+    emptyText = cardFragmentView.findViewById(R.id.empty_event_text);
 
     RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity(),
         LinearLayoutManager.VERTICAL, false);
@@ -163,10 +172,28 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
   public void onTaskComplete() {
     visibleCards.clear();
     visibleCards.addAll(cards);
-//    if (visibleCards.isEmpty()) {
-//      cardFragmentView.findViewById(R.id.empty_event_text).
-//    }
+    if (visibleCards.isEmpty()) {
+      emptyText.setVisibility(View.VISIBLE);
+    }
+    // Sort by mana cost
+    CardFilter.filterCards(cards, "CLEAR", "CLEAR", "CLEAR", "CLEAR", "CLEAR");
     adapter.notifyDataSetChanged();
+    loadingView.setVisibility(View.GONE);
+  }
+
+  @Override
+  public void onMessage(String s) {
+    final CardViewFragment frag = this;
+    Snackbar.make(cardFragmentView, s, Snackbar.LENGTH_INDEFINITE).setAction("Retry",
+        new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        jsonTask = new LoadCardJsonTask(frag).execute(URL + COLLECT_PARAM,
+            getStringFromManifest("hearthstone_api_key"), cards);
+        emptyText.setVisibility(View.GONE);
+        loadingView.setVisibility(View.VISIBLE);
+      }
+    }).show();
   }
 
   /**

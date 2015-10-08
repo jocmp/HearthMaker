@@ -32,6 +32,7 @@
     <string name="navigation_sub_item_2">Subitem 2</string>
 
     <string-array name="card_class">
+        <item>CLEAR ALL</item>
         <item>Neutral</item>
         <item>Druid</item>
         <item>Hunter</item>

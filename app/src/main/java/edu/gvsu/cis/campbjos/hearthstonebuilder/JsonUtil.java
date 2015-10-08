@@ -5,6 +5,7 @@ import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,7 +46,8 @@ public class JsonUtil {
             card.setRarity(checkKeyToString(jsonCard, "rarity"));
             card.setAttack(checkKeyToInt(jsonCard, "attack"));
             card.setDurability(checkKeyToInt(jsonCard, "durability"));
-            card.setTextDescription(checkKeyToString(jsonCard, "text"));
+            card.setTextDescription(Jsoup.parse(checkKeyToString(
+                    jsonCard, "text")).toString());
             card.setFlavor(checkKeyToString(jsonCard, "flavor"));
             card.setArtist(checkKeyToString(jsonCard, "artist"));
             card.setIsCollectible(jsonCard.getBoolean("collectible"));

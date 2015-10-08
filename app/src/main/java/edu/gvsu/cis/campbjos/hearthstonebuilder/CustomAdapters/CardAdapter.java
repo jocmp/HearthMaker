@@ -1,19 +1,17 @@
 package edu.gvsu.cis.campbjos.hearthstonebuilder.CustomAdapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.R;
-
-import java.util.ArrayList;
 
 public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
@@ -127,34 +125,34 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
       switch (currentCard.getPlayerClass()) {
         case "Neutral":
-          cardView.setBackgroundColor(Color.parseColor("#E0E0E0"));
+          cardView.setBackgroundColor(ContextCompat.getColor(context,R.color.neutral));
           break;
         case "Druid":
-          cardView.setBackgroundColor(Color.parseColor("#44FF7D0A"));
+          cardView.setBackgroundColor(ContextCompat.getColor(context, R.color.druid));
           break;
         case "Hunter":
-          cardView.setBackgroundColor(Color.parseColor("#44ABD473"));
+          cardView.setBackgroundColor(ContextCompat.getColor(context, R.color.hunter));
           break;
         case "Mage":
-          cardView.setBackgroundColor(Color.parseColor("#4469CCF0"));
+          cardView.setBackgroundColor(ContextCompat.getColor(context, R.color.mage));
           break;
         case "Paladin":
-          cardView.setBackgroundColor(Color.parseColor("#44F58CBA"));
+          cardView.setBackgroundColor(ContextCompat.getColor(context, R.color.paladin));
           break;
         case "Priest":
-          cardView.setBackgroundColor(Color.parseColor("#FFFFFF"));
+          cardView.setBackgroundColor(ContextCompat.getColor(context, R.color.priest));
           break;
         case "Rogue":
-          cardView.setBackgroundColor(Color.parseColor("#44FFF569"));
+          cardView.setBackgroundColor(ContextCompat.getColor(context, R.color.rogue));
           break;
         case "Shaman":
-          cardView.setBackgroundColor(Color.parseColor("#440070DE"));
+          cardView.setBackgroundColor(ContextCompat.getColor(context, R.color.shaman));
           break;
         case "Warlock":
-          cardView.setBackgroundColor(Color.parseColor("#449482C9"));
+          cardView.setBackgroundColor(ContextCompat.getColor(context, R.color.warlock));
           break;
         case "Warrior":
-          cardView.setBackgroundColor(Color.parseColor("#44C79C6E"));
+          cardView.setBackgroundColor(ContextCompat.getColor(context, R.color.warrior));
           break;
         default:
           break;

@@ -38,23 +38,27 @@ public class JsonUtil {
           if (!checkKeyToString(jsonCard,"type").equals("Hero")){
             // Create our card instance
             Card card = new Card();
-            card.setCardId(checkKeyToString(jsonCard,"cardId"));
-            card.setCardName(checkKeyToString(jsonCard,"name"));
-            card.setCardSet(checkKeyToString(jsonCard,"cardSet"));
-            card.setType(checkKeyToString(jsonCard,"type"));
-            card.setRarity(checkKeyToString(jsonCard,"rarity"));
+            card.setCardId(checkKeyToString(jsonCard, "cardId"));
+            card.setCardName(checkKeyToString(jsonCard, "name"));
+            card.setCardSet(checkKeyToString(jsonCard, "cardSet"));
+            card.setType(checkKeyToString(jsonCard, "type"));
+            card.setRarity(checkKeyToString(jsonCard, "rarity"));
             card.setAttack(checkKeyToInt(jsonCard, "attack"));
-            card.setDurability(checkKeyToInt(jsonCard,"durability"));
-            card.setTextDescription(checkKeyToString(jsonCard,"text"));
+            card.setDurability(checkKeyToInt(jsonCard, "durability"));
+            card.setTextDescription(checkKeyToString(jsonCard, "text"));
             card.setFlavor(checkKeyToString(jsonCard, "flavor"));
-            card.setArtist(checkKeyToString(jsonCard,"artist"));
+            card.setArtist(checkKeyToString(jsonCard, "artist"));
             card.setIsCollectible(jsonCard.getBoolean("collectible"));
-            card.setImageUrl(checkKeyToString(jsonCard,"img"));
-            card.setGoldImageUrl(checkKeyToString(jsonCard,"imgGold"));
+            card.setImageUrl(checkKeyToString(jsonCard, "img"));
+            card.setGoldImageUrl(checkKeyToString(jsonCard, "imgGold"));
             card.setCost(checkKeyToInt(jsonCard, "cost"));
             card.setFaction(checkKeyToString(jsonCard, "faction"));
             card.setHealth(checkKeyToInt(jsonCard, "health"));
-            card.setPlayerClass(checkKeyToString(jsonCard,"playerClass"));
+            //if there is no player class then the card is neutral
+            if (checkKeyToString(jsonCard,"playerClass").isEmpty())
+              card.setPlayerClass("Neutral");
+            else
+              card.setPlayerClass(checkKeyToString(jsonCard,"playerClass"));
             // Add to deck
             cardList.add(card);
           }

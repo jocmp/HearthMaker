@@ -1,8 +1,8 @@
 package edu.gvsu.cis.campbjos.hearthstonebuilder;
 
-import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
-
 import java.util.ArrayList;
+
+import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
 
 /**
  * @author HearthMaker Team
@@ -49,7 +49,7 @@ public class CardFilter {
   }
 
   private static boolean classFilterCard (String classFilter, Card card){
-    if (classFilter.equals("Neutral") && card.getPlayerClass().isEmpty()){
+    if (classFilter.equals("Neutral") && card.getPlayerClass().equals("Neutral")){
       return true;
     } else if (classFilter.equals(card.getPlayerClass())){
       return true;

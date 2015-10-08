@@ -1,11 +1,13 @@
 package edu.gvsu.cis.campbjos.hearthstonebuilder.CustomAdapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
@@ -22,8 +24,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
   }
 
   @Override
-  public CardAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                   int viewType) {
+  public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     return new ViewHolder(LayoutInflater
         .from(parent.getContext())
         .inflate(R.layout.item_two_line, parent, false), parent.getContext());
@@ -32,7 +33,6 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
   @Override
   public void onBindViewHolder(ViewHolder holder, int position) {
     holder.setEntry(cardData.get(position));
-
   }
 
   @Override
@@ -47,6 +47,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     TextView itemRarity;
     TextView itemAttack;
     TextView itemHealthDurability;
+    RelativeLayout view;
     private Context context;
     private Card currentCard;
 
@@ -118,6 +119,41 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         case "Spell":
           itemHealthDurability.setVisibility(View.INVISIBLE);
           itemAttack.setVisibility(View.INVISIBLE);
+          break;
+        default:
+          break;
+      }
+      
+      switch (currentCard.getPlayerClass()) {
+        case "Neutral":
+          view.setBackgroundColor(Color.parseColor("#E0E0E0"));
+          break;
+        case "Druid":
+          view.setBackgroundColor(Color.parseColor("#44FF7D0A"));
+          break;
+        case "Hunter":
+          view.setBackgroundColor(Color.parseColor("#44ABD473"));
+          break;
+        case "Mage":
+          view.setBackgroundColor(Color.parseColor("#4469CCF0"));
+          break;
+        case "Paladin":
+          view.setBackgroundColor(Color.parseColor("#44F58CBA"));
+          break;
+        case "Priest":
+          view.setBackgroundColor(Color.parseColor("#FFFFFF"));
+          break;
+        case "Rogue":
+          view.setBackgroundColor(Color.parseColor("#44FFF569"));
+          break;
+        case "Shaman":
+          view.setBackgroundColor(Color.parseColor("#440070DE"));
+          break;
+        case "Warlock":
+          view.setBackgroundColor(Color.parseColor("#449482C9"));
+          break;
+        case "Warrior":
+          view.setBackgroundColor(Color.parseColor("#44C79C6E"));
           break;
         default:
           break;

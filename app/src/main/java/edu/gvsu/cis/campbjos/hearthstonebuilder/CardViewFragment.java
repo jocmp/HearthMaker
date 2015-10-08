@@ -163,6 +163,9 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
   public void onTaskComplete() {
     visibleCards.clear();
     visibleCards.addAll(cards);
+//    if (visibleCards.isEmpty()) {
+//      cardFragmentView.findViewById(R.id.empty_event_text).
+//    }
     adapter.notifyDataSetChanged();
   }
 

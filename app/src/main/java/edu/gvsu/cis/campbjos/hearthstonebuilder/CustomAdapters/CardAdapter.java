@@ -47,7 +47,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     TextView itemRarity;
     TextView itemAttack;
     TextView itemHealthDurability;
-    RelativeLayout view;
+    View cardView;
     private Context context;
     private Card currentCard;
 
@@ -59,11 +59,12 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
      */
     public ViewHolder(View view, Context parent) {
       super(view);
-      itemTitle = (TextView) view.findViewById(R.id.item_title);
-      itemSubtitle = (TextView) view.findViewById(R.id.item_subtitle);
-      itemManaCost = (TextView) view.findViewById(R.id.mana_cost);
-      itemRarity = (TextView) view.findViewById(R.id.rarity);
-      itemAttack = (TextView) view.findViewById(R.id.attack);
+      cardView = view;
+      itemTitle = (TextView) cardView.findViewById(R.id.item_title);
+      itemSubtitle = (TextView) cardView.findViewById(R.id.item_subtitle);
+      itemManaCost = (TextView) cardView.findViewById(R.id.mana_cost);
+      itemRarity = (TextView) cardView.findViewById(R.id.rarity);
+      itemAttack = (TextView) cardView.findViewById(R.id.attack);
       itemHealthDurability = (TextView) view.findViewById(R.id.health);
       context = parent;
     }
@@ -101,16 +102,16 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         case "Minion":
           itemHealthDurability.setText(Integer.toString(card.getHealth()));
           itemAttack.setText(Integer.toString(card.getAttack()));
-          itemHealthDurability.setBackground
-              (ContextCompat.getDrawable(context, R.drawable.health_minion));
+          itemHealthDurability.setBackground(
+              ContextCompat.getDrawable(context, R.drawable.health_minion));
           itemAttack.setBackground(ContextCompat.getDrawable(context, R.drawable.attack_minion));
           itemHealthDurability.setVisibility(View.VISIBLE);
           itemAttack.setVisibility(View.VISIBLE);
           break;
         case "Weapon":
           itemHealthDurability.setText(Integer.toString(card.getDurability()));
-          itemHealthDurability.setBackground
-              (ContextCompat.getDrawable(context, R.drawable.durability_weapon));
+          itemHealthDurability.setBackground(
+              ContextCompat.getDrawable(context, R.drawable.durability_weapon));
           itemAttack.setBackground(ContextCompat.getDrawable(context, R.drawable.attack_weapon));
           itemAttack.setText(Integer.toString(card.getAttack()));
           itemHealthDurability.setVisibility(View.VISIBLE);
@@ -123,37 +124,37 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         default:
           break;
       }
-      
+
       switch (currentCard.getPlayerClass()) {
         case "Neutral":
-          view.setBackgroundColor(Color.parseColor("#E0E0E0"));
+          cardView.setBackgroundColor(Color.parseColor("#E0E0E0"));
           break;
         case "Druid":
-          view.setBackgroundColor(Color.parseColor("#44FF7D0A"));
+          cardView.setBackgroundColor(Color.parseColor("#44FF7D0A"));
           break;
         case "Hunter":
-          view.setBackgroundColor(Color.parseColor("#44ABD473"));
+          cardView.setBackgroundColor(Color.parseColor("#44ABD473"));
           break;
         case "Mage":
-          view.setBackgroundColor(Color.parseColor("#4469CCF0"));
+          cardView.setBackgroundColor(Color.parseColor("#4469CCF0"));
           break;
         case "Paladin":
-          view.setBackgroundColor(Color.parseColor("#44F58CBA"));
+          cardView.setBackgroundColor(Color.parseColor("#44F58CBA"));
           break;
         case "Priest":
-          view.setBackgroundColor(Color.parseColor("#FFFFFF"));
+          cardView.setBackgroundColor(Color.parseColor("#FFFFFF"));
           break;
         case "Rogue":
-          view.setBackgroundColor(Color.parseColor("#44FFF569"));
+          cardView.setBackgroundColor(Color.parseColor("#44FFF569"));
           break;
         case "Shaman":
-          view.setBackgroundColor(Color.parseColor("#440070DE"));
+          cardView.setBackgroundColor(Color.parseColor("#440070DE"));
           break;
         case "Warlock":
-          view.setBackgroundColor(Color.parseColor("#449482C9"));
+          cardView.setBackgroundColor(Color.parseColor("#449482C9"));
           break;
         case "Warrior":
-          view.setBackgroundColor(Color.parseColor("#44C79C6E"));
+          cardView.setBackgroundColor(Color.parseColor("#44C79C6E"));
           break;
         default:
           break;

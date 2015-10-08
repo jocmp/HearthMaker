@@ -2,4 +2,14 @@
 <resources>
     <color name="primary_material_light">#D7CCC8</color>
     <color name="primary_dark_material_light">#3E2723</color>
+    <color name="neutral">#E0E0E0</color>
+    <color name="druid">#44FF7D0A</color>
+    <color name="hunter">#44ABD473</color>
+    <color name="mage">#E0E0E0</color>
+    <color name="paladin">#4469CCF0</color>
+    <color name="priest">#FFFFFF</color>
+    <color name="rogue">#44FFF569</color>
+    <color name="shaman">#440070DE</color>
+    <color name="warlock">#449482C9</color>
+    <color name="warrior">#44C79C6E</color>
 </resources>

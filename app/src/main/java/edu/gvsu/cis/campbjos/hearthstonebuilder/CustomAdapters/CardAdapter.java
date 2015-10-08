@@ -53,7 +53,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     /**
      * Viewholder class for each RecyclerView item.
      *
-     * @param view view
+     * @param view   view
      * @param parent Parent context
      */
     public ViewHolder(View view, Context parent) {
@@ -67,7 +67,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
       context = parent;
     }
 
-    public void setEntry(Card card) {
+    private void setEntry(Card card) {
       //sets text values. These are used by all cards
       currentCard = card;
       itemTitle.setText(currentCard.getCardName());
@@ -100,22 +100,24 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         case "Minion":
           itemHealthDurability.setText(Integer.toString(card.getHealth()));
           itemAttack.setText(Integer.toString(card.getAttack()));
-          itemHealthDurability.setBackground(
-              ContextCompat.getDrawable(context, R.drawable.health_minion));
-          itemAttack.setBackground(
-              ContextCompat.getDrawable(context, R.drawable.attack_minion));
+          itemHealthDurability.setBackground
+              (ContextCompat.getDrawable(context, R.drawable.health_minion));
+          itemAttack.setBackground(ContextCompat.getDrawable(context, R.drawable.attack_minion));
+          itemHealthDurability.setVisibility(View.VISIBLE);
+          itemAttack.setVisibility(View.VISIBLE);
           break;
         case "Weapon":
           itemHealthDurability.setText(Integer.toString(card.getDurability()));
-          itemHealthDurability.setBackground(
-              ContextCompat.getDrawable(context, R.drawable.durability_weapon));
-          itemAttack.setBackground(
-              ContextCompat.getDrawable(context, R.drawable.durability_weapon));
+          itemHealthDurability.setBackground
+              (ContextCompat.getDrawable(context, R.drawable.durability_weapon));
+          itemAttack.setBackground(ContextCompat.getDrawable(context, R.drawable.attack_weapon));
           itemAttack.setText(Integer.toString(card.getAttack()));
+          itemHealthDurability.setVisibility(View.VISIBLE);
+          itemAttack.setVisibility(View.VISIBLE);
           break;
         case "Spell":
-          itemHealthDurability.setVisibility(itemView.INVISIBLE);
-          itemAttack.setVisibility(itemView.INVISIBLE);
+          itemHealthDurability.setVisibility(View.INVISIBLE);
+          itemAttack.setVisibility(View.INVISIBLE);
           break;
         default:
           break;

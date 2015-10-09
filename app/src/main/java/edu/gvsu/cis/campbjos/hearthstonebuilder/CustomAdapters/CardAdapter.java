@@ -44,14 +44,18 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     TextView itemTitle;
     TextView itemSubtitle;
     TextView itemManaCost;
-    TextView itemRarity;
+    ImageView itemRarity;
     TextView itemAttack;
+    ImageView itemAttackDurabilityImage;
+    RelativeLayout itemAttackDurabilityGrid;
     TextView itemHealthDurability;
     ImageView itemHealthDurabilityImage;
     RelativeLayout itemHealthDurabilityGrid;
     View cardView;
     private Context context;
     private Card currentCard;
+
+
 
     /**
      * Viewholder class for each RecyclerView item.
@@ -65,7 +69,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
       itemTitle = (TextView) cardView.findViewById(R.id.item_title);
       itemSubtitle = (TextView) cardView.findViewById(R.id.item_subtitle);
       itemManaCost = (TextView) cardView.findViewById(R.id.mana_cost);
-      itemRarity = (TextView) cardView.findViewById(R.id.rarity);
+      itemRarity = (ImageView) cardView.findViewById(R.id.rarity);
       itemAttack = (TextView) cardView.findViewById(R.id.attack);
       itemHealthDurability = (TextView) view.findViewById(R.id.health);
       itemHealthDurabilityImage = (ImageView) cardView.findViewById(R.id.health_image);
@@ -83,19 +87,19 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
       //switch rarity
       switch (currentCard.getRarity()) {
         case "Common":
-          itemRarity.setBackground(ContextCompat.getDrawable(context, R.drawable.rarity_common));
+          itemRarity.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.rarity_common));
           break;
         case "Free":
-          itemRarity.setBackground(ContextCompat.getDrawable(context, R.drawable.rarity_common));
+          itemRarity.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.rarity_common));
           break;
         case "Rare":
-          itemRarity.setBackground(ContextCompat.getDrawable(context, R.drawable.rarity_rare));
+          itemRarity.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.rarity_rare));
           break;
         case "Epic":
-          itemRarity.setBackground(ContextCompat.getDrawable(context, R.drawable.rarity_epic));
+          itemRarity.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.rarity_epic));
           break;
         case "Legendary":
-          itemRarity.setBackground(ContextCompat.getDrawable(context, R.drawable.rarity_legendary));
+          itemRarity.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.rarity_legendary));
           break;
         default:
           break;
@@ -116,6 +120,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
           itemHealthDurabilityImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.durability_weapon));
           itemAttack.setBackground(ContextCompat.getDrawable(context, R.drawable.attack_weapon));
           itemAttack.setText(Integer.toString(card.getAttack()));
+          //itemAttack.setPaddingRelative(0,0,0,0);
           itemHealthDurabilityGrid.setVisibility(View.VISIBLE);
           itemAttack.setVisibility(View.VISIBLE);
           break;

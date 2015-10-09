@@ -17,9 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -44,7 +42,7 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
   private View emptyText;
 
   //TEMP VARIABLES. WILL COME FROM DRAWER IN THE FUTURE.
-  private String classFilter = "Warrior";
+  private String classFilter = "CLEAR";
   private String manaCostFilter = "CLEAR";
   private String typeFilter = "CLEAR";
   private String rarityFilter = "CLEAR";
@@ -170,13 +168,11 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
 
   @Override
   public void onTaskComplete() {
-    visibleCards.clear();
-    visibleCards.addAll(cards);
-    if (visibleCards.isEmpty()) {
+    if (cards.isEmpty()) {
       emptyText.setVisibility(View.VISIBLE);
     }
-    // Sort by mana cost
-    CardFilter.filterCards(cards, "CLEAR", "CLEAR", "CLEAR", "CLEAR", "CLEAR");
+    visibleCards.clear();
+    visibleCards.addAll(CardFilter.filterCards(cards, "CLEAR", "CLEAR", "CLEAR", "CLEAR", "CLEAR"));
     adapter.notifyDataSetChanged();
     loadingView.setVisibility(View.GONE);
   }

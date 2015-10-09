@@ -5,8 +5,8 @@
     <color name="neutral">#E0E0E0</color>
     <color name="druid">#44FF7D0A</color>
     <color name="hunter">#44ABD473</color>
-    <color name="mage">#E0E0E0</color>
-    <color name="paladin">#4469CCF0</color>
+    <color name="mage">#4469CCF0</color>
+    <color name="paladin">#44F58CBA</color>
     <color name="priest">#FFFFFF</color>
     <color name="rogue">#44FFF569</color>
     <color name="shaman">#440070DE</color>

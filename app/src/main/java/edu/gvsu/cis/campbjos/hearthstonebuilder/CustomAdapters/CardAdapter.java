@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -45,6 +47,8 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     TextView itemRarity;
     TextView itemAttack;
     TextView itemHealthDurability;
+    ImageView itemHealthDurabilityImage;
+    RelativeLayout itemHealthDurabilityGrid;
     View cardView;
     private Context context;
     private Card currentCard;
@@ -64,6 +68,8 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
       itemRarity = (TextView) cardView.findViewById(R.id.rarity);
       itemAttack = (TextView) cardView.findViewById(R.id.attack);
       itemHealthDurability = (TextView) view.findViewById(R.id.health);
+      itemHealthDurabilityImage = (ImageView) cardView.findViewById(R.id.health_image);
+      itemHealthDurabilityGrid = (RelativeLayout) cardView.findViewById(R.id.health_grid);
       context = parent;
     }
 
@@ -100,23 +106,21 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         case "Minion":
           itemHealthDurability.setText(Integer.toString(card.getHealth()));
           itemAttack.setText(Integer.toString(card.getAttack()));
-          itemHealthDurability.setBackground(
-              ContextCompat.getDrawable(context, R.drawable.health_minion));
+          itemHealthDurabilityImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.health_minion));
           itemAttack.setBackground(ContextCompat.getDrawable(context, R.drawable.attack_minion));
-          itemHealthDurability.setVisibility(View.VISIBLE);
+          itemHealthDurabilityGrid.setVisibility(View.VISIBLE);
           itemAttack.setVisibility(View.VISIBLE);
           break;
         case "Weapon":
           itemHealthDurability.setText(Integer.toString(card.getDurability()));
-          itemHealthDurability.setBackground(
-              ContextCompat.getDrawable(context, R.drawable.durability_weapon));
+          itemHealthDurabilityImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.durability_weapon));
           itemAttack.setBackground(ContextCompat.getDrawable(context, R.drawable.attack_weapon));
           itemAttack.setText(Integer.toString(card.getAttack()));
-          itemHealthDurability.setVisibility(View.VISIBLE);
+          itemHealthDurabilityGrid.setVisibility(View.VISIBLE);
           itemAttack.setVisibility(View.VISIBLE);
           break;
         case "Spell":
-          itemHealthDurability.setVisibility(View.INVISIBLE);
+          itemHealthDurabilityGrid.setVisibility(View.INVISIBLE);
           itemAttack.setVisibility(View.INVISIBLE);
           break;
         default:

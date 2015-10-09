@@ -10,8 +10,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
+import edu.gvsu.cis.campbjos.hearthstonebuilder.CardIconCrop;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.R;
 
@@ -46,16 +49,14 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     TextView itemManaCost;
     ImageView itemRarity;
     TextView itemAttack;
-    ImageView itemAttackDurabilityImage;
-    RelativeLayout itemAttackDurabilityGrid;
     TextView itemHealthDurability;
     ImageView itemHealthDurabilityImage;
+    ImageView itemIcon;
     RelativeLayout itemHealthDurabilityGrid;
     View cardView;
     private Context context;
     private Card currentCard;
-
-
+    CardIconCrop crop = new CardIconCrop();
 
     /**
      * Viewholder class for each RecyclerView item.
@@ -66,6 +67,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     public ViewHolder(View view, Context parent) {
       super(view);
       cardView = view;
+      itemIcon = (ImageView) cardView.findViewById(R.id.card_icon);
       itemTitle = (TextView) cardView.findViewById(R.id.item_title);
       itemSubtitle = (TextView) cardView.findViewById(R.id.item_subtitle);
       itemManaCost = (TextView) cardView.findViewById(R.id.mana_cost);
@@ -83,6 +85,8 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
       itemTitle.setText(currentCard.getCardName());
       itemSubtitle.setText(currentCard.getTextDescription());
       itemManaCost.setText(Integer.toString(card.getCost()));
+
+      Picasso.with(context).load(card.getImageUrl()).transform(crop).into(itemIcon);
 
       //switch rarity
       switch (currentCard.getRarity()) {

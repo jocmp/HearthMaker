@@ -1,7 +1,5 @@
 package edu.gvsu.cis.campbjos.hearthstonebuilder;
 
-import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,6 +8,8 @@ import org.jsoup.Jsoup;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
 
 /**
  * @author HearthMaker Team
@@ -59,7 +59,8 @@ public class JsonUtil {
             card.setPlayerClass("Neutral");
           else
             card.setPlayerClass(checkKeyToString(jsonCard, "playerClass"));
-          // Add to deck
+
+          // Add to entire list
           cardList.add(card);
         }
       }

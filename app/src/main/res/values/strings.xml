@@ -48,6 +48,7 @@
     </string-array>
 
     <string-array name="cost">
+        <item>CLEAR</item>
         <item>0</item>
         <item>1</item>
         <item>2</item>
@@ -56,30 +57,29 @@
         <item>5</item>
         <item>6</item>
         <item>7+</item>
-        <item>CLEAR</item>
     </string-array>
 
     <string-array name="card_type">
+        <item>CLEAR</item>
         <item>Minion</item>
         <item>Spell</item>
         <item>Weapon</item>
-        <item>CLEAR</item>
     </string-array>
 
     <string-array name="rarity">
+        <item>CLEAR</item>
         <item>Common</item>
         <item>Rare</item>
         <item>Epic</item>
         <item>Legendary</item>
-        <item>CLEAR</item>
     </string-array>
 
     <string-array name="card_set">
+        <item>CLEAR</item>
         <item>Basic</item>
         <item>Naxxramas</item>
         <item>Goblins vs. Gnomes</item>
         <item>Blackrock Mountain</item>
         <item>The Argent Tournament</item>
-        <item>CLEAR</item>
     </string-array>
 </resources>

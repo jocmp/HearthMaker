@@ -248,6 +248,7 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
           classFilter, costFilter, typeFilter, rarityFilter, cardSetFilter));
       adapter.notifyDataSetChanged();
     }
+
     if (visibleCards.isEmpty()) {
       emptyText.setVisibility(View.VISIBLE);
     } else {

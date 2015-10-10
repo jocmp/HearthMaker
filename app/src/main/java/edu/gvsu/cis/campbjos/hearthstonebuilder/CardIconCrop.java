@@ -25,11 +25,15 @@ public class CardIconCrop implements Transformation {
         int Xoffset = (source.getHeight()/source.getWidth())*82;
         double temp = Yoffset*1.45;
         int size = (int) temp;
+
+        //create square image
         Bitmap scaledSquare = Bitmap.createBitmap(source, Xoffset, Yoffset, size, size);
 
+        //create transparent edges
         Bitmap output = Bitmap.createBitmap(scaledSquare.getWidth(),
                 scaledSquare.getHeight(), Bitmap.Config.ARGB_8888);
 
+        //draw to canvas and put circle over top of the edges
         Canvas canvas = new Canvas(output);
         final Paint paint = new Paint();
         final Rect rect = new Rect(0, 0, size, size);
@@ -43,6 +47,7 @@ public class CardIconCrop implements Transformation {
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
         canvas.drawBitmap(scaledSquare, rect, rect, paint);
 
+        //recycle old bitmaps
         if (output != source){
             scaledSquare.recycle();
             source.recycle();

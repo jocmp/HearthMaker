@@ -9,4 +9,5 @@
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="progress_height">48dp</dimen>
     <dimen name="progress_width">48dp</dimen>
+    <item name="disabled_alpha_material_light" type="dimen" format="float">0.26</item>
 </resources>

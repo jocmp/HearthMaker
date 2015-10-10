@@ -9,6 +9,13 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="HearthMakerTheme" parent="@style/Theme.AppCompat.Light.NoActionBar" >
-        <item name="android:colorBackground">?android:attr/colorBackground</item>
+
+    </style>
+
+    <style name="filter_style">
+        <item name="android:background">#EFEBE9</item>
+        <item name="android:popupBackground">@android:color/white</item>
+        <item name="android:layout_marginStart">@dimen/activity_vertical_margin</item>
+        <item name="android:layout_marginEnd">@dimen/activity_vertical_margin</item>
     </style>
 </resources>

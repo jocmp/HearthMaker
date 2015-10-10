@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="edu.gvsu.cis.campbjos.hearthstonebuilder.fragment_card_view"
-    android:background="@android:color/white">
+    android:background="@color/windowBackground">
+
     <TextView
         android:id="@+id/empty_event_text"
         android:layout_width="wrap_content"
@@ -23,47 +24,47 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/card_recyclerview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"/>
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner_layout"
+        android:background="#EFEBE9"
+        android:elevation="4dp">
 
         <Spinner
             android:id="@+id/spinner_class"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/primary_material_light"
-            android:popupBackground="@android:color/white"/>
+            style="@style/filter_style"/>
+
         <Spinner
             android:id="@+id/spinner_cost"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/primary_material_light"
-            android:popupBackground="@android:color/white"/>
+            style="@style/filter_style"/>
         <Spinner
             android:id="@+id/spinner_type"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/primary_material_light"
-            android:popupBackground="@android:color/white"/>
+            style="@style/filter_style"/>
         <Spinner
             android:id="@+id/spinner_rarity"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/primary_material_light"
-            android:popupBackground="@android:color/white"/>
+            style="@style/filter_style"/>
 
         <Spinner
             android:id="@+id/spinner_set"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/primary_material_light"
-            android:popupBackground="@android:color/white"/>
+            style="@style/filter_style" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/card_recyclerview"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"/>
     </LinearLayout>
 
 </RelativeLayout>

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright 2014 Google Inc. All rights reserved.
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -11,111 +10,138 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<android.support.v7.widget.CardView
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/card_view"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    card_view:cardCornerRadius="20dp"
-    android:layout_margin="2dp">
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="?android:attr/selectableItemBackground"
     android:clickable="true"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="72dp"
     android:mode="twoLine"
     android:id="@+id/list_item"
-    android:paddingLeft="?attr/listPreferredItemPaddingLeft"
-    android:paddingRight="?attr/listPreferredItemPaddingRight">
+    android:paddingStart="?attr/listPreferredItemPaddingLeft"
+    android:paddingEnd="?attr/listPreferredItemPaddingRight">
 
-    <TextView android:id="@+id/item_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?attr/textAppearanceListItem"
-        tools:text="you are here"
-        android:textColor="?android:attr/textColorPrimary"
-        android:maxLines="1"
-        android:paddingTop="5dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/icon_grid" />
 
-    <TextView android:id="@+id/item_subtitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceListItemSmall"
-        tools:text="you are here"
-        android:textColor="?android:attr/textColorSecondary"
-        android:maxLines="1"
-        android:paddingBottom="8dp"
-        android:ellipsize="end"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_toStartOf="@+id/icon_grid"
-        android:layout_below="@+id/item_title" />
+        <ImageView
+            android:id="@+id/card_icon"
+            tools:src="@drawable/circle"
+            android:contentDescription="@string/card_icon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:scaleType="fitCenter"
+            android:layout_centerVertical="true" />
 
-    <GridLayout android:id="@+id/icon_grid"
-        android:layout_alignParentRight="true"
-        android:rowCount="2"
-        android:columnCount="2"
-        android:paddingTop="5dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/item_title"
-        android:layout_alignBottom="@+id/item_subtitle" >
+        <TextView
+            android:id="@+id/item_title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:textSize="16sp"
+            android:maxLines="1"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textColor="?android:attr/textColorPrimary"
+            tools:text="you are here"
+            android:layout_marginStart="8dp"
+            android:layout_above="@+id/item_subtitle"
+            android:layout_toEndOf="@+id/card_icon"
+            android:layout_toLeftOf="@+id/icon_grid" />
 
-        <!--HOW DO WE MAKE THE HEIGHT/WIDTH DYNAMIC?-->
-        <TextView android:id="@+id/mana_cost"
-            android:text="4"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold"
-            android:shadowColor="#000000"
-            android:shadowDx="2"
-            android:shadowDy="2"
-            android:shadowRadius="2"
-            android:gravity="center"
-            android:layout_columnSpan="1"
-            android:layout_rowSpan="1"
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:background="@drawable/mana_crystal"/>
-        <TextView android:id="@+id/rarity"
-            android:layout_columnSpan="1"
-            android:layout_rowSpan="1"
-            android:layout_height="20dp"
-            android:layout_width="15dp" />
-        <TextView android:id="@+id/attack"
-            android:text="4"
-            android:textStyle="bold"
-            android:textColor="#FFFFFF"
-            android:shadowColor="#000000"
-            android:shadowDx="2"
-            android:shadowDy="2"
-            android:shadowRadius="2"
-            android:gravity="center"
-            android:layout_columnSpan="1"
-            android:layout_rowSpan="1"
-            android:layout_height="20dp"
-            android:layout_width="20dp" />
-        <TextView android:id="@+id/health"
-            android:text="4"
-            android:textStyle="bold"
-            android:textColor="#FFFFFF"
-            android:shadowColor="#000000"
-            android:shadowDx="2"
-            android:shadowDy="2"
-            android:shadowRadius="2"
-            android:gravity="center"
-            android:layout_columnSpan="1"
-            android:layout_rowSpan="1"
-            android:layout_height="20dp"
-            android:layout_width="15dp" />
-    </GridLayout>
+        <TextView
+            android:id="@+id/item_subtitle"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:paddingBottom="16dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall"
+            android:textColor="?android:attr/textColorSecondary"
+            tools:text="you are here"
+            android:layout_alignParentBottom="true"
+            android:layout_alignStart="@+id/item_title"
+            android:layout_toLeftOf="@+id/icon_grid" />
 
-</RelativeLayout>
+        <GridLayout
+            android:id="@+id/icon_grid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:paddingRight="16dp"
+            android:rowCount="2"
+            android:paddingTop="10dp"
+            android:layout_alignParentEnd="true">
 
+
+             <edu.gvsu.cis.campbjos.hearthstonebuilder.UI.BelweBoldTextView
+                 android:id="@+id/mana_cost"
+                 android:layout_width="25dp"
+                 android:layout_height="25dp"
+                 android:layout_columnSpan="1"
+                 android:layout_rowSpan="1"
+                 android:gravity="center"
+                 android:background="@drawable/mana_crystal"
+                 android:textSize="17dp"
+                 android:shadowColor="@android:color/black"
+                 android:shadowDx="2"
+                 android:shadowDy="2"
+                 android:shadowRadius="3"
+                 android:textColor="?android:attr/textColorPrimary"
+                 android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/rarity"
+                android:layout_width="19dp"
+                android:layout_height="25dp"
+                android:layout_columnSpan="1"
+                android:layout_rowSpan="1"
+                android:layout_gravity="top"/>
+
+            <edu.gvsu.cis.campbjos.hearthstonebuilder.UI.BelweBoldTextView
+                android:id="@+id/attack"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_columnSpan="1"
+                android:layout_rowSpan="1"
+                android:gravity="center"
+                android:textSize="17dp"
+                android:shadowColor="#000000"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="3"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textStyle="bold" />
+
+            <RelativeLayout
+                android:id="@+id/health_grid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnSpan="1"
+                android:layout_rowSpan="1" >
+
+            <ImageView
+                android:id="@+id/health_image"
+                android:layout_width="19dp"
+                android:layout_height="25dp" />
+
+            <edu.gvsu.cis.campbjos.hearthstonebuilder.UI.BelweBoldTextView
+                android:id="@+id/health"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:textSize="17dp"
+                android:gravity="center"
+                android:shadowColor="#000000"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="3"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:layout_centerHorizontal="true" />
+            </RelativeLayout>
+
+        </GridLayout>
+    </RelativeLayout>
+<!--
 </android.support.v7.widget.CardView>
+-->
 

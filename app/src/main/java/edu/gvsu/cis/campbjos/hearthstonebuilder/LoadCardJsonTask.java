@@ -1,6 +1,7 @@
 package edu.gvsu.cis.campbjos.hearthstonebuilder;
 
 import android.os.AsyncTask;
+import android.view.View;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -28,10 +29,20 @@ public class LoadCardJsonTask extends AsyncTask<Object, Void, Void> {
     host = this.fragmentWeakRef.get();
   }
 
+  @Override
+  protected void onPreExecute() {
+    super.onPreExecute();
+    if (fragmentWeakRef != null) {
+      fragmentWeakRef.get().getProgressView().setVisibility(View.VISIBLE);
+    }
+  }
 
   @Override
-  protected void onPostExecute(Void vd) {
-    super.onPostExecute(vd);
+  protected void onPostExecute(Void nothing) {
+    super.onPostExecute(nothing);
+    if (fragmentWeakRef != null) {
+      fragmentWeakRef.get().getProgressView().setVisibility(View.INVISIBLE);
+    }
     if (host != null) {
       host.onTaskComplete();
     }

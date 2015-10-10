@@ -14,8 +14,6 @@
   limitations under the License.
   -->
 
-<!-- A DrawerLayout is intended to be used as the top-level content view
-  using match_parent for both width and height to consume the full space available. -->
 <android.support.v4.widget.DrawerLayout android:id="@+id/drawer_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -29,10 +27,8 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <android.support.v7.widget.Toolbar android:id="@+id/activity_toolbar"
-            android:layout_height="?attr/actionBarSize"
-            android:layout_width="match_parent"
-            android:background="?attr/colorPrimary"/>
+        <include layout="@layout/toolbar" android:id="@+id/activity_toolbar" />
+
         <FrameLayout
             android:id="@+id/content_frame"
             android:layout_width="match_parent"
@@ -54,5 +50,6 @@
         android:choiceMode="singleChoice"
         android:divider="@null"
         android:scrollbars="vertical"
+        android:background="@android:color/white"
         app:layoutManager="LinearLayoutManager" />
 </android.support.v4.widget.DrawerLayout>

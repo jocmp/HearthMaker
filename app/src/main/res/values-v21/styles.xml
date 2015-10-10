@@ -3,5 +3,6 @@
 
     <style name="AppTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="android:colorAccent">?android:attr/colorAccent</item>
+        <item name="android:windowBackground">@color/windowBackground</item>
     </style>
 </resources>

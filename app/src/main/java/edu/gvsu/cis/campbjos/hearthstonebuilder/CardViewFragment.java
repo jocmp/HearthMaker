@@ -41,16 +41,22 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
   private View cardFragmentView;
   private View loadingView;
   private View emptyText;
+  private View spinnerLayout;
+  // We don't want to sort when we open the filter list
+  private boolean togglePress;
+  private int refreshCount;
 
   private final int CLASS_SPINNER_ID = R.id.spinner_class;
+  private final int COST_SPINNER_ID = R.id.spinner_cost;
+  private final int TYPE_SPINNER_ID = R.id.spinner_type;
+  private final int RARITY_SPINNER_ID = R.id.spinner_rarity;
+  private final int SET_SPINNER_ID = R.id.spinner_set;
 
-  //TEMP VARIABLES. WILL COME FROM DRAWER IN THE FUTURE.
-  private String classFilter = "Warrior";
-  private String manaCostFilter = "CLEAR";
+  private String classFilter = "CLEAR";
+  private String costFilter = "CLEAR";
   private String typeFilter = "CLEAR";
   private String rarityFilter = "CLEAR";
   private String cardSetFilter = "CLEAR";
-  //END
 
   private static Spinner classSpinner;
   private static Spinner costSpinner;
@@ -86,7 +92,8 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
     jsonTask = new LoadCardJsonTask(this);
     jsonTask.execute(URL + COLLECT_PARAM,
         getStringFromManifest("hearthstone_api_key"), cards);
-    loadingView.setVisibility(View.VISIBLE);
+
+
   }
 
   @Override
@@ -97,6 +104,8 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
         = (RecyclerView) cardFragmentView.findViewById(R.id.card_recyclerview);
     loadingView = cardFragmentView.findViewById(R.id.loading_spinner);
     emptyText = cardFragmentView.findViewById(R.id.empty_event_text);
+    spinnerLayout = cardFragmentView.findViewById(R.id.spinner_layout);
+    spinnerLayout.setVisibility(View.GONE);
 
     RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity(),
         LinearLayoutManager.VERTICAL, false);
@@ -106,13 +115,13 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
     adapter = new CardAdapter(visibleCards);
     categoryRecycler.setAdapter(adapter);
     categoryRecycler.addOnItemTouchListener(
-            new RecyclerItemClickListener(getActivity(),
-                    new RecyclerItemClickListener.OnItemClickListener() {
-                      @Override
-                      public void onItemClick(View view, int position) {
+        new RecyclerItemClickListener(getActivity(),
+            new RecyclerItemClickListener.OnItemClickListener() {
+              @Override
+              public void onItemClick(View view, int position) {
 
-                      }
-                    })
+              }
+            })
     );
     setHasOptionsMenu(true);
 
@@ -121,15 +130,14 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
 
     for (int i = 0; i < 5; i++) {
       setSpinnerAdapter(spinners.get(i), idArray[i]);
+      spinners.get(i).setOnItemSelectedListener(this);
     }
-
-    setSpinnerListener();
-
 
     return cardFragmentView;
   }
 
   private void addSpinners() {
+    spinners.clear();
     spinners.add(classSpinner);
     spinners.add(costSpinner);
     spinners.add(typeSpinner);
@@ -145,17 +153,9 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
     setSpinner = (Spinner) cardFragmentView.findViewById(R.id.spinner_set);
   }
 
-  private void setSpinnerListener() {
-    classSpinner.setOnItemSelectedListener(this);
-   // costSpinner.setOnItemSelectedListener(this);
-   // typeSpinner.setOnItemSelectedListener(this);
-   // rareSpinner.setOnItemSelectedListener(this);
-   // setSpinner.setOnItemSelectedListener(this);
-  }
-
   private void setSpinnerAdapter(Spinner currentSpinner, int arrayId) {
     ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-        getActivity(), arrayId, android.R.layout.simple_spinner_item);
+        getActivity(), arrayId, R.layout.spinner_item);
     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     currentSpinner.setAdapter(adapter);
   }
@@ -181,13 +181,11 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
 
   @Override
   public void onTaskComplete() {
-    visibleCards.clear();
-    visibleCards.addAll(cards);
-    if (visibleCards.isEmpty()) {
+    if (cards.isEmpty()) {
       emptyText.setVisibility(View.VISIBLE);
     }
-    // Sort by mana cost
-    CardFilter.filterCards(cards, "CLEAR", "CLEAR", "CLEAR", "CLEAR", "CLEAR");
+    visibleCards.clear();
+    visibleCards.addAll(CardFilter.filterCards(cards, "CLEAR", "CLEAR", "CLEAR", "CLEAR", "CLEAR"));
     adapter.notifyDataSetChanged();
     loadingView.setVisibility(View.GONE);
   }
@@ -209,16 +207,57 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
 
   @Override
   public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-    switch (view.getId()) {
+
+    String selection = (String) parent.getAdapter().getItem(position);
+
+    switch (parent.getId()) {
       case CLASS_SPINNER_ID:
-        classFilter = (String) parent.getAdapter().getItem(position);
+        if (selection.contains("CLEAR")) {
+          classFilter = "CLEAR";
+        } else {
+          classFilter = selection;
+        }
         break;
+      case COST_SPINNER_ID:
+        costFilter = selection;
+        break;
+      case TYPE_SPINNER_ID:
+        typeFilter = selection;
+        break;
+      case RARITY_SPINNER_ID:
+        rarityFilter = selection;
+        break;
+      case SET_SPINNER_ID:
+        cardSetFilter = selection;
+        break;
+      default:
+        break;
+    }
+
+    if (togglePress) {
+      // The OnItemSelected will loop each time
+      refreshCount--;
+      // We don't want to sort if the user is just opening the drawer
+      if (refreshCount <= 0) {
+        togglePress = false;
+      }
+    } else {
+      // Filter on selection
+      visibleCards.clear();
+      visibleCards.addAll(CardFilter.filterCards(cards,
+          classFilter, costFilter, typeFilter, rarityFilter, cardSetFilter));
+      adapter.notifyDataSetChanged();
+    }
+    if (visibleCards.isEmpty()) {
+      emptyText.setVisibility(View.VISIBLE);
+    } else {
+      emptyText.setVisibility(View.INVISIBLE);
     }
   }
 
   @Override
   public void onNothingSelected(AdapterView<?> parent) {
-
+    // Cancel
   }
 
   /**
@@ -246,21 +285,25 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
     return results;
   }
 
+  public View getProgressView() {
+    return loadingView;
+  }
+
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
-    // The action bar home/up action should open or close the drawer.
-    // ActionBarDrawerToggle will take care of this.
-
-    // Handle action buttons
+    togglePress = true;
+    refreshCount = 5;
     switch (item.getItemId()) {
       case R.id.action_search:
-        visibleCards.clear();
-        visibleCards.addAll(CardFilter.filterCards(cards,
-            classFilter, manaCostFilter, typeFilter, rarityFilter, cardSetFilter));
-        adapter.notifyDataSetChanged();
+        if (spinnerLayout.getVisibility() == View.VISIBLE) {
+          spinnerLayout.setVisibility(View.GONE);
+        } else {
+          spinnerLayout.setVisibility(View.VISIBLE);
+        }
         return true;
       default:
-        return super.onOptionsItemSelected(item);
+        spinnerLayout.setVisibility(View.VISIBLE);
+        return true;
     }
   }
 }

@@ -31,6 +31,8 @@
     <string name="navigation_sub_item_1">Subitem 1</string>
     <string name="navigation_sub_item_2">Subitem 2</string>
 
+    <string name="card_icon">Card icon</string>
+
     <string-array name="card_class">
         <item>CLEAR ALL</item>
         <item>Neutral</item>

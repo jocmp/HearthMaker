@@ -6,12 +6,18 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import edu.gvsu.cis.campbjos.hearthstonebuilder.CardIconCrop;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.R;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.UI.CircleBitmap;
 
 public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
@@ -42,12 +48,16 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     TextView itemTitle;
     TextView itemSubtitle;
     TextView itemManaCost;
-    TextView itemRarity;
+    ImageView itemRarity;
     TextView itemAttack;
     TextView itemHealthDurability;
+    ImageView itemHealthDurabilityImage;
+    ImageView itemIcon;
+    RelativeLayout itemHealthDurabilityGrid;
     View cardView;
     private Context context;
     private Card currentCard;
+    /// CardIconCrop crop = new CardIconCrop();
 
     /**
      * Viewholder class for each RecyclerView item.
@@ -58,12 +68,15 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     public ViewHolder(View view, Context parent) {
       super(view);
       cardView = view;
+      itemIcon = (ImageView) cardView.findViewById(R.id.card_icon);
       itemTitle = (TextView) cardView.findViewById(R.id.item_title);
       itemSubtitle = (TextView) cardView.findViewById(R.id.item_subtitle);
       itemManaCost = (TextView) cardView.findViewById(R.id.mana_cost);
-      itemRarity = (TextView) cardView.findViewById(R.id.rarity);
+      itemRarity = (ImageView) cardView.findViewById(R.id.rarity);
       itemAttack = (TextView) cardView.findViewById(R.id.attack);
       itemHealthDurability = (TextView) view.findViewById(R.id.health);
+      itemHealthDurabilityImage = (ImageView) cardView.findViewById(R.id.health_image);
+      itemHealthDurabilityGrid = (RelativeLayout) cardView.findViewById(R.id.health_grid);
       context = parent;
     }
 
@@ -74,22 +87,27 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
       itemSubtitle.setText(currentCard.getTextDescription());
       itemManaCost.setText(Integer.toString(card.getCost()));
 
+      Picasso.with(context).load(card.getImageUrl())
+          .transform(new CircleBitmap())
+          .into(itemIcon);
+
+
       //switch rarity
       switch (currentCard.getRarity()) {
         case "Common":
-          itemRarity.setBackground(ContextCompat.getDrawable(context, R.drawable.rarity_common));
+          itemRarity.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.rarity_common));
           break;
         case "Free":
-          itemRarity.setBackground(ContextCompat.getDrawable(context, R.drawable.rarity_common));
+          itemRarity.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.rarity_common));
           break;
         case "Rare":
-          itemRarity.setBackground(ContextCompat.getDrawable(context, R.drawable.rarity_rare));
+          itemRarity.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.rarity_rare));
           break;
         case "Epic":
-          itemRarity.setBackground(ContextCompat.getDrawable(context, R.drawable.rarity_epic));
+          itemRarity.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.rarity_epic));
           break;
         case "Legendary":
-          itemRarity.setBackground(ContextCompat.getDrawable(context, R.drawable.rarity_legendary));
+          itemRarity.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.rarity_legendary));
           break;
         default:
           break;
@@ -100,23 +118,22 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         case "Minion":
           itemHealthDurability.setText(Integer.toString(card.getHealth()));
           itemAttack.setText(Integer.toString(card.getAttack()));
-          itemHealthDurability.setBackground(
-              ContextCompat.getDrawable(context, R.drawable.health_minion));
+          itemHealthDurabilityImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.health_minion));
           itemAttack.setBackground(ContextCompat.getDrawable(context, R.drawable.attack_minion));
-          itemHealthDurability.setVisibility(View.VISIBLE);
+          itemHealthDurabilityGrid.setVisibility(View.VISIBLE);
           itemAttack.setVisibility(View.VISIBLE);
           break;
         case "Weapon":
           itemHealthDurability.setText(Integer.toString(card.getDurability()));
-          itemHealthDurability.setBackground(
-              ContextCompat.getDrawable(context, R.drawable.durability_weapon));
+          itemHealthDurabilityImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.durability_weapon));
           itemAttack.setBackground(ContextCompat.getDrawable(context, R.drawable.attack_weapon));
           itemAttack.setText(Integer.toString(card.getAttack()));
-          itemHealthDurability.setVisibility(View.VISIBLE);
+          //itemAttack.setPaddingRelative(0,0,0,0);
+          itemHealthDurabilityGrid.setVisibility(View.VISIBLE);
           itemAttack.setVisibility(View.VISIBLE);
           break;
         case "Spell":
-          itemHealthDurability.setVisibility(View.INVISIBLE);
+          itemHealthDurabilityGrid.setVisibility(View.INVISIBLE);
           itemAttack.setVisibility(View.INVISIBLE);
           break;
         default:

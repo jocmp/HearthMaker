@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-package edu.gvsu.cis.campbjos.hearthstonebuilder;
+package edu.gvsu.cis.campbjos.hearthstonebuilder.CustomAdapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import edu.gvsu.cis.campbjos.hearthstonebuilder.R;
 
 /**
  * Adapter for the planet data used in our drawer menu.
@@ -64,7 +66,7 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.ViewHolder
   /**
    * Interface for receiving click events from cells.
    */
-  interface OnItemClickListener {
+  public interface OnItemClickListener {
     void onClick(View view, int position);
   }
 

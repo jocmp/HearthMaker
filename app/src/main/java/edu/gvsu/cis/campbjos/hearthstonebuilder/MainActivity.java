@@ -29,11 +29,13 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import edu.gvsu.cis.campbjos.hearthstonebuilder.CustomAdapters.DrawerAdapter;
+
 /**
  * This example illustrates a common usage of the DrawerLayout widget in the Android support
  * library.
  */
-public class NavigationDrawerActivity extends AppCompatActivity implements DrawerAdapter.OnItemClickListener {
+public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnItemClickListener {
   private DrawerLayout mDrawerLayout;
   private RecyclerView mDrawerList;
   private ActionBarDrawerToggle mDrawerToggle;
@@ -41,13 +43,12 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
   private CharSequence mDrawerTitle;
   private CharSequence mTitle;
 
-  //just to make it build. CT 9/25/2015
-  String[]mPlanetTitles = {"HearthMaker"};
+  String[]drawerItems = {"Catalog"};
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_navigation_drawer);
+    setContentView(R.layout.activity_main);
 
     mTitle = mDrawerTitle = getTitle();
     mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -60,7 +61,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
     mDrawerList.setHasFixedSize(true);
 
     // set up the drawer's list view with items and click listener
-    mDrawerList.setAdapter(new DrawerAdapter(mPlanetTitles, this));
+    mDrawerList.setAdapter(new DrawerAdapter(drawerItems, this));
     // enable ActionBar app icon to behave as action to toggle nav drawer
     if (getSupportActionBar() != null) {
       getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -110,7 +111,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Drawe
     ft.commit();
 
     // update selected item title, then close the drawer
-    setTitle(mPlanetTitles[position]);
+    setTitle(drawerItems[position]);
     mDrawerLayout.closeDrawer(mDrawerList);
   }
 

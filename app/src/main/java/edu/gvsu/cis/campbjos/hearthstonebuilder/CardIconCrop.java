@@ -1,6 +1,12 @@
 package edu.gvsu.cis.campbjos.hearthstonebuilder;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 
 import com.squareup.picasso.Transformation;
 
@@ -14,16 +20,35 @@ public class CardIconCrop implements Transformation {
     }
 
     @Override public Bitmap transform(Bitmap source) {
-        
-        //do logic to transform into a rounded bitmap
-        int size = Math.min(source.getWidth(), source.getHeight());
-        int x = (source.getWidth() - size) / 2;
-        int y = (source.getHeight() - size) / 2;
-        Bitmap result = Bitmap.createBitmap(source, x, y, size, size);
-        if (result != source) {
+
+        int Yoffset = (source.getHeight()/source.getWidth())*95;
+        int Xoffset = (source.getHeight()/source.getWidth())*82;
+        double temp = Yoffset*1.45;
+        int size = (int) temp;
+        Bitmap scaledSquare = Bitmap.createBitmap(source, Xoffset, Yoffset, size, size);
+
+        Bitmap output = Bitmap.createBitmap(scaledSquare.getWidth(),
+                scaledSquare.getHeight(), Bitmap.Config.ARGB_8888);
+
+        Canvas canvas = new Canvas(output);
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, size, size);
+        paint.setAntiAlias(true);
+        paint.setFilterBitmap(true);
+        paint.setDither(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(Color.parseColor("#BAB399"));
+        canvas.drawCircle(size/ 2 + 0.7f,
+               size / 2 + 0.7f, size / 2 + 0.1f, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(scaledSquare, rect, rect, paint);
+
+        if (output != source){
+            scaledSquare.recycle();
             source.recycle();
         }
-        return result;
+
+        return output;
     }
 
 

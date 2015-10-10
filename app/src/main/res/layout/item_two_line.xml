@@ -32,7 +32,6 @@
 
         <ImageView
             android:id="@+id/card_icon"
-            android:src="@drawable/circle"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:paddingLeft="16dp"
@@ -81,31 +80,42 @@
             android:paddingTop="10dp"
             android:layout_alignParentEnd="true">
 
-
-             <edu.gvsu.cis.campbjos.hearthstonebuilder.BelweBoldTextView
-                 android:id="@+id/mana_cost"
-                 android:layout_width="25dp"
-                 android:layout_height="25dp"
-                 android:layout_columnSpan="1"
-                 android:layout_rowSpan="1"
-                 android:gravity="center"
-                 android:background="@drawable/mana_crystal"
-                 android:textSize="17dp"
-                 android:shadowColor="#000000"
-                 android:shadowDx="2"
-                 android:shadowDy="2"
-                 android:shadowRadius="3"
-                 android:textColor="#FFFFFF"
-                 android:textStyle="bold" />
-
+            <RelativeLayout
+                android:layout_marginLeft="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnSpan="1"
+                android:layout_rowSpan="1">
+                <ImageView
+                    android:layout_marginTop="3dp"
+                    android:id="@+id/mana_image"
+                    android:layout_width="17dp"
+                    android:layout_height="17dp"
+                    android:gravity="center"
+                    android:src="@drawable/mana_crystal"/>
+                <edu.gvsu.cis.campbjos.hearthstonebuilder.BelweBoldTextView
+                    android:id="@+id/mana_cost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="17dp"
+                    android:gravity="center"
+                    android:textSize="17dp"
+                    android:shadowColor="#000000"
+                    android:shadowDx="2"
+                    android:shadowDy="2"
+                    android:shadowRadius="3"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold"
+                    android:layout_centerHorizontal="true"/>
+            </RelativeLayout>
 
             <ImageView
                 android:id="@+id/rarity"
-                android:layout_width="19dp"
-                android:layout_height="25dp"
+                android:layout_width="15dp"
+                android:layout_height="20dp"
                 android:layout_columnSpan="1"
                 android:layout_rowSpan="1"
-                android:layout_gravity="top"/>
+                android:layout_marginTop="1dp"
+                android:layout_gravity="center"/>
 
             <edu.gvsu.cis.campbjos.hearthstonebuilder.BelweBoldTextView
                 android:id="@+id/attack"

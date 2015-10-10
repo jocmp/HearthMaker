@@ -18,8 +18,6 @@ Group project for CIS350: Software Engineering.
 License
 -------
 
-Copyright 2014 The Android Open Source Project, Inc.
-
 Licensed to the Apache Software Foundation (ASF) under one or more contributor
 license agreements.  See the NOTICE file distributed with this work for
 additional information regarding copyright ownership.  The ASF licenses this

@@ -16,10 +16,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -32,7 +31,7 @@ import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
  * Use the {@link CardViewFragment#newInstance} factory method to create an instance of this
  * fragment.
  */
-public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonTaskListener {
+public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonTaskListener, AdapterView.OnItemSelectedListener {
   private static final String URL = "https://omgvamp-hearthstone-v1.p.mashape.com/cards?";
   private static final String COLLECT_PARAM = "collectible=1";
   private ArrayList<Card> cards;
@@ -42,6 +41,8 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
   private View cardFragmentView;
   private View loadingView;
   private View emptyText;
+
+  private final int CLASS_SPINNER_ID = R.id.spinner_class;
 
   //TEMP VARIABLES. WILL COME FROM DRAWER IN THE FUTURE.
   private String classFilter = "Warrior";
@@ -84,7 +85,7 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
     super.onViewCreated(view, savedInstanceState);
     jsonTask = new LoadCardJsonTask(this);
     jsonTask.execute(URL + COLLECT_PARAM,
-            getStringFromManifest("hearthstone_api_key"), cards);
+        getStringFromManifest("hearthstone_api_key"), cards);
     loadingView.setVisibility(View.VISIBLE);
   }
 
@@ -119,8 +120,11 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
     addSpinners();
 
     for (int i = 0; i < 5; i++) {
-      setSpinner(spinners.get(i), idArray[i]);
+      setSpinnerAdapter(spinners.get(i), idArray[i]);
     }
+
+    setSpinnerListener();
+
 
     return cardFragmentView;
   }
@@ -141,12 +145,19 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
     setSpinner = (Spinner) cardFragmentView.findViewById(R.id.spinner_set);
   }
 
-  private void setSpinner(Spinner currentSpinner, int arrayId) {
-    ArrayAdapter<String> currentAdapter = new ArrayAdapter<>(getActivity(),
-        android.R.layout.simple_spinner_item,
-        getResources().getStringArray(arrayId));
-    currentAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-    currentSpinner.setAdapter(currentAdapter);
+  private void setSpinnerListener() {
+    classSpinner.setOnItemSelectedListener(this);
+   // costSpinner.setOnItemSelectedListener(this);
+   // typeSpinner.setOnItemSelectedListener(this);
+   // rareSpinner.setOnItemSelectedListener(this);
+   // setSpinner.setOnItemSelectedListener(this);
+  }
+
+  private void setSpinnerAdapter(Spinner currentSpinner, int arrayId) {
+    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+        getActivity(), arrayId, android.R.layout.simple_spinner_item);
+    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    currentSpinner.setAdapter(adapter);
   }
 
   // TODO: Rename method, update argument and hook method into UI event
@@ -194,6 +205,20 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
         loadingView.setVisibility(View.VISIBLE);
       }
     }).show();
+  }
+
+  @Override
+  public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+    switch (view.getId()) {
+      case CLASS_SPINNER_ID:
+        classFilter = (String) parent.getAdapter().getItem(position);
+        break;
+    }
+  }
+
+  @Override
+  public void onNothingSelected(AdapterView<?> parent) {
+
   }
 
   /**

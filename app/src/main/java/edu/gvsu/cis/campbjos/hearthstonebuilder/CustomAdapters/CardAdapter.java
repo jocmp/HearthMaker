@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.CardIconCrop;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.R;
-import edu.gvsu.cis.campbjos.hearthstonebuilder.UI.CircleBitmap;
 
 public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
@@ -57,7 +56,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     View cardView;
     private Context context;
     private Card currentCard;
-    /// CardIconCrop crop = new CardIconCrop();
+    private CardIconCrop crop;
 
     /**
      * Viewholder class for each RecyclerView item.
@@ -88,7 +87,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
       itemManaCost.setText(Integer.toString(card.getCost()));
 
       Picasso.with(context).load(card.getImageUrl())
-          .transform(new CircleBitmap())
+          .transform(crop)
           .into(itemIcon);
 
 

@@ -42,9 +42,6 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
   private View loadingView;
   private View emptyText;
   private View spinnerLayout;
-  // We don't want to sort when we open the filter list
-  private boolean togglePress;
-  private int refreshCount;
 
   private final int CLASS_SPINNER_ID = R.id.spinner_class;
   private final int COST_SPINNER_ID = R.id.spinner_cost;
@@ -234,20 +231,10 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
         break;
     }
 
-    if (togglePress) {
-      // The OnItemSelected will loop each time
-      refreshCount--;
-      // We don't want to sort if the user is just opening the drawer
-      if (refreshCount <= 0) {
-        togglePress = false;
-      }
-    } else {
-      // Filter on selection
-      visibleCards.clear();
-      visibleCards.addAll(CardFilter.filterCards(cards,
-          classFilter, costFilter, typeFilter, rarityFilter, cardSetFilter));
-      adapter.notifyDataSetChanged();
-    }
+    visibleCards.clear();
+    visibleCards.addAll(CardFilter.filterCards(cards,
+        classFilter, costFilter, typeFilter, rarityFilter, cardSetFilter));
+    adapter.notifyDataSetChanged();
 
     if (visibleCards.isEmpty()) {
       emptyText.setVisibility(View.VISIBLE);
@@ -292,8 +279,7 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
 
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
-    togglePress = true;
-    refreshCount = 5;
+
     switch (item.getItemId()) {
       case R.id.action_search:
         if (spinnerLayout.getVisibility() == View.VISIBLE) {

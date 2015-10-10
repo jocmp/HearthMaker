@@ -87,6 +87,8 @@ public class CardFilter {
   private static boolean cardSetFilterCard(String cardSetFilter, Card card) {
     if (cardSetFilter.equals("CLEAR")) {
       return true;
+    } else if (cardSetFilter.equals("Classic") && card.getCardSet().equals("Basic")){
+        return true;
     } else if (cardSetFilter.equals(card.getCardSet())) {
       return true;
     }

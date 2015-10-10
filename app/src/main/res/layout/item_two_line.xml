@@ -10,119 +10,138 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
+<!--
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="0dp"
+    card_view:cardCornerRadius="6dp">
+    -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/list_item"
+    android:layout_width="match_parent"
+    android:layout_height="82dp"
     android:background="?android:attr/selectableItemBackground"
     android:clickable="true"
-    android:layout_width="match_parent"
-    android:layout_height="72dp"
     android:mode="twoLine"
-    android:id="@+id/list_item"
-    android:paddingStart="?attr/listPreferredItemPaddingLeft"
-    android:paddingEnd="?attr/listPreferredItemPaddingRight">
+    android:layout_marginBottom="3dp">
 
+    <ImageView
+        android:id="@+id/card_icon"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:paddingLeft="16dp"
+        android:paddingTop="10dp" />
 
-        <ImageView
-            android:id="@+id/card_icon"
-            tools:src="@drawable/circle"
-            android:contentDescription="@string/card_icon"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:scaleType="fitCenter"
-            android:layout_centerVertical="true" />
+    <TextView
+        android:id="@+id/item_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingLeft="72dp"
+        android:layout_marginRight="16dp"
+        android:textSize="16sp"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/icon_grid"
+        android:maxLines="1"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textColor="?android:attr/textColorPrimary"
+        tools:text="you are here" />
 
-        <TextView
-            android:id="@+id/item_title"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:textSize="16sp"
-            android:maxLines="1"
-            android:textAppearance="?attr/textAppearanceListItem"
-            android:textColor="?android:attr/textColorPrimary"
-            tools:text="you are here"
-            android:layout_marginStart="8dp"
-            android:layout_above="@+id/item_subtitle"
-            android:layout_toEndOf="@+id/card_icon"
-            android:layout_toLeftOf="@+id/icon_grid" />
+    <TextView
+        android:id="@+id/item_subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:textSize="14sp"
+        android:layout_alignParentStart="true"
+        android:paddingLeft="72dp"
+        android:layout_below="@+id/item_title"
+        android:layout_toStartOf="@+id/icon_grid"
+        android:layout_marginRight="16dp"
+        android:paddingBottom="16dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:textColor="?android:attr/textColorSecondary"
+        tools:text="you are here" />
 
-        <TextView
-            android:id="@+id/item_subtitle"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:paddingBottom="16dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textAppearance="?android:attr/textAppearanceListItemSmall"
-            android:textColor="?android:attr/textColorSecondary"
-            tools:text="you are here"
-            android:layout_alignParentBottom="true"
-            android:layout_alignStart="@+id/item_title"
-            android:layout_toLeftOf="@+id/icon_grid" />
+    <GridLayout
+        android:id="@+id/icon_grid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:columnCount="2"
+        android:paddingRight="16dp"
+        android:rowCount="2"
+        android:paddingTop="10dp"
+        android:layout_alignParentEnd="true">
 
-        <GridLayout
-            android:id="@+id/icon_grid"
+        <RelativeLayout
+            android:layout_marginLeft="4dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:columnCount="2"
-            android:paddingRight="16dp"
-            android:rowCount="2"
-            android:paddingTop="10dp"
-            android:layout_alignParentEnd="true">
-
-             <edu.gvsu.cis.campbjos.hearthstonebuilder.UI.BelweBoldTextView
-                 android:id="@+id/mana_cost"
-                 android:layout_width="25dp"
-                 android:layout_height="25dp"
-                 android:layout_columnSpan="1"
-                 android:layout_rowSpan="1"
-                 android:gravity="center"
-                 android:background="@drawable/mana_crystal"
-                 android:textSize="17dp"
-                 android:shadowColor="@android:color/black"
-                 android:shadowDx="2"
-                 android:shadowDy="2"
-                 android:shadowRadius="3"
-                 android:textColor="?android:attr/textColorPrimary"
-                 android:textStyle="bold" />
+            android:layout_columnSpan="1"
+            android:layout_rowSpan="1">
             <ImageView
-                android:id="@+id/rarity"
-                android:layout_width="15dp"
-                android:layout_height="20dp"
-                android:layout_columnSpan="1"
-                android:layout_rowSpan="1"
-                android:layout_marginTop="1dp"
-                android:layout_gravity="center"/>
-
+                android:layout_marginTop="3dp"
+                android:id="@+id/mana_image"
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:gravity="center"
+                android:src="@drawable/mana_crystal"/>
             <edu.gvsu.cis.campbjos.hearthstonebuilder.UI.BelweBoldTextView
-                android:id="@+id/attack"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_columnSpan="1"
-                android:layout_rowSpan="1"
+                android:id="@+id/mana_cost"
+                android:layout_width="wrap_content"
+                android:layout_height="17dp"
                 android:gravity="center"
                 android:textSize="17dp"
                 android:shadowColor="#000000"
                 android:shadowDx="2"
                 android:shadowDy="2"
                 android:shadowRadius="3"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textStyle="bold" />
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:layout_centerHorizontal="true"/>
+        </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/health_grid"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_columnSpan="1"
-                android:layout_rowSpan="1" >
+        <ImageView
+            android:id="@+id/rarity"
+            android:layout_width="15dp"
+            android:layout_height="20dp"
+            android:layout_columnSpan="1"
+            android:layout_rowSpan="1"
+            android:layout_marginTop="1dp"
+            android:layout_gravity="center"/>
 
+        <edu.gvsu.cis.campbjos.hearthstonebuilder.UI.BelweBoldTextView
+            android:id="@+id/attack"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_columnSpan="1"
+            android:layout_rowSpan="1"
+            android:gravity="center"
+            android:textSize="17dp"
+            android:shadowColor="#000000"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="3"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
+
+        <RelativeLayout
+            android:id="@+id/health_grid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="1"
+            android:layout_rowSpan="1" >
             <ImageView
                 android:id="@+id/health_image"
                 android:layout_width="19dp"
                 android:layout_height="25dp" />
-
             <edu.gvsu.cis.campbjos.hearthstonebuilder.UI.BelweBoldTextView
                 android:id="@+id/health"
                 android:layout_width="wrap_content"
@@ -136,7 +155,10 @@
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
                 android:layout_centerHorizontal="true" />
-            </RelativeLayout>
+        </RelativeLayout>
 
-        </GridLayout>
-    </RelativeLayout>
+    </GridLayout>
+</RelativeLayout>
+    <!--
+    </android.support.v7.widget.CardView>
+    -->

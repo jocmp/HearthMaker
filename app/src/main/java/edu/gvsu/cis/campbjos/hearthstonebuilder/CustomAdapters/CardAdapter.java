@@ -14,7 +14,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import edu.gvsu.cis.campbjos.hearthstonebuilder.CardIconCrop;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.UI.CardIconCrop;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.R;
 
@@ -87,7 +87,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
       itemManaCost.setText(Integer.toString(card.getCost()));
 
       Picasso.with(context).load(card.getImageUrl())
-          .transform(crop)
+          .transform(new CardIconCrop())
           .into(itemIcon);
 
 

@@ -5,8 +5,6 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-import edu.gvsu.cis.campbjos.hearthstonebuilder.UI.FontCache;
-
 /**
  * Created by chadt on 10/9/2015.
  */

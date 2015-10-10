@@ -1,4 +1,4 @@
-package edu.gvsu.cis.campbjos.hearthstonebuilder;
+package edu.gvsu.cis.campbjos.hearthstonebuilder.UI;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;

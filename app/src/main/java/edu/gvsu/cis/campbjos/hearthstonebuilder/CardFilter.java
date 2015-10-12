@@ -60,7 +60,11 @@ public class CardFilter {
   private static boolean manaCostFilterCard(String manaCostFilter, Card card) {
     if (manaCostFilter.equals("CLEAR")) {
       return true;
-    } else if (Integer.parseInt(manaCostFilter) == card.getCost()) {
+    } else if (manaCostFilter.equals("7+") && card.getCost() >= 7){
+      return true;
+      //to get past the invalid int check to see if it is at the 7+
+    } else if (!manaCostFilter.equals("7+") && Integer.parseInt(manaCostFilter) == card.getCost()) {
+
       return true;
     }
     return false;

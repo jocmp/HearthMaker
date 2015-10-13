@@ -59,13 +59,11 @@ android {
     sourceSets {
         main {
             dirs.each { dir ->
-                java.srcDirs "src/${dir}/java"
-                res.srcDirs "src/${dir}/res"
+                java.srcDir "src/${dir}/java"
+                res.srcDir "src/${dir}/res"
             }
         }
-        androidTest.setRoot('tests')
-        androidTest.java.srcDirs = ['tests/src']
-
+        instrumentTest.setRoot('src/androidTest/')
     }
 
     packagingOptions {

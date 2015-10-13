@@ -24,6 +24,9 @@
             android:name="hearthstone_api_key"
             android:value="bexJwbUuYPmshc9PHODsSl9ToBo6p1qjKxojsn2mTw1utrOlqo" />
 
+        <instrumentation
+            android:name="com.google.android.apps.common.testing.testrunner.GoogleInstrumentationTestRunner"
+            android:label="Tests for my packaged app"
+            android:targetPackage="edu.gvsu.cis.campjos.hearthstonebuilder.test" />
     </application>
-
 </manifest>

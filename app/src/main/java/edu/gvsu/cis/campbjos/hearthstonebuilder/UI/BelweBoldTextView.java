@@ -16,13 +16,11 @@ public class BelweBoldTextView extends TextView{
 
     public BelweBoldTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
-
         applyCustomFont(context);
     }
 
     public BelweBoldTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-
         applyCustomFont(context);
     }
 

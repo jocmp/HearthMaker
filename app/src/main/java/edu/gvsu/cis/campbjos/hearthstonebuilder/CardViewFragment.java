@@ -49,11 +49,11 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
   private final int RARITY_SPINNER_ID = R.id.spinner_rarity;
   private final int SET_SPINNER_ID = R.id.spinner_set;
 
-  private String classFilter = "CLEAR";
-  private String costFilter = "CLEAR";
-  private String typeFilter = "CLEAR";
-  private String rarityFilter = "CLEAR";
-  private String cardSetFilter = "CLEAR";
+  private String classFilter;
+  private String costFilter;
+  private String typeFilter;
+  private String rarityFilter;
+  private String cardSetFilter;
 
   private static Spinner classSpinner;
   private static Spinner costSpinner;
@@ -81,6 +81,12 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
     super.onCreate(savedInstanceState);
     cards = new ArrayList<>();
     visibleCards = new ArrayList<>();
+
+    classFilter = "CLEAR";
+    costFilter = "CLEAR";
+    typeFilter = "CLEAR";
+    rarityFilter = "CLEAR";
+    cardSetFilter = "CLEAR";
   }
 
   @Override

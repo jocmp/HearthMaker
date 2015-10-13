@@ -1,4 +1,4 @@
-package edu.gvsu.cis.campbjos.hearthstonebuilder.test;
+package edu.gvsu.cis.campbjos.hearthstonebuilder;
 
 import android.test.InstrumentationTestCase;
 
@@ -19,7 +19,7 @@ public class ClassFilterTest extends InstrumentationTestCase {
 
 
     public void testClassFilter() {
-        ArrayList<Card> fakeCards = new ArrayList<Card>();
+        ArrayList<Card> fakeCards = new ArrayList<>();
         String response = null;
         try {
             response = NetworkUtil.get("https://omgvamp-hearthstone-v1.p.mashape.com/cards?collectible=1", "X-Mashape-Key", "bexJwbUuYPmshc9PHODsSl9ToBo6p1qjKxojsn2mTw1utrOlqo");

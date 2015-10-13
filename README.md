@@ -10,10 +10,25 @@ Pre-requisites
 - Android Build Tools v23.0.1
 - Android Support Repository
 
-Getting Started
+Background
 ---------------
 
-Group project for CIS350: Software Engineering.  
+This is a project for CIS350: Software Engineering.
+
+### Generating Test Reports ###
+
+1. Place new test files under `src/androidTest/${dir}/java`
+2. Start up an Android device to test
+3. Use Gradle from the command line and enter the following, which will install the debug build onto the device:  
+<pre><code>./gradlew installDebugAndroidTest</code></pre>
+4. Use Gradle from the command line to generate the coverage report:
+<pre><code>./gradlew createDebugCoverageReport</code></pre>   
+Your report will be complete if you see the following:   
+<pre><code>:app:createDebugAndroidTestCoverageReport
+:app:createDebugCoverageReport
+BUILD SUCCESSFUL</code></pre>
+5. Go to `app/build/reports/..` to view the individual outputs from index.html files.
+
 
 License
 -------

@@ -24,6 +24,7 @@ import java.util.ArrayList;
 
 import edu.gvsu.cis.campbjos.hearthstonebuilder.CustomAdapters.CardAdapter;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.UI.DividerItemDecoration;
 
 /**
  * A simple {@link Fragment} subclass. Activities that contain this fragment must implement the
@@ -126,6 +127,8 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
               }
             })
     );
+    categoryRecycler.addItemDecoration
+        (new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
     setHasOptionsMenu(true);
 
     findSpinnerViews();

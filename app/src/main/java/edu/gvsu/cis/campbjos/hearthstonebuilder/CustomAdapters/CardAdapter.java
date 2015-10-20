@@ -14,9 +14,9 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import edu.gvsu.cis.campbjos.hearthstonebuilder.UI.CardIconCrop;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.R;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.UI.CardIconCrop;
 
 public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
@@ -56,8 +56,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     View cardView;
     private Context context;
     private Card currentCard;
-    private CardIconCrop crop;
-
+    private CardIconCrop cardCrop;
     /**
      * Viewholder class for each RecyclerView item.
      *
@@ -77,6 +76,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
       itemHealthDurabilityImage = (ImageView) cardView.findViewById(R.id.health_image);
       itemHealthDurabilityGrid = (RelativeLayout) cardView.findViewById(R.id.health_grid);
       context = parent;
+      cardCrop  = new CardIconCrop();
     }
 
     private void setEntry(Card card) {
@@ -87,9 +87,9 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
       itemManaCost.setText(Integer.toString(card.getCost()));
 
       Picasso.with(context).load(card.getImageUrl())
-          .transform(new CardIconCrop())
-          .into(itemIcon);
-
+              .placeholder(R.drawable.placeholder)
+              .transform(cardCrop)
+              .into(itemIcon);
 
       //switch rarity
       switch (currentCard.getRarity()) {

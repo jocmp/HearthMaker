@@ -1,6 +1,8 @@
 package edu.gvsu.cis.campbjos.hearthstonebuilder;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
 
@@ -43,10 +45,21 @@ public class CardFilter {
     }
     //after putting the cards into their index, go through and all to the final list
     for (int k = 0; k < filteredCards.size(); k++) {
+      Collections.sort(filteredCards.get(k), ALPHABETICAL_ORDER);
       sortedCards.addAll(filteredCards.get(k));
     }
     return sortedCards;
   }
+
+  private static Comparator<Card> ALPHABETICAL_ORDER = new Comparator<Card>() {
+    public int compare(Card card1, Card card2) {
+      int res = String.CASE_INSENSITIVE_ORDER.compare(card1.getCardName(), card2.getCardName());
+      if (res == 0) {
+        res = card1.getCardName().compareTo(card2.getCardName());
+      }
+      return res;
+    }
+  };
 
   private static boolean classFilterCard(String classFilter, Card card) {
     if (classFilter.equals("CLEAR")) {

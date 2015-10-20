@@ -95,8 +95,6 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
     jsonTask = new LoadCardJsonTask(this);
     jsonTask.execute(URL + COLLECT_PARAM,
         getStringFromManifest("hearthstone_api_key"), cards);
-
-
   }
 
   @Override
@@ -118,16 +116,16 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
     adapter = new CardAdapter(visibleCards);
     categoryRecycler.setAdapter(adapter);
     categoryRecycler.addOnItemTouchListener(
-        new RecyclerItemClickListener(getActivity(),
-            new RecyclerItemClickListener.OnItemClickListener() {
-              @Override
-              public void onItemClick(View view, int position) {
+            new RecyclerItemClickListener(getActivity(),
+                    new RecyclerItemClickListener.OnItemClickListener() {
+                      @Override
+                      public void onItemClick(View view, int position) {
 
-              }
-            })
+                      }
+                    })
     );
-    setHasOptionsMenu(true);
 
+    setHasOptionsMenu(true);
     findSpinnerViews();
     addSpinners();
 

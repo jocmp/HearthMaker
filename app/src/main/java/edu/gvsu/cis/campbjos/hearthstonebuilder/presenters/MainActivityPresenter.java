@@ -31,6 +31,7 @@ public class MainActivityPresenter {
   }
 
   public ArrayList<Card> getCardFilter(String search) {
-    return CardFilter.filterCards(null, search, search, search, search, search);
+    ArrayList<Card> removeThis = new ArrayList<Card>();
+    return CardFilter.filterCards(removeThis, search, search, search, search, search, search);
   }
 }

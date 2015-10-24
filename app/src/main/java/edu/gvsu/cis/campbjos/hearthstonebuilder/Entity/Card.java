@@ -33,7 +33,7 @@ public class Card {
    * @param cardName        The card name
    * @param cardSet         the set name
    * @param type            The card type
-   * @param faction         The faction of the card
+   * @param race         The faction of the card
    * @param rarity          The rarity of the card
    * @param cost            The mana cost of this card
    * @param attack          The attack of the card

@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
  * @author HearthBuilder Team
  * @version Fall 2015
  */
+@Deprecated
 public class Card {
   private String cardId;
   private String name;

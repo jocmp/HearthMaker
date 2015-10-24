@@ -19,31 +19,38 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import edu.gvsu.cis.campbjos.hearthstonebuilder.CustomAdapters.CardAdapter;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.UI.DividerItemDecoration;
 
-/**
- * A simple {@link Fragment} subclass. Activities that contain this fragment must implement the
- * {@link CardViewFragment.OnFragmentInteractionListener} interface to handle interaction events.
- * Use the {@link CardViewFragment#newInstance} factory method to create an instance of this
- * fragment.
- */
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonTaskListener, AdapterView.OnItemSelectedListener {
+
+  @InjectView(R.id.card_recyclerview)
+  RecyclerView mCategoryRecycler;
+
+  @InjectView(R.id.loading_spinner)
+  View mLoadingView;
+
+  @InjectView(R.id.empty_event_text)
+  TextView mEmptyTextView;
+
   private static final String URL = "https://omgvamp-hearthstone-v1.p.mashape.com/cards?";
   private static final String COLLECT_PARAM = "collectible=1";
   private ArrayList<Card> cards;
   private ArrayList<Card> visibleCards;
   private CardAdapter adapter;
   private AsyncTask jsonTask;
-  private View cardFragmentView;
-  private View loadingView;
-  private View emptyText;
   private View spinnerLayout;
-
+  private View mCardFragmentView;
+  
   private final int CLASS_SPINNER_ID = R.id.spinner_class;
   private final int COST_SPINNER_ID = R.id.spinner_cost;
   private final int TYPE_SPINNER_ID = R.id.spinner_type;
@@ -70,7 +77,6 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
     idArray = new int[]{R.array.card_class,
         R.array.cost, R.array.card_type, R.array.rarity, R.array.card_set};
   }
-  private OnFragmentInteractionListener mListener;
 
   // TODO: Rename and change types and number of parameters
   public static CardViewFragment newInstance() {
@@ -101,42 +107,29 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
-    cardFragmentView = inflater.inflate(R.layout.fragment_card_view, container, false);
-    RecyclerView categoryRecycler
-        = (RecyclerView) cardFragmentView.findViewById(R.id.card_recyclerview);
-    loadingView = cardFragmentView.findViewById(R.id.loading_spinner);
-    emptyText = cardFragmentView.findViewById(R.id.empty_event_text);
-    spinnerLayout = cardFragmentView.findViewById(R.id.spinner_layout);
-    spinnerLayout.setVisibility(View.GONE);
+    mCardFragmentView = inflater.inflate(R.layout.fragment_card_view, container, false);
 
+    ButterKnife.inject(this, mCardFragmentView);
+    
     RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity(),
         LinearLayoutManager.VERTICAL, false);
-    categoryRecycler.setHasFixedSize(true);
-    categoryRecycler.isVerticalScrollBarEnabled();
-    categoryRecycler.setLayoutManager(mLayoutManager);
+    mCategoryRecycler.setHasFixedSize(true);
+    mCategoryRecycler.isVerticalScrollBarEnabled();
+    mCategoryRecycler.setLayoutManager(mLayoutManager);
     adapter = new CardAdapter(visibleCards);
-    categoryRecycler.setAdapter(adapter);
-    categoryRecycler.addOnItemTouchListener(
-            new RecyclerItemClickListener(getActivity(),
-                    new RecyclerItemClickListener.OnItemClickListener() {
-                      @Override
-                      public void onItemClick(View view, int position) {
+    mCategoryRecycler.setAdapter(adapter);
+    mCategoryRecycler.addOnItemTouchListener(
+        new RecyclerItemClickListener(getActivity(),
+            new RecyclerItemClickListener.OnItemClickListener() {
+              @Override
+              public void onItemClick(View view, int position) {
 
-                      }
-                    })
+              }
+            })
     );
-    categoryRecycler.addItemDecoration
+    mCategoryRecycler.addItemDecoration
         (new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
-    setHasOptionsMenu(true);
-    findSpinnerViews();
-    addSpinners();
-
-    for (int i = 0; i < 5; i++) {
-      setSpinnerAdapter(spinners.get(i), idArray[i]);
-      spinners.get(i).setOnItemSelectedListener(this);
-    }
-
-    return cardFragmentView;
+    return mCardFragmentView;
   }
 
   private void addSpinners() {
@@ -148,62 +141,36 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
     spinners.add(setSpinner);
   }
 
-  private void findSpinnerViews() {
-    classSpinner = (Spinner) cardFragmentView.findViewById(R.id.spinner_class);
-    costSpinner = (Spinner) cardFragmentView.findViewById(R.id.spinner_cost);
-    typeSpinner = (Spinner) cardFragmentView.findViewById(R.id.spinner_type);
-    rareSpinner = (Spinner) cardFragmentView.findViewById(R.id.spinner_rarity);
-    setSpinner = (Spinner) cardFragmentView.findViewById(R.id.spinner_set);
-  }
+//  private void setSpinnerAdapter(Spinner currentSpinner, int arrayId) {
+//    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+//        getActivity(), arrayId, R.layout.spinner_item);
+//    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//    currentSpinner.setAdapter(adapter);
+//  }
 
-  private void setSpinnerAdapter(Spinner currentSpinner, int arrayId) {
-    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-        getActivity(), arrayId, R.layout.spinner_item);
-    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-    currentSpinner.setAdapter(adapter);
-  }
-
-  // TODO: Rename method, update argument and hook method into UI event
-  public void onButtonPressed(Uri uri) {
-    if (mListener != null) {
-      mListener.onFragmentInteraction(uri);
-    }
-  }
-
-  @Override
-  public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-    super.onCreateOptionsMenu(menu, inflater);
-    inflater.inflate(R.menu.navigation_drawer, menu);
-  }
-
-  @Override
-  public void onDetach() {
-    super.onDetach();
-    mListener = null;
-  }
 
   @Override
   public void onTaskComplete() {
     if (cards.isEmpty()) {
-      emptyText.setVisibility(View.VISIBLE);
+      mEmptyTextView.setVisibility(View.VISIBLE);
     }
     visibleCards.clear();
     visibleCards.addAll(CardFilter.filterCards(cards, "CLEAR", "CLEAR", "CLEAR", "CLEAR", "CLEAR"));
     adapter.notifyDataSetChanged();
-    loadingView.setVisibility(View.GONE);
+    mLoadingView.setVisibility(View.GONE);
   }
 
   @Override
   public void onMessage(String s) {
     final CardViewFragment frag = this;
-    Snackbar.make(cardFragmentView, s, Snackbar.LENGTH_INDEFINITE).setAction("Retry",
+    Snackbar.make(mCardFragmentView, s, Snackbar.LENGTH_INDEFINITE).setAction("Retry",
         new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         jsonTask = new LoadCardJsonTask(frag).execute(URL + COLLECT_PARAM,
             getStringFromManifest("hearthstone_api_key"), cards);
-        emptyText.setVisibility(View.GONE);
-        loadingView.setVisibility(View.VISIBLE);
+        mEmptyTextView.setVisibility(View.GONE);
+        mLoadingView.setVisibility(View.VISIBLE);
       }
     }).show();
   }
@@ -237,33 +204,16 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
         break;
     }
 
-    visibleCards.clear();
-    visibleCards.addAll(CardFilter.filterCards(cards,
-        classFilter, costFilter, typeFilter, rarityFilter, cardSetFilter));
-    adapter.notifyDataSetChanged();
-
     if (visibleCards.isEmpty()) {
-      emptyText.setVisibility(View.VISIBLE);
+      mEmptyTextView.setVisibility(View.VISIBLE);
     } else {
-      emptyText.setVisibility(View.INVISIBLE);
+      mEmptyTextView.setVisibility(View.INVISIBLE);
     }
   }
 
   @Override
   public void onNothingSelected(AdapterView<?> parent) {
     // Cancel
-  }
-
-  /**
-   * This interface must be implemented by activities that contain this fragment to allow an
-   * interaction in this fragment to be communicated to the activity and potentially other fragments
-   * contained in that activity. <p> See the Android Training lesson <a href=
-   * "http://developer.android.com/training/basics/fragments/communicating.html" >Communicating with
-   * Other Fragments</a> for more information.
-   */
-  public interface OnFragmentInteractionListener {
-    // TODO: Update argument type and name
-    void onFragmentInteraction(Uri uri);
   }
 
   private String getStringFromManifest(String key) {
@@ -280,23 +230,12 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
   }
 
   public View getProgressView() {
-    return loadingView;
+    return mLoadingView;
   }
 
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
-
-    switch (item.getItemId()) {
-      case R.id.action_search:
-        if (spinnerLayout.getVisibility() == View.VISIBLE) {
-          spinnerLayout.setVisibility(View.GONE);
-        } else {
-          spinnerLayout.setVisibility(View.VISIBLE);
-        }
-        return true;
-      default:
-        spinnerLayout.setVisibility(View.VISIBLE);
-        return true;
-    }
+  public void setCardList(List<Card> list) {
+    visibleCards.clear();
+    visibleCards.addAll(list);
+    adapter.notifyDataSetChanged();
   }
 }

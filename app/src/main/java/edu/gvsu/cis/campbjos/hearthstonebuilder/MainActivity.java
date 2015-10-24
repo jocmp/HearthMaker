@@ -27,9 +27,12 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import edu.gvsu.cis.campbjos.hearthstonebuilder.CustomAdapters.DrawerAdapter;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.presenters.MainActivityPresenter;
 
 /**
  * This example illustrates a common usage of the DrawerLayout widget in the Android support
@@ -42,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
 
   private CharSequence mDrawerTitle;
   private CharSequence mTitle;
+  private MainActivityPresenter mMainActivityPresenter;
 
   String[]drawerItems = {"Catalog"};
 
@@ -66,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     if (getSupportActionBar() != null) {
       getSupportActionBar().setDisplayHomeAsUpEnabled(true);
       getSupportActionBar().setHomeButtonEnabled(true);
-
     }
 
     // ActionBarDrawerToggle ties together the the proper interactions
@@ -123,6 +126,12 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     }
   }
 
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    getMenuInflater().inflate(R.menu.navigation_drawer, menu);
+    return super.onCreateOptionsMenu(menu);
+  }
+
   /**
    * When using the ActionBarDrawerToggle, you must call it during onPostCreate() and
    * onConfigurationChanged()...
@@ -142,4 +151,13 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     mDrawerToggle.onConfigurationChanged(newConfig);
   }
 
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+
+    switch (item.getItemId()) {
+      case R.id.action_search:
+        break;
+    }
+    return true;
+  }
 }

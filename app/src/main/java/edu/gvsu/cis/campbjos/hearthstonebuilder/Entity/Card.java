@@ -14,7 +14,7 @@ public class Card {
   private String name;
   private String cardSet;
   private String type;
-  private String faction;
+  private String race;
   private String rarity;
   private int cost;
   private int attack;
@@ -47,14 +47,14 @@ public class Card {
    * @param imgGold         URL to image of the golden card on Hearthhead
    */
   public Card(String cardId, String cardName, String cardSet, String type,
-              String faction, String rarity, int cost, int attack, int health,
+              String race, String rarity, int cost, int attack, int health,
               int durability, String textDescription, String flavor, String artist,
               boolean isCollectible, String imageUrl, String imgGold, Bitmap image) {
     this.cardId = cardId;
     this.name = cardName;
     this.cardSet = cardSet;
     this.type = type;
-    this.faction = faction;
+    this.race = race;
     this.rarity = rarity;
     this.cost = cost;
     this.attack = attack;
@@ -112,12 +112,12 @@ public class Card {
     this.type = type;
   }
 
-  public String getFaction() {
-    return faction;
+  public String getRace() {
+    return race;
   }
 
-  public void setFaction(String faction) {
-    this.faction = faction;
+  public void setRace(String faction) {
+    this.race = faction;
   }
 
   public String getRarity() {

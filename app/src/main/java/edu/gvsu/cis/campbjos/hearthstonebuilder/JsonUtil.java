@@ -52,7 +52,7 @@ public class JsonUtil {
           card.setImageUrl(checkKeyToString(jsonCard, "img"));
           card.setGoldImageUrl(checkKeyToString(jsonCard, "imgGold"));
           card.setCost(checkKeyToInt(jsonCard, "cost"));
-          card.setFaction(checkKeyToString(jsonCard, "faction"));
+          card.setRace(checkKeyToString(jsonCard, "race"));
           card.setHealth(checkKeyToInt(jsonCard, "health"));
           //if there is no player class then the card is neutral
           if (checkKeyToString(jsonCard, "playerClass").isEmpty())

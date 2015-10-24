@@ -13,7 +13,8 @@ public class CardFilter {
 
   public static ArrayList<Card> filterCards(ArrayList<Card> cards, String classFilter,
                                             String manaCostFilter, String typeFilter,
-                                            String rarityFilter, String cardSetFilter) {
+                                            String rarityFilter, String cardSetFilter,
+                                            String textFilter) {
 
     //structure to sort the cards by mana cost.
     ArrayList<Card> sortedCards = new ArrayList<>();
@@ -26,7 +27,9 @@ public class CardFilter {
           && manaCostFilterCard(manaCostFilter, currentCard)
           && typeFilterCard(typeFilter, currentCard)
           && rarityFilterCard(rarityFilter, currentCard)
-          && cardSetFilterCard(cardSetFilter, currentCard)) {
+          && cardSetFilterCard(cardSetFilter, currentCard)
+              && textFilterCard(textFilter, currentCard)  )
+     {
 
         //index in filteredCards to add the currentCard
         int costIndex = currentCard.getCost();
@@ -107,6 +110,15 @@ public class CardFilter {
     } else if (cardSetFilter.equals("Classic") && card.getCardSet().equals("Basic")){
         return true;
     } else if (cardSetFilter.equals(card.getCardSet())) {
+      return true;
+    }
+    return false;
+  }
+
+  private static boolean textFilterCard(String textFilter, Card card){
+    if (card.getCardName().toLowerCase().contains(textFilter.toLowerCase())
+            || card.getTextDescription().toLowerCase().contains(textFilter.toLowerCase())
+            || card.getRace().toLowerCase().contains(textFilter.toLowerCase())){
       return true;
     }
     return false;

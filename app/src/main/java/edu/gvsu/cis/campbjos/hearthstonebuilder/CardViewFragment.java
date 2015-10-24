@@ -54,6 +54,7 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
   private String typeFilter;
   private String rarityFilter;
   private String cardSetFilter;
+  private String textFilter;
 
   private static Spinner classSpinner;
   private static Spinner costSpinner;
@@ -87,6 +88,7 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
     typeFilter = "CLEAR";
     rarityFilter = "CLEAR";
     cardSetFilter = "CLEAR";
+    textFilter = "";
   }
 
   @Override
@@ -186,7 +188,8 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
       emptyText.setVisibility(View.VISIBLE);
     }
     visibleCards.clear();
-    visibleCards.addAll(CardFilter.filterCards(cards, "CLEAR", "CLEAR", "CLEAR", "CLEAR", "CLEAR"));
+    visibleCards.addAll(CardFilter.filterCards(cards, classFilter, costFilter, typeFilter,
+            rarityFilter, cardSetFilter, textFilter));
     adapter.notifyDataSetChanged();
     loadingView.setVisibility(View.GONE);
   }
@@ -237,7 +240,7 @@ public class CardViewFragment extends Fragment implements LoadCardJsonTask.JsonT
 
     visibleCards.clear();
     visibleCards.addAll(CardFilter.filterCards(cards,
-        classFilter, costFilter, typeFilter, rarityFilter, cardSetFilter));
+        classFilter, costFilter, typeFilter, rarityFilter, cardSetFilter, textFilter));
     adapter.notifyDataSetChanged();
 
     if (visibleCards.isEmpty()) {

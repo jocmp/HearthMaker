@@ -28,5 +28,11 @@
             android:name="com.google.android.apps.common.testing.testrunner.GoogleInstrumentationTestRunner"
             android:label="Tests for my packaged app"
             android:targetPackage="edu.gvsu.cis.campjos.hearthstonebuilder.test" />
+
+        <activity
+            android:name=".DetailActivity"
+            android:label="@string/title_activity_detail" >
+        </activity>
     </application>
+
 </manifest>

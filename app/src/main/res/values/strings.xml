@@ -33,6 +33,19 @@
 
     <string name="card_icon">Card icon</string>
 
+    <string-array name="card_class_dialog">
+        <item>Druid</item>
+        <item>Hunter</item>
+        <item>Mage</item>
+        <item>Paladin</item>
+        <item>Priest</item>
+        <item>Rogue</item>
+        <item>Shaman</item>
+        <item>Warlock</item>
+        <item>Warrior</item>
+    </string-array>
+
+
     <string-array name="card_class">
         <item>CLEAR</item>
         <item>Neutral</item>
@@ -173,4 +186,7 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

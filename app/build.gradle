@@ -58,7 +58,7 @@ android {
         }
         debug {
             debuggable true
-            testCoverageEnabled = true
+            // testCoverageEnabled = true
         }
     }
     sourceSets {

@@ -3,6 +3,7 @@ package edu.gvsu.cis.campbjos.hearthstonebuilder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
 
@@ -11,7 +12,7 @@ import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
  */
 public class CardFilter {
 
-  public static ArrayList<Card> filterCards(ArrayList<Card> cards, String classFilter,
+  public static ArrayList<Card> filterCards(List<Card> cards, String classFilter,
                                             String manaCostFilter, String typeFilter,
                                             String rarityFilter, String cardSetFilter,
                                             String textFilter) {
@@ -28,12 +29,9 @@ public class CardFilter {
           && typeFilterCard(typeFilter, currentCard)
           && rarityFilterCard(rarityFilter, currentCard)
           && cardSetFilterCard(cardSetFilter, currentCard)
-              && textFilterCard(textFilter, currentCard)  )
-     {
-
+              && textFilterCard(textFilter, currentCard)) {
         //index in filteredCards to add the currentCard
         int costIndex = currentCard.getCost();
-
         //if this cost has not been initialized then initialize it
         if (filteredCards.size() <= costIndex) {
           for (int c = filteredCards.size(); c <= costIndex; c++) {
@@ -41,7 +39,6 @@ public class CardFilter {
             filteredCards.add(new ArrayList<Card>());
           }
         }
-
         //get the arrayList at the mana cost index and add the current card
         filteredCards.get(costIndex).add(currentCard);
       }

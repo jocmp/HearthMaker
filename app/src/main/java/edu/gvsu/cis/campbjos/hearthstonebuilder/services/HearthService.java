@@ -1,7 +1,13 @@
 package edu.gvsu.cis.campbjos.hearthstonebuilder.services;
 
+import com.google.gson.JsonObject;
+
+import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.NetworkUtil;
+
 import retrofit.RestAdapter;
 import retrofit.http.GET;
+import retrofit.http.Header;
 import retrofit.http.Query;
 import rx.Observable;
 
@@ -12,7 +18,7 @@ import rx.Observable;
 public class HearthService {
 
   private static final String MASHAPE_API =
-      "https://omgvamp-hearthstone-v1.p.mashape.com";//cards?";
+      "https://omgvamp-hearthstone-v1.p.mashape.com";
   private HearthApi mHearthApi;
 
   /**
@@ -32,8 +38,8 @@ public class HearthService {
   }
 
   public interface HearthApi {
-
-    //@GET("/locationcampusSearch")
-    //public Observable<Location> getCard(@Query("q") String location);
+    @GET("/cards")
+    public Observable<JsonObject> getCardResponse(
+        @Header("X-Mashape-Key") String key, @Query("collectible") String query);
   }
 }

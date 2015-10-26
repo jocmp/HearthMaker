@@ -19,8 +19,13 @@ package edu.gvsu.cis.campbjos.hearthstonebuilder;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -30,42 +35,78 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import edu.gvsu.cis.campbjos.hearthstonebuilder.CustomAdapters.DrawerAdapter;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.presenters.MainActivityPresenter;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.services.HearthService;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnItemSelected;
 
 /**
  * This example illustrates a common usage of the DrawerLayout widget in the Android support
  * library.
  */
-public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnItemClickListener {
+public class MainActivity extends AppCompatActivity implements
+    CardViewFragment.OnFragmentInteractionListener, NavigationView.OnNavigationItemSelectedListener,
+      DeckFragment.DeckFragmentListener, NewDeckDialog.DialogListener{
+
+  @InjectView(R.id.spinner_class)
+  Spinner mClassSpinner;
+  @InjectView(R.id.spinner_cost)
+  Spinner mCostSpinner;
+  @InjectView(R.id.spinner_type)
+  Spinner mTypeSpinner;
+  @InjectView(R.id.spinner_rarity)
+  Spinner mRaritySpinner;
+  @InjectView(R.id.spinner_set)
+  Spinner mSetSpinner;
+  @InjectView(R.id.nav_view)
+  NavigationView mDrawerList;
+  @InjectView(R.id.spinner_layout)
+  View mSpinnerView;
   private DrawerLayout mDrawerLayout;
-  private RecyclerView mDrawerList;
   private ActionBarDrawerToggle mDrawerToggle;
 
   private CharSequence mDrawerTitle;
   private CharSequence mTitle;
+  private String mCollectibleOption;
+  private String mManifestHearthApiKey;
   private MainActivityPresenter mMainActivityPresenter;
+  private HearthService mHearthService;
+  private Fragment mFragment;
 
-  String[]drawerItems = {"Catalog"};
+
+  private static ArrayList<Spinner> spinners;
+  private static int[] idArray;
+  static {
+    spinners = new ArrayList<>();
+    idArray = new int[]{R.array.card_class,
+      R.array.cost, R.array.card_type, R.array.rarity, R.array.card_set};
+  }
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-
+    ButterKnife.inject(this);
     mTitle = mDrawerTitle = getTitle();
     mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-    mDrawerList = (RecyclerView) findViewById(R.id.left_drawer);
     Toolbar mToolbar = (Toolbar) findViewById(R.id.activity_toolbar);
     setSupportActionBar(mToolbar);
+    mSpinnerView.setVisibility(View.GONE);
+    mHearthService = new HearthService();
+    mMainActivityPresenter = new MainActivityPresenter(this, mHearthService);
     // set a custom shadow that overlays the main content when the drawer opens
     mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-    // improve performance by indicating the list if fixed size.
-    mDrawerList.setHasFixedSize(true);
-
-    // set up the drawer's list view with items and click listener
-    mDrawerList.setAdapter(new DrawerAdapter(drawerItems, this));
+    mDrawerList.setNavigationItemSelectedListener(this);
     // enable ActionBar app icon to behave as action to toggle nav drawer
     if (getSupportActionBar() != null) {
       getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -93,29 +134,55 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     };
     mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-    if (savedInstanceState == null) {
-      selectItem(0);
+    spinners.add(mClassSpinner);
+    spinners.add(mCostSpinner);
+    spinners.add(mTypeSpinner);
+    spinners.add(mRaritySpinner);
+    spinners.add(mSetSpinner);
+
+    for (int k = 0; k < 5; k++) {
+      setSpinnerAdapter(spinners.get(k), idArray[k]);
     }
+
+    mCollectibleOption = "1";
+    mManifestHearthApiKey = "hearthstone_api_key";
+
+    selectItem(R.id.nav_catalog);
   }
 
-  /* The click listener for RecyclerView in the navigation drawer */
-  @Override
-  public void onClick(View view, int position) {
-    selectItem(position);
+  private void setSpinnerAdapter(Spinner currentSpinner, int arrayId) {
+    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+        this, arrayId, R.layout.spinner_item);
+    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    currentSpinner.setAdapter(adapter);
   }
 
   private void selectItem(int position) {
     // update the main content by replacing fragments
-    Fragment fragment = CardViewFragment.newInstance();
-
+    switch (position) {
+      case R.id.nav_catalog:
+        mFragment = CardViewFragment.newInstance();
+        break;
+      case R.id.nav_new_deck:
+        createNewDeck();
+        return;
+      default:
+        mFragment = CardViewFragment.newInstance();
+        break;
+    }
     FragmentManager fragmentManager = getFragmentManager();
     FragmentTransaction ft = fragmentManager.beginTransaction();
-    ft.replace(R.id.content_frame, fragment);
+    ft.replace(R.id.content_frame, mFragment);
     ft.commit();
 
     // update selected item title, then close the drawer
-    setTitle(drawerItems[position]);
+    setTitle(mDrawerList.getMenu().findItem(position).getTitle());
     mDrawerLayout.closeDrawer(mDrawerList);
+  }
+
+  public void createNewDeck() {
+    NewDeckDialog dialog = new NewDeckDialog();
+    dialog.show(getSupportFragmentManager(), "newdeck");
   }
 
   @Override
@@ -136,7 +203,6 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
    * When using the ActionBarDrawerToggle, you must call it during onPostCreate() and
    * onConfigurationChanged()...
    */
-
   @Override
   protected void onPostCreate(Bundle savedInstanceState) {
     super.onPostCreate(savedInstanceState);
@@ -156,8 +222,78 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
 
     switch (item.getItemId()) {
       case R.id.action_search:
-        break;
+        if (mSpinnerView.getVisibility() == View.VISIBLE) {
+          mSpinnerView.setVisibility(View.GONE);
+        } else {
+          mSpinnerView.setVisibility(View.VISIBLE);
+        }
+        return true;
+      default:
+        mSpinnerView.setVisibility(View.VISIBLE);
+        return true;
     }
+  }
+
+  @OnItemSelected({R.id.spinner_class, R.id.spinner_cost, R.id.spinner_type, R.id.spinner_rarity,
+                    R.id.spinner_set})
+  public void onSpinnerItemSelected() {
+    mMainActivityPresenter.getCardFilter(
+        mClassSpinner.getSelectedItem().toString(),
+        mCostSpinner.getSelectedItem().toString(),
+        mTypeSpinner.getSelectedItem().toString(),
+        mRaritySpinner.getSelectedItem().toString(),
+        mSetSpinner.getSelectedItem().toString()
+    );
+  }
+
+  public void setSubscriberResult(List<Card> list) {
+    if (mFragment.getClass() == CardViewFragment.class && mFragment != null) {
+      CardViewFragment cardViewFragment = (CardViewFragment) mFragment;
+      cardViewFragment.setCardList(list);
+    }
+  }
+
+  public String getCollectibleOption() {
+    return this.mCollectibleOption;
+  }
+
+  public String getManifestHearthApiKey() {
+    return mManifestHearthApiKey;
+  }
+
+  @Override
+  public void getAllCards() {
+    mMainActivityPresenter.loadCards();
+  }
+
+  public void setNotifyListEmpty() {
+    if (mFragment != null && mFragment.getClass() == CardViewFragment.class) {
+      CardViewFragment cardViewFragment = (CardViewFragment) mFragment;
+      cardViewFragment.setListEmpty();
+    }
+  }
+
+  @Override
+  public boolean onNavigationItemSelected(MenuItem menuItem) {
+    selectItem(menuItem.getItemId());
     return true;
+  }
+
+  @Override
+  public void onFragmentInteraction(Uri uri) {
+
+  }
+
+  @Override
+  public void onDialogComplete(int type) {
+    mFragment = DeckFragment.newInstance(type);
+    getFragmentManager().beginTransaction()
+        .replace(R.id.content_frame, mFragment)
+        .commit();
+
+    mDrawerLayout.closeDrawer(mDrawerList);
+    if (mSpinnerView.getVisibility() == View.VISIBLE) {
+      mSpinnerView.setVisibility(View.GONE);
+    }
   }
 }

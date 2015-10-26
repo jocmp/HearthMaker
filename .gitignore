@@ -9,7 +9,6 @@
 .idea/gradle.xml
 .idea/modules.xml
 /.idea/modules.xml
-/app/app.iml
 /.gitignore.swp
 hearthmaker.iml
 .idea

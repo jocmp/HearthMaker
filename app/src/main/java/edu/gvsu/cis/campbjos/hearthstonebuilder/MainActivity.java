@@ -20,6 +20,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -45,6 +46,7 @@ import edu.gvsu.cis.campbjos.hearthstonebuilder.services.HearthService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -74,7 +76,6 @@ public class MainActivity extends AppCompatActivity implements
   View mSpinnerView;
   private DrawerLayout mDrawerLayout;
   private ActionBarDrawerToggle mDrawerToggle;
-
   private CharSequence mDrawerTitle;
   private CharSequence mTitle;
   private String mCollectibleOption;
@@ -82,14 +83,16 @@ public class MainActivity extends AppCompatActivity implements
   private MainActivityPresenter mMainActivityPresenter;
   private HearthService mHearthService;
   private Fragment mFragment;
-
+  private int count;
 
   private static ArrayList<Spinner> spinners;
+  private static List<List<Card>> UserDecks;
   private static int[] idArray;
   static {
     spinners = new ArrayList<>();
     idArray = new int[]{R.array.card_class,
       R.array.cost, R.array.card_type, R.array.rarity, R.array.card_set};
+    UserDecks = new ArrayList<>();
   }
 
   @Override
@@ -97,11 +100,11 @@ public class MainActivity extends AppCompatActivity implements
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     ButterKnife.inject(this);
+    setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     mTitle = mDrawerTitle = getTitle();
     mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
     Toolbar mToolbar = (Toolbar) findViewById(R.id.activity_toolbar);
     setSupportActionBar(mToolbar);
-    mSpinnerView.setVisibility(View.GONE);
     mHearthService = new HearthService();
     mMainActivityPresenter = new MainActivityPresenter(this, mHearthService);
     // set a custom shadow that overlays the main content when the drawer opens
@@ -147,6 +150,7 @@ public class MainActivity extends AppCompatActivity implements
     mCollectibleOption = "1";
     mManifestHearthApiKey = "hearthstone_api_key";
 
+    mSpinnerView.setVisibility(View.GONE);
     selectItem(R.id.nav_catalog);
   }
 
@@ -164,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements
         mFragment = CardViewFragment.newInstance();
         break;
       case R.id.nav_new_deck:
-        createNewDeck();
+        createNewDeckDialog();
         return;
       default:
         mFragment = CardViewFragment.newInstance();
@@ -175,12 +179,14 @@ public class MainActivity extends AppCompatActivity implements
     ft.replace(R.id.content_frame, mFragment);
     ft.commit();
 
-    // update selected item title, then close the drawer
-    setTitle(mDrawerList.getMenu().findItem(position).getTitle());
+    // Close the drawer
+    MenuItem currentItem = mDrawerList.getMenu().findItem(position);
+    currentItem.setChecked(true);
+    setTitle(currentItem.getTitle());
     mDrawerLayout.closeDrawer(mDrawerList);
   }
 
-  public void createNewDeck() {
+  public void createNewDeckDialog() {
     NewDeckDialog dialog = new NewDeckDialog();
     dialog.show(getSupportFragmentManager(), "newdeck");
   }
@@ -284,13 +290,20 @@ public class MainActivity extends AppCompatActivity implements
 
   }
 
+  private void createNewDeck(int className) {
+    String[] classes = getResources().getStringArray(R.array.card_class_dialog);
+    count++;
+    mDrawerList.getMenu().add(
+        R.id.group_user_cards, 1000*count, Menu.NONE, classes[className]+count);
+  }
+
   @Override
   public void onDialogComplete(int type) {
+    createNewDeck(type);
     mFragment = DeckFragment.newInstance(type);
     getFragmentManager().beginTransaction()
         .replace(R.id.content_frame, mFragment)
         .commit();
-
     mDrawerLayout.closeDrawer(mDrawerList);
     if (mSpinnerView.getVisibility() == View.VISIBLE) {
       mSpinnerView.setVisibility(View.GONE);

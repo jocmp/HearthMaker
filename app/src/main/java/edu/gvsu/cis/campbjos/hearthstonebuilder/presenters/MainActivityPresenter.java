@@ -43,17 +43,6 @@ public class MainActivityPresenter {
   }
 
   public void getCardFilter(
-      String cardClass, String cost, String type, String rarity, String set) {
-    filterList.clear();
-    filterList.addAll(CardFilter.filterCards(cardList, cardClass, cost, type, rarity, set, ""));
-    if (filterList.isEmpty()) {
-      mView.setNotifyListEmpty();
-    } else {
-      mView.setSubscriberResult(filterList);
-    }
-  }
-
-  public void getCardFilter(
       String cardClass, String cost, String type, String rarity, String set, String query) {
     mView.setSubscriberResult(
         CardFilter.filterCards(cardList, cardClass, cost, type, rarity, set, query));
@@ -80,7 +69,9 @@ public class MainActivityPresenter {
           @Override
           public void onNext(JsonObject jsonObject) {
             JsonUtil.parse(jsonObject, cardList);
-            mView.setSubscriberResult(cardList);
+            if (mView.getActivityFragment().getClass() == CardViewFragment.class) {
+              mView.setSubscriberResult(cardList);
+            }
           }
         });
   }

@@ -40,6 +40,8 @@ public class JsonUtil {
           if (!checkKeyToString(jsonCard, "type").equals("Hero")) {
             // Create our card instance
             Card card = new Card();
+            // Set the entire object as a String
+            card.setCardJson(jsonArray.get(k).getAsString());
             card.setCardId(checkKeyToString(jsonCard, "cardId"));
             card.setCardName(checkKeyToString(jsonCard, "name"));
             card.setCardSet(checkKeyToString(jsonCard, "cardSet"));

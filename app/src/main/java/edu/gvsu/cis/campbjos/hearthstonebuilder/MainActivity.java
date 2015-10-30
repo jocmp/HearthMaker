@@ -32,6 +32,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
@@ -77,6 +79,14 @@ public class MainActivity extends AppCompatActivity implements
   private HearthService mHearthService;
   private Fragment mFragment;
 
+  ImageView setExpand;
+  ImageView rarityExpand;
+  ImageView typeExpand;
+  ImageView costExpand;
+  ImageView classExpand;
+  ImageView clearAll;
+
+  SearchView searchView;
 
   private static ArrayList<Spinner> spinners;
   private static int[] idArray;
@@ -101,6 +111,93 @@ public class MainActivity extends AppCompatActivity implements
     // set a custom shadow that overlays the main content when the drawer opens
     mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
     mDrawerList.setNavigationItemSelectedListener(this);
+
+    setExpand = (ImageView) findViewById(R.id.expand_set);
+    setExpand.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        mSetSpinner.performClick();
+      }
+    });
+
+    rarityExpand = (ImageView) findViewById(R.id.expand_rarity);
+    rarityExpand.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        mRaritySpinner.performClick();
+      }
+    });
+
+    typeExpand = (ImageView) findViewById(R.id.expand_type);
+    typeExpand.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        mTypeSpinner.performClick();
+      }
+    });
+
+    costExpand = (ImageView) findViewById(R.id.expand_cost);
+    costExpand.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        mCostSpinner.performClick();
+      }
+    });
+
+    classExpand = (ImageView) findViewById(R.id.expand_class);
+    classExpand.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        mClassSpinner.performClick();
+      }
+    });
+
+
+    searchView = (SearchView) findViewById(R.id.searchView);
+    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+      @Override
+      public boolean onQueryTextSubmit(String query) {
+        mMainActivityPresenter.getCardFilter(
+                mClassSpinner.getSelectedItem().toString(),
+                mCostSpinner.getSelectedItem().toString(),
+                mTypeSpinner.getSelectedItem().toString(),
+                mRaritySpinner.getSelectedItem().toString(),
+                mSetSpinner.getSelectedItem().toString(), query);
+        return false;
+      }
+
+      @Override
+      public boolean onQueryTextChange(String newText) {
+        mMainActivityPresenter.getCardFilter(
+                mClassSpinner.getSelectedItem().toString(),
+                mCostSpinner.getSelectedItem().toString(),
+                mTypeSpinner.getSelectedItem().toString(),
+                mRaritySpinner.getSelectedItem().toString(),
+                mSetSpinner.getSelectedItem().toString(), newText);
+        return false;
+      }
+    });
+
+
+    clearAll = (ImageView) findViewById(R.id.clear_all);
+    clearAll.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        mClassSpinner.setVisibility(View.INVISIBLE);
+        mClassSpinner.setSelection(0);
+        mRaritySpinner.setVisibility(View.INVISIBLE);
+        mRaritySpinner.setSelection(0);
+        mCostSpinner.setVisibility(View.INVISIBLE);
+        mCostSpinner.setSelection(0);
+        mTypeSpinner.setVisibility(View.INVISIBLE);
+        mTypeSpinner.setSelection(0);
+        mSetSpinner.setVisibility(View.INVISIBLE);
+        mSetSpinner.setSelection(0);
+        searchView.setQuery("",true);
+        searchView.onActionViewCollapsed();
+      }
+    });
+
     // enable ActionBar app icon to behave as action to toggle nav drawer
     if (getSupportActionBar() != null) {
       getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -232,12 +329,52 @@ public class MainActivity extends AppCompatActivity implements
                     R.id.spinner_set})
   public void onSpinnerItemSelected() {
     mMainActivityPresenter.getCardFilter(
-        mClassSpinner.getSelectedItem().toString(),
-        mCostSpinner.getSelectedItem().toString(),
-        mTypeSpinner.getSelectedItem().toString(),
-        mRaritySpinner.getSelectedItem().toString(),
-        mSetSpinner.getSelectedItem().toString()
+            mClassSpinner.getSelectedItem().toString(),
+            mCostSpinner.getSelectedItem().toString(),
+            mTypeSpinner.getSelectedItem().toString(),
+            mRaritySpinner.getSelectedItem().toString(),
+            mSetSpinner.getSelectedItem().toString(),
+            searchView.getQuery().toString()
     );
+    if (mSetSpinner.getSelectedItem().toString().equals("CLEAR")) {
+      mSetSpinner.setVisibility(View.INVISIBLE);
+      setExpand.setVisibility(View.VISIBLE);
+    } else{
+      mSetSpinner.setVisibility(View.VISIBLE);
+      setExpand.setVisibility(View.INVISIBLE);
+    }
+    
+    if (mRaritySpinner.getSelectedItem().toString().equals("CLEAR")) {
+      mRaritySpinner.setVisibility(View.INVISIBLE);
+      rarityExpand.setVisibility(View.VISIBLE);
+    } else{
+      mRaritySpinner.setVisibility(View.VISIBLE);
+      rarityExpand.setVisibility(View.INVISIBLE);
+    }
+    
+    if (mTypeSpinner.getSelectedItem().toString().equals("CLEAR")) {
+      mTypeSpinner.setVisibility(View.INVISIBLE);
+      typeExpand.setVisibility(View.VISIBLE);
+    } else{
+      mTypeSpinner.setVisibility(View.VISIBLE);
+      typeExpand.setVisibility(View.INVISIBLE);
+    }
+    
+    if (mCostSpinner.getSelectedItem().toString().equals("CLEAR")) {
+      mCostSpinner.setVisibility(View.INVISIBLE);
+      costExpand.setVisibility(View.VISIBLE);
+    } else{
+      mCostSpinner.setVisibility(View.VISIBLE);
+      costExpand.setVisibility(View.INVISIBLE);
+    }
+    
+    if (mClassSpinner.getSelectedItem().toString().equals("CLEAR")) {
+      mClassSpinner.setVisibility(View.INVISIBLE);
+      classExpand.setVisibility(View.VISIBLE);
+    } else{
+      mClassSpinner.setVisibility(View.VISIBLE);
+      classExpand.setVisibility(View.INVISIBLE);
+    }
   }
 
   public void setSubscriberResult(List<Card> list) {

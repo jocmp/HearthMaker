@@ -10,15 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import edu.gvsu.cis.campbjos.hearthstonebuilder.CustomAdapters.CardAdapter;
-import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
-import edu.gvsu.cis.campbjos.hearthstonebuilder.UI.DividerItemDecoration;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.CustomAdapters.CardAdapter;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.UI.DividerItemDecoration;
 
 public class CardViewFragment extends Fragment {
 

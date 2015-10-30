@@ -27,6 +27,7 @@ public class Card {
   private String playerClass;
   private String img;
   private String imgGold;
+  private String cardJson;
 
   /**
    * @param cardId          The card id
@@ -206,5 +207,13 @@ public class Card {
 
   public void setPlayerClass(String playerClass) {
     this.playerClass = playerClass;
+  }
+
+  public String getCardJson() {
+    return cardJson;
+  }
+
+  public void setCardJson(String cardJson) {
+    this.cardJson = cardJson;
   }
 }

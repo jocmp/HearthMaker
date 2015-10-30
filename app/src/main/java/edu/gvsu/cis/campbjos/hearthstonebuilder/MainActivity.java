@@ -32,6 +32,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.SearchView;
@@ -323,15 +325,30 @@ public class MainActivity extends AppCompatActivity implements
     switch (item.getItemId()) {
       case R.id.action_search:
         if (mSpinnerView.getVisibility() == View.VISIBLE) {
-          mSpinnerView.setVisibility(View.GONE);
+          setUpAnimation(mSpinnerView);
+          mSpinnerView.setVisibility(View.INVISIBLE);
+          //mSpinnerView.setVisibility(View.GONE);
         } else {
           mSpinnerView.setVisibility(View.VISIBLE);
+          setDownAnimation(mSpinnerView);
         }
+
+
         return true;
       default:
         mSpinnerView.setVisibility(View.VISIBLE);
         return true;
     }
+  }
+
+  private void setUpAnimation(View viewToAnimate){
+    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_up);
+    viewToAnimate.startAnimation(animation);
+  }
+
+  private void setDownAnimation(View viewToAnimate){
+    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_down);
+    viewToAnimate.startAnimation(animation);
   }
 
   @OnItemSelected({R.id.spinner_class, R.id.spinner_cost, R.id.spinner_type, R.id.spinner_rarity,

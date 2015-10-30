@@ -23,21 +23,22 @@
     android:layout_height="match_parent"
     tools:openDrawer="start">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include layout="@layout/toolbar" android:id="@+id/activity_toolbar" />
+        <include android:elevation="2dp" layout="@layout/toolbar" android:id="@+id/activity_toolbar" />
 
         <GridLayout
+            android:layout_below="@id/activity_toolbar"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:rowCount="6"
             android:background="@color/primary_material_light"
             android:id="@+id/spinner_layout"
-            android:elevation="4dp">
+            android:elevation="1dp">
 
             <RelativeLayout
                 android:layout_width="fill_parent"
@@ -87,7 +88,8 @@
                     android:layout_alignParentRight="true"
                     android:layout_width="150dp"
                     android:layout_height="match_parent"
-                    style="@style/filter_style" />
+                    style="@style/filter_style"
+                    android:visibility="invisible"/>
                 <ImageView
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
@@ -120,7 +122,8 @@
                     android:layout_alignParentRight="true"
                     android:layout_width="150dp"
                     android:layout_height="match_parent"
-                    style="@style/filter_style" />
+                    style="@style/filter_style"
+                    android:visibility="invisible"/>
                 <ImageView
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
@@ -153,7 +156,8 @@
                     android:layout_alignParentRight="true"
                     android:layout_width="150dp"
                     android:layout_height="match_parent"
-                    style="@style/filter_style" />
+                    style="@style/filter_style"
+                    android:visibility="invisible"/>
                 <ImageView
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
@@ -186,7 +190,8 @@
                     android:layout_alignParentRight="true"
                     android:layout_width="150dp"
                     android:layout_height="match_parent"
-                    style="@style/filter_style" />
+                    style="@style/filter_style"
+                    android:visibility="invisible"/>
                 <ImageView
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
@@ -219,7 +224,8 @@
                     android:layout_alignParentRight="true"
                     android:layout_width="150dp"
                     android:layout_height="match_parent"
-                    style="@style/filter_style" />
+                    style="@style/filter_style"
+                    android:visibility="invisible"/>
                 <ImageView
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
@@ -233,11 +239,13 @@
         </GridLayout>
 
         <FrameLayout
+            android:layout_below="@id/activity_toolbar"
             android:id="@+id/content_frame"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:animateLayoutChanges="true"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <android.support.design.widget.NavigationView android:id="@+id/nav_view"
         android:layout_width="wrap_content" android:layout_height="match_parent"

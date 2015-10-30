@@ -6,12 +6,20 @@ import android.app.Activity;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.GridLayout;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -26,6 +34,8 @@ public class DetailActivity extends AppCompatActivity {
   ImageView cardImage;
   @InjectView(R.id.toolbar_layout)
   CollapsingToolbarLayout cToolLayout;
+  @InjectView(R.id.cardDetails)
+  TextView cardData;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +47,8 @@ public class DetailActivity extends AppCompatActivity {
     Intent intent = getIntent();
     String imageURL = intent.getStringExtra("card");
     String cardName = intent.getStringExtra("name");
+    String cardFlavor = intent.getStringExtra("flavor");
+    cardData.setText("\""+cardFlavor+"\"");
     cToolLayout.setTitle(cardName);
     Picasso.with(this).load(imageURL).into(cardImage);
   }

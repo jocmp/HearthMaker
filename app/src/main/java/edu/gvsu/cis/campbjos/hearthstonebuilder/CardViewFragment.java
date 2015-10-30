@@ -75,6 +75,7 @@ public class CardViewFragment extends Fragment {
                 Intent intent = new Intent(getActivity() ,DetailActivity.class);
                 intent.putExtra("card", adapter.getPositionInfo(position).getImageUrl());
                 intent.putExtra("name", adapter.getPositionInfo(position).getCardName());
+                intent.putExtra("flavor", adapter.getPositionInfo(position).getFlavor());
                 startActivity(intent);
               }
             })

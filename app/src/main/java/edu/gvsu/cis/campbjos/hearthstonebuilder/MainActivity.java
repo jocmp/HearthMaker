@@ -71,6 +71,8 @@ public class MainActivity extends AppCompatActivity implements
   NavigationView mDrawerList;
   @InjectView(R.id.spinner_layout)
   View mSpinnerView;
+  @InjectView(R.id.content_frame)
+  View mContentFrame;
 
   private DrawerLayout mDrawerLayout;
   private ActionBarDrawerToggle mDrawerToggle;
@@ -325,12 +327,14 @@ public class MainActivity extends AppCompatActivity implements
     switch (item.getItemId()) {
       case R.id.action_search:
         if (mSpinnerView.getVisibility() == View.VISIBLE) {
-          setUpAnimation(mSpinnerView);
-          mSpinnerView.setVisibility(View.INVISIBLE);
-          //mSpinnerView.setVisibility(View.GONE);
+          setBarUpAnimation(mSpinnerView);
+          setListUpAnimation(mContentFrame);
+          //mSpinnerView.setVisibility(View.INVISIBLE);
+          mSpinnerView.setVisibility(View.GONE);
         } else {
           mSpinnerView.setVisibility(View.VISIBLE);
-          setDownAnimation(mSpinnerView);
+          setListDownAnimation(mContentFrame);
+          setBarDownAnimation(mSpinnerView);
         }
 
 
@@ -341,16 +345,25 @@ public class MainActivity extends AppCompatActivity implements
     }
   }
 
-  private void setUpAnimation(View viewToAnimate){
+  private void setBarUpAnimation(View viewToAnimate){
     Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_up);
     viewToAnimate.startAnimation(animation);
   }
 
-  private void setDownAnimation(View viewToAnimate){
+  private void setBarDownAnimation(View viewToAnimate){
     Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_down);
     viewToAnimate.startAnimation(animation);
   }
 
+  private void setListUpAnimation(View viewToAnimate){
+    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_up_list);
+    viewToAnimate.startAnimation(animation);
+  }
+
+  private void setListDownAnimation(View viewToAnimate){
+    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_down_list);
+    viewToAnimate.startAnimation(animation);
+  }
   @OnItemSelected({R.id.spinner_class, R.id.spinner_cost, R.id.spinner_type, R.id.spinner_rarity,
                     R.id.spinner_set})
   public void onSpinnerItemSelected() {

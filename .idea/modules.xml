@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/HearthMaker.iml" filepath="$PROJECT_DIR$/HearthMaker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HearthMakerApp.iml" filepath="$PROJECT_DIR$/HearthMakerApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

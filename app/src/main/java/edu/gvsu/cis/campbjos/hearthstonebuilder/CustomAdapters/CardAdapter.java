@@ -26,6 +26,10 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     cardData = myDataset;
   }
 
+  public Card getPositionInfo(int position) {
+    return cardData.get(position);
+  }
+
   @Override
   public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     return new ViewHolder(LayoutInflater

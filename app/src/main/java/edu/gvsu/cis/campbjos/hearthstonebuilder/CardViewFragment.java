@@ -1,6 +1,7 @@
 package edu.gvsu.cis.campbjos.hearthstonebuilder;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
@@ -71,7 +72,11 @@ public class CardViewFragment extends Fragment {
             new RecyclerItemClickListener.OnItemClickListener() {
               @Override
               public void onItemClick(View view, int position) {
-
+                Intent intent = new Intent(getActivity() ,DetailActivity.class);
+                intent.putExtra("card", adapter.getPositionInfo(position).getImageUrl());
+                intent.putExtra("name", adapter.getPositionInfo(position).getCardName());
+                intent.putExtra("flavor", adapter.getPositionInfo(position).getFlavor());
+                startActivity(intent);
               }
             })
     );

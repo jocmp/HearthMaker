@@ -11,27 +11,19 @@ import java.io.OutputStreamWriter;
 import java.util.List;
 
 /**
- * @author josiah
+ * @author Josiah Campbell
  * @version 10/27/15
  */
 public class DeckEncoder {
 
-  public void writeJsonStream(OutputStream out, List<Deck> decks) throws IOException {
+  public static void writeJsonStream(OutputStream out, Deck deck) throws IOException {
     JsonWriter writer = new JsonWriter(new OutputStreamWriter(out, "UTF-8"));
     writer.setIndent("  ");
-    writeDecksArray(writer, decks);
+    writeDeck(writer, deck);
     writer.close();
   }
 
-  public void writeDecksArray(JsonWriter writer, List<Deck> decks) throws IOException {
-    writer.beginArray();
-    for (Deck deck : decks) {
-      writeDeck(writer, deck);
-    }
-    writer.endArray();
-  }
-
-  public void writeDeck(JsonWriter writer, Deck deck) throws IOException {
+  private static void writeDeck(JsonWriter writer, Deck deck) throws IOException {
     writer.beginObject();
     writer.name("name").value(deck.getDeckName());
     writer.name("id").value(deck.getId());
@@ -40,8 +32,7 @@ public class DeckEncoder {
     writer.endObject();
   }
 
-
-  public void writeCardArray(JsonWriter writer, Deck deck) throws IOException {
+  private static void writeCardArray(JsonWriter writer, Deck deck) throws IOException {
     writer.beginArray();
     for (Card card : deck.getCardList()) {
       writer.value(card.getCardJson());

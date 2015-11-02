@@ -1,11 +1,13 @@
 package edu.gvsu.cis.campbjos.hearthstonebuilder.presenters;
 
-import com.google.gson.JsonObject;
-
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.support.v4.app.Fragment;
+
+import com.google.gson.JsonObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import edu.gvsu.cis.campbjos.hearthstonebuilder.CardFilter;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.CardViewFragment;
@@ -13,10 +15,6 @@ import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.JsonUtil;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.MainActivity;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.services.HearthService;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;

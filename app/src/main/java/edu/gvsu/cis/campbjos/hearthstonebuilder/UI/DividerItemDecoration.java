@@ -18,6 +18,8 @@ package edu.gvsu.cis.campbjos.hearthstonebuilder.UI;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -50,6 +52,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
   @Override
   public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+
     if (mOrientation == VERTICAL_LIST) {
       drawVertical(c, parent);
     } else {
@@ -69,6 +72,8 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
       final int top = child.getBottom() + params.bottomMargin;
       final int bottom = top + mDivider.getIntrinsicHeight();
       mDivider.setBounds(left, top, right, bottom);
+      //set color. Added by Chad 10/30/2015
+      mDivider.setColorFilter(Color.parseColor("#B6B6B6"), PorterDuff.Mode.ADD);
       mDivider.draw(c);
     }
   }
@@ -85,6 +90,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
       final int left = child.getRight() + params.rightMargin;
       final int right = left + mDivider.getIntrinsicHeight();
       mDivider.setBounds(left, top, right, bottom);
+      mDivider.setColorFilter(Color.parseColor("#B6B6B6"), PorterDuff.Mode.ADD);
       mDivider.draw(c);
     }
   }

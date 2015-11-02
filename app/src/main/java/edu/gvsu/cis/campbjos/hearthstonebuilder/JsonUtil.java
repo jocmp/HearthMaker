@@ -4,14 +4,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.jsoup.Jsoup;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -41,7 +36,7 @@ public class JsonUtil {
             // Create our card instance
             Card card = new Card();
             // Set the entire object as a String
-            card.setCardJson(jsonArray.get(k).getAsString());
+            //card.setCardJson(jsonArray.get(k).getAsString());
             card.setCardId(checkKeyToString(jsonCard, "cardId"));
             card.setCardName(checkKeyToString(jsonCard, "name"));
             card.setCardSet(checkKeyToString(jsonCard, "cardSet"));

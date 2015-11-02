@@ -32,7 +32,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.SearchView;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
@@ -67,6 +72,8 @@ public class MainActivity extends AppCompatActivity implements
   NavigationView mDrawerList;
   @InjectView(R.id.spinner_layout)
   View mSpinnerView;
+  @InjectView(R.id.content_frame)
+  View mContentFrame;
 
   private DrawerLayout mDrawerLayout;
   private ActionBarDrawerToggle mDrawerToggle;
@@ -77,6 +84,17 @@ public class MainActivity extends AppCompatActivity implements
   private MainActivityPresenter mMainActivityPresenter;
   private HearthService mHearthService;
   private Fragment mFragment;
+
+
+  ImageView setExpand;
+  ImageView rarityExpand;
+  ImageView typeExpand;
+  ImageView costExpand;
+  ImageView classExpand;
+  ImageView clearAll;
+
+  SearchView searchView;
+
   private int count;
 
   private static ArrayList<Spinner> spinners;
@@ -104,6 +122,95 @@ public class MainActivity extends AppCompatActivity implements
     // set a custom shadow that overlays the main content when the drawer opens
     mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
     mDrawerList.setNavigationItemSelectedListener(this);
+
+    setExpand = (ImageView) findViewById(R.id.expand_set);
+
+    setExpand = (ImageView) findViewById(R.id.expand_set);
+    setExpand.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        mSetSpinner.performClick();
+      }
+    });
+
+    rarityExpand = (ImageView) findViewById(R.id.expand_rarity);
+    rarityExpand.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        mRaritySpinner.performClick();
+      }
+    });
+
+    typeExpand = (ImageView) findViewById(R.id.expand_type);
+    typeExpand.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        mTypeSpinner.performClick();
+      }
+    });
+
+    costExpand = (ImageView) findViewById(R.id.expand_cost);
+    costExpand.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        mCostSpinner.performClick();
+      }
+    });
+
+    classExpand = (ImageView) findViewById(R.id.expand_class);
+    classExpand.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        mClassSpinner.performClick();
+      }
+    });
+
+
+    searchView = (SearchView) findViewById(R.id.searchView);
+    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+      @Override
+      public boolean onQueryTextSubmit(String query) {
+        mMainActivityPresenter.getCardFilter(
+                mClassSpinner.getSelectedItem().toString(),
+                mCostSpinner.getSelectedItem().toString(),
+                mTypeSpinner.getSelectedItem().toString(),
+                mRaritySpinner.getSelectedItem().toString(),
+                mSetSpinner.getSelectedItem().toString(), query);
+        return false;
+      }
+
+      @Override
+      public boolean onQueryTextChange(String newText) {
+        mMainActivityPresenter.getCardFilter(
+                mClassSpinner.getSelectedItem().toString(),
+                mCostSpinner.getSelectedItem().toString(),
+                mTypeSpinner.getSelectedItem().toString(),
+                mRaritySpinner.getSelectedItem().toString(),
+                mSetSpinner.getSelectedItem().toString(), newText);
+        return false;
+      }
+    });
+
+
+    clearAll = (ImageView) findViewById(R.id.clear_all);
+    clearAll.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        mClassSpinner.setVisibility(View.INVISIBLE);
+        mClassSpinner.setSelection(0);
+        mRaritySpinner.setVisibility(View.INVISIBLE);
+        mRaritySpinner.setSelection(0);
+        mCostSpinner.setVisibility(View.INVISIBLE);
+        mCostSpinner.setSelection(0);
+        mTypeSpinner.setVisibility(View.INVISIBLE);
+        mTypeSpinner.setSelection(0);
+        mSetSpinner.setVisibility(View.INVISIBLE);
+        mSetSpinner.setSelection(0);
+        searchView.setQuery("",true);
+        searchView.onActionViewCollapsed();
+      }
+    });
+
     // enable ActionBar app icon to behave as action to toggle nav drawer
     if (getSupportActionBar() != null) {
       getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -150,7 +257,7 @@ public class MainActivity extends AppCompatActivity implements
 
   private void setSpinnerAdapter(Spinner currentSpinner, int arrayId) {
     ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-        this, arrayId, R.layout.spinner_item);
+            this, arrayId, R.layout.spinner_item);
     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     currentSpinner.setAdapter(adapter);
   }
@@ -196,6 +303,23 @@ public class MainActivity extends AppCompatActivity implements
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.navigation_drawer, menu);
+
+//    final MenuItem item = menu.findItem(R.id.action_search);
+//    item.setActionView(R.layout.iv_rotate);
+//    ImageView refresh = (FrameLayout) item.getActionView();
+//
+//    refresh.setOnClickListener(new View.OnClickListener() {
+//      @Override
+//      public void onClick(View v) {
+//        if (mSpinnerView.getVisibility() == View.VISIBLE)
+//          v.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.rev_ic_filter_list_24dp));
+//        else
+//          v.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_filter_list_24dp));
+//
+//        onOptionsItemSelected(item);
+//      }
+//    });
+
     return super.onCreateOptionsMenu(menu);
   }
 
@@ -222,11 +346,22 @@ public class MainActivity extends AppCompatActivity implements
 
     switch (item.getItemId()) {
       case R.id.action_search:
+        //rotate(item);
         if (mSpinnerView.getVisibility() == View.VISIBLE) {
+          setBarUpAnimation(mSpinnerView);
+          setListUpAnimation(mContentFrame);
+          //mSpinnerView.setVisibility(View.INVISIBLE);
           mSpinnerView.setVisibility(View.GONE);
+          getSupportActionBar().setSubtitle("");
+
         } else {
           mSpinnerView.setVisibility(View.VISIBLE);
+          setListDownAnimation(mContentFrame);
+          setBarDownAnimation(mSpinnerView);
+          getSupportActionBar().setSubtitle("Filter Cards");
         }
+
+
         return true;
       default:
         mSpinnerView.setVisibility(View.VISIBLE);
@@ -234,17 +369,88 @@ public class MainActivity extends AppCompatActivity implements
     }
   }
 
+//  private void rotate(MenuItem item){
+//    Animation rotation = AnimationUtils.loadAnimation(this, R.anim.rotate);
+//    item.getActionView().startAnimation(rotation);
+//    rotation.setFillAfter(true);
+//  }
+
+  private void setBarUpAnimation(View viewToAnimate){
+    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_up);
+    viewToAnimate.startAnimation(animation);
+  }
+
+  private void setBarDownAnimation(View viewToAnimate){
+    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_down);
+    viewToAnimate.startAnimation(animation);
+  }
+
+  private void setListUpAnimation(View viewToAnimate){
+    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_up_list);
+    viewToAnimate.startAnimation(animation);
+  }
+
+  private void setListDownAnimation(View viewToAnimate){
+    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_down_list);
+
+    RelativeLayout.LayoutParams rlParams = (RelativeLayout.LayoutParams) viewToAnimate.getLayoutParams();
+    //set the margin to negative so the animation does not truncate the bottom
+    rlParams.setMargins(0, 0, 0, viewToAnimate.getHeight() * -1);
+    //Custom SlideAnimationListener to set the margin back once the animation is complete
+    animation.setAnimationListener(new SlideAnimationListener(viewToAnimate));
+    viewToAnimate.startAnimation(animation);
+  }
   @OnItemSelected({R.id.spinner_class, R.id.spinner_cost, R.id.spinner_type, R.id.spinner_rarity,
                     R.id.spinner_set})
   public void onSpinnerItemSelected() {
     mMainActivityPresenter.getCardFilter(
-        mClassSpinner.getSelectedItem().toString(),
-        mCostSpinner.getSelectedItem().toString(),
-        mTypeSpinner.getSelectedItem().toString(),
-        mRaritySpinner.getSelectedItem().toString(),
-        mSetSpinner.getSelectedItem().toString(),
-        ""
+
+            mClassSpinner.getSelectedItem().toString(),
+            mCostSpinner.getSelectedItem().toString(),
+            mTypeSpinner.getSelectedItem().toString(),
+            mRaritySpinner.getSelectedItem().toString(),
+            mSetSpinner.getSelectedItem().toString(),
+            searchView.getQuery().toString()
     );
+    if (mSetSpinner.getSelectedItem().toString().equals("CLEAR")) {
+      mSetSpinner.setVisibility(View.INVISIBLE);
+      setExpand.setVisibility(View.VISIBLE);
+    } else{
+      mSetSpinner.setVisibility(View.VISIBLE);
+      setExpand.setVisibility(View.INVISIBLE);
+    }
+    
+    if (mRaritySpinner.getSelectedItem().toString().equals("CLEAR")) {
+      mRaritySpinner.setVisibility(View.INVISIBLE);
+      rarityExpand.setVisibility(View.VISIBLE);
+    } else{
+      mRaritySpinner.setVisibility(View.VISIBLE);
+      rarityExpand.setVisibility(View.INVISIBLE);
+    }
+    
+    if (mTypeSpinner.getSelectedItem().toString().equals("CLEAR")) {
+      mTypeSpinner.setVisibility(View.INVISIBLE);
+      typeExpand.setVisibility(View.VISIBLE);
+    } else{
+      mTypeSpinner.setVisibility(View.VISIBLE);
+      typeExpand.setVisibility(View.INVISIBLE);
+    }
+    
+    if (mCostSpinner.getSelectedItem().toString().equals("CLEAR")) {
+      mCostSpinner.setVisibility(View.INVISIBLE);
+      costExpand.setVisibility(View.VISIBLE);
+    } else{
+      mCostSpinner.setVisibility(View.VISIBLE);
+      costExpand.setVisibility(View.INVISIBLE);
+    }
+    
+    if (mClassSpinner.getSelectedItem().toString().equals("CLEAR")) {
+      mClassSpinner.setVisibility(View.INVISIBLE);
+      classExpand.setVisibility(View.VISIBLE);
+    } else{
+      mClassSpinner.setVisibility(View.VISIBLE);
+      classExpand.setVisibility(View.INVISIBLE);
+    }
   }
 
   public void setSubscriberResult(List<Card> list) {

@@ -26,6 +26,10 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     cardData = myDataset;
   }
 
+  public Card getPositionInfo(int position) {
+    return cardData.get(position);
+  }
+
   @Override
   public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     return new ViewHolder(LayoutInflater
@@ -72,7 +76,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
       itemManaCost = (TextView) cardView.findViewById(R.id.mana_cost);
       itemRarity = (ImageView) cardView.findViewById(R.id.rarity);
       itemAttack = (TextView) cardView.findViewById(R.id.attack);
-      itemHealthDurability = (TextView) view.findViewById(R.id.health);
+      itemHealthDurability = (TextView) cardView.findViewById(R.id.health);
       itemHealthDurabilityImage = (ImageView) cardView.findViewById(R.id.health_image);
       itemHealthDurabilityGrid = (RelativeLayout) cardView.findViewById(R.id.health_grid);
       context = parent;
@@ -140,6 +144,9 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
       }
 
       switch (currentCard.getPlayerClass()) {
+        case "Warrior":
+          cardView.setBackgroundColor(ContextCompat.getColor(context, R.color.warrior));
+          break;
         case "Neutral":
           cardView.setBackgroundColor(ContextCompat.getColor(context,R.color.neutral));
           break;
@@ -166,9 +173,6 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
           break;
         case "Warlock":
           cardView.setBackgroundColor(ContextCompat.getColor(context, R.color.warlock));
-          break;
-        case "Warrior":
-          cardView.setBackgroundColor(ContextCompat.getColor(context, R.color.warrior));
           break;
         default:
           break;

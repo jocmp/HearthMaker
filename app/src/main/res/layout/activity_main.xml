@@ -37,8 +37,7 @@
             android:layout_height="wrap_content"
             android:rowCount="6"
             android:background="@color/primary_material_light"
-            android:id="@+id/spinner_layout"
-            android:elevation="1dp">
+            android:id="@+id/spinner_layout">
 
             <RelativeLayout
                 android:layout_width="fill_parent"
@@ -53,6 +52,7 @@
                 android:layout_centerVertical="true"
                 android:layout_width="fill_parent"
                 android:layout_marginRight="50dp"
+                android:paddingLeft="16dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/searchView"
                 android:queryHint="Name or description"/>

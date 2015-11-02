@@ -36,6 +36,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.Spinner;
 
@@ -121,6 +122,8 @@ public class MainActivity extends AppCompatActivity implements
     // set a custom shadow that overlays the main content when the drawer opens
     mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
     mDrawerList.setNavigationItemSelectedListener(this);
+
+    setExpand = (ImageView) findViewById(R.id.expand_set);
 
     setExpand = (ImageView) findViewById(R.id.expand_set);
     setExpand.setOnClickListener(new View.OnClickListener() {
@@ -254,7 +257,7 @@ public class MainActivity extends AppCompatActivity implements
 
   private void setSpinnerAdapter(Spinner currentSpinner, int arrayId) {
     ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-        this, arrayId, R.layout.spinner_item);
+            this, arrayId, R.layout.spinner_item);
     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     currentSpinner.setAdapter(adapter);
   }
@@ -300,6 +303,23 @@ public class MainActivity extends AppCompatActivity implements
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.navigation_drawer, menu);
+
+//    final MenuItem item = menu.findItem(R.id.action_search);
+//    item.setActionView(R.layout.iv_rotate);
+//    ImageView refresh = (FrameLayout) item.getActionView();
+//
+//    refresh.setOnClickListener(new View.OnClickListener() {
+//      @Override
+//      public void onClick(View v) {
+//        if (mSpinnerView.getVisibility() == View.VISIBLE)
+//          v.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.rev_ic_filter_list_24dp));
+//        else
+//          v.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_filter_list_24dp));
+//
+//        onOptionsItemSelected(item);
+//      }
+//    });
+
     return super.onCreateOptionsMenu(menu);
   }
 
@@ -326,15 +346,19 @@ public class MainActivity extends AppCompatActivity implements
 
     switch (item.getItemId()) {
       case R.id.action_search:
+        //rotate(item);
         if (mSpinnerView.getVisibility() == View.VISIBLE) {
           setBarUpAnimation(mSpinnerView);
           setListUpAnimation(mContentFrame);
           //mSpinnerView.setVisibility(View.INVISIBLE);
           mSpinnerView.setVisibility(View.GONE);
+          getSupportActionBar().setSubtitle("");
+
         } else {
           mSpinnerView.setVisibility(View.VISIBLE);
           setListDownAnimation(mContentFrame);
           setBarDownAnimation(mSpinnerView);
+          getSupportActionBar().setSubtitle("Filter Cards");
         }
 
 
@@ -344,6 +368,12 @@ public class MainActivity extends AppCompatActivity implements
         return true;
     }
   }
+
+//  private void rotate(MenuItem item){
+//    Animation rotation = AnimationUtils.loadAnimation(this, R.anim.rotate);
+//    item.getActionView().startAnimation(rotation);
+//    rotation.setFillAfter(true);
+//  }
 
   private void setBarUpAnimation(View viewToAnimate){
     Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_up);
@@ -362,6 +392,12 @@ public class MainActivity extends AppCompatActivity implements
 
   private void setListDownAnimation(View viewToAnimate){
     Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_down_list);
+
+    RelativeLayout.LayoutParams rlParams = (RelativeLayout.LayoutParams) viewToAnimate.getLayoutParams();
+    //set the margin to negative so the animation does not truncate the bottom
+    rlParams.setMargins(0, 0, 0, viewToAnimate.getHeight() * -1);
+    //Custom SlideAnimationListener to set the margin back once the animation is complete
+    animation.setAnimationListener(new SlideAnimationListener(viewToAnimate));
     viewToAnimate.startAnimation(animation);
   }
   @OnItemSelected({R.id.spinner_class, R.id.spinner_cost, R.id.spinner_type, R.id.spinner_rarity,

@@ -4,7 +4,7 @@
         <item name="android:windowActionBarOverlay">false</item>
     </style>
 
-    <style name="AppTheme" parent="@style/Theme.AppCompat.Light.NoActionBar" />
+    <style name="AppTheme" parent="@style/Theme.AppCompat.Light.NoActionBar"/>
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
@@ -20,7 +20,12 @@
 
     <style name="Theme.MyTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:actionBarWidgetTheme">@style/Theme.MyTheme.Widget</item>
+        <item name="android:actionButtonStyle">@style/MyActionButtonStyle</item>
         <!-- your other custom styles -->
+    </style>
+    <style name="MyActionButtonStyle" parent="Widget.AppCompat.ActionButton">
+        <item name="android:minWidth">20dp</item>
+        <item name="android:paddingRight">16dp</item>
     </style>
     <style name="Theme.MyTheme.Widget" parent="Widget.AppCompat.SearchView">
         <item name="android:textColorHint">@android:color/white</item>

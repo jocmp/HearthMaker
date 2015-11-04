@@ -55,7 +55,7 @@ public class DeckFragment extends Fragment {
   private static final String ARG_TYPE = "param1";
 
   private int mType;
-  private DeckCatalogAdapter adapter;
+  private DeckCatalogAdapter catalogAdapter;
   private CardDeckAdapter deckAdapter;
   
   private DeckFragmentListener mListener;
@@ -114,6 +114,13 @@ public class DeckFragment extends Fragment {
   }
 
   @Override
+  public void onResume() {
+    super.onResume();
+    mDeckFragmentPresenter.loadDeck(String.valueOf(mDeckIdParam));
+    catalogAdapter.notifyDataSetChanged();
+  }
+
+  @Override
   public View onCreateView(
       LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
@@ -127,23 +134,19 @@ public class DeckFragment extends Fragment {
     mCatalogRecyclerView.setHasFixedSize(true);
     mCatalogRecyclerView.isVerticalScrollBarEnabled();
     mCatalogRecyclerView.setLayoutManager(mLayoutManager);
-    adapter = new DeckCatalogAdapter(cards);
-    mCatalogRecyclerView.setAdapter(adapter);
+    catalogAdapter = new DeckCatalogAdapter(cards);
+    mCatalogRecyclerView.setAdapter(catalogAdapter);
     mCatalogRecyclerView.addOnItemTouchListener(
         new RecyclerItemClickListener(getActivity(), mCatalogRecyclerView,
             new RecyclerItemClickListener.OnItemClickListener() {
               @Override
               public void onItemClick(View view, int position) {
-                addDeckCard(cards.get(position));
+                addDeckCard(catalogAdapter.getPositionInfo(position));
               }
 
               @Override
               public void onItemLongClick(View view, int position) {
-                Intent intent = new Intent(getActivity(), DetailActivity.class);
-                intent.putExtra("card", adapter.getPositionInfo(position).getImageUrl());
-                intent.putExtra("name", adapter.getPositionInfo(position).getCardName());
-                intent.putExtra("flavor", adapter.getPositionInfo(position).getFlavor());
-                startActivity(intent);
+                mDeckFragmentPresenter.startDetailIntent(catalogAdapter.getPositionInfo(position));
               }
             }));
     mCatalogRecyclerView.addItemDecoration
@@ -154,7 +157,6 @@ public class DeckFragment extends Fragment {
     mDeckRecyclerView.setHasFixedSize(true);
     mDeckRecyclerView.isVerticalScrollBarEnabled();
     mDeckRecyclerView.setLayoutManager(mDeckLayoutManager);
-    adapter = new DeckCatalogAdapter(cards);
     deckAdapter = new CardDeckAdapter(deck.getCardList());
     mDeckRecyclerView.setAdapter(deckAdapter);
     mDeckRecyclerView.addOnItemTouchListener(
@@ -173,7 +175,6 @@ public class DeckFragment extends Fragment {
             }));
     mDeckRecyclerView.addItemDecoration
         (new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
-    mDeckFragmentPresenter.loadDeck(String.valueOf(mDeckIdParam));
     mListener.getAllCards();
     return mDeckFragmentView;
   }
@@ -188,7 +189,6 @@ public class DeckFragment extends Fragment {
   public void onPause() {
     super.onPause();
     mDeckFragmentPresenter.saveDeck(deck);
-    deckAdapter.notifyDataSetChanged();
   }
 
   @Override
@@ -202,14 +202,14 @@ public class DeckFragment extends Fragment {
     cards.addAll(list);
     mEmptyTextView.setVisibility(View.GONE);
     mLoadingView.setVisibility(View.GONE);
-    adapter.notifyDataSetChanged();
+    catalogAdapter.notifyDataSetChanged();
   }
 
   public void setListEmpty() {
     cards.clear();
     mEmptyTextView.setVisibility(View.VISIBLE);
     mLoadingView.setVisibility(View.GONE);
-    adapter.notifyDataSetChanged();
+    catalogAdapter.notifyDataSetChanged();
   }
 
   public interface DeckFragmentListener {

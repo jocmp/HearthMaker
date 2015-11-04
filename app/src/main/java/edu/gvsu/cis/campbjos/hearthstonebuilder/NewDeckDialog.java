@@ -27,7 +27,7 @@ public class NewDeckDialog extends DialogFragment {
     hostActivity = (DialogListener) getActivity();
     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
     // Set the dialog title
-    builder.setTitle("Types")
+    builder.setTitle("Choose a class...")
         // Specify the list array, the items to be selected by default (null for none),
         // and the listener through which to receive callbacks when items are selected
         .setSingleChoiceItems(R.array.card_class_dialog, checked,

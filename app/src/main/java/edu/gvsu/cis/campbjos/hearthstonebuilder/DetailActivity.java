@@ -49,12 +49,12 @@ public class DetailActivity extends AppCompatActivity {
     String cardClass = intent.getStringExtra("class");
     String cardRarity = intent.getStringExtra("rarity");
 
-    if(cardRarity.equals("Free")) {
+    if (cardRarity != null && cardRarity.equals("Free")) {
       cardRarity = "Common";
     }
 
     rarityDetail.setText(cardRarity);
-    cardData.setText("\""+cardFlavor+"\"");
+    cardData.setText(cardFlavor);
     classDetail.setText(cardClass);
     cToolLayout.setTitle(cardName);
     Picasso.with(this).load(imageURL).into(cardImage);

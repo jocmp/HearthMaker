@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,7 @@ import edu.gvsu.cis.campbjos.hearthstonebuilder.CardFilter;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.CardViewFragment;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.DeckEncoder;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.DeckFragment;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.DetailActivity;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Deck;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.JsonUtil;
@@ -64,7 +66,6 @@ public class DeckFragmentPresenter {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    deck.getCardList().clear();
     return true;
   }
 
@@ -114,5 +115,15 @@ public class DeckFragmentPresenter {
     }
     // Log.d("CAMPBELL", sb.toString());
     return sb.toString();
+  }
+
+  public void startDetailIntent(Card card) {
+    Intent intent = new Intent(mView.getActivity(), DetailActivity.class);
+    intent.putExtra("card", card.getImageUrl());
+    intent.putExtra("name", card.getCardName());
+    intent.putExtra("flavor", card.getFlavor());
+    intent.putExtra("class", card.getPlayerClass());
+    intent.putExtra("rarity", card.getRarity());
+    mView.startActivity(intent);
   }
 }

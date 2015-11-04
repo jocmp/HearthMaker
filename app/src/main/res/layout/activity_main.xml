@@ -46,8 +46,9 @@
                 <TextView
                     android:layout_alignParentTop="true"
                     android:layout_width="fill_parent"
-                    android:layout_height="1dp"
-                    android:background="#b6b6b6"/>
+                    android:layout_height=".5dp"
+                    android:background="@color/primary_dark_material_light"/>
+
             <SearchView
                 android:layout_centerVertical="true"
                 android:layout_width="fill_parent"
@@ -67,8 +68,8 @@
                 <TextView
                     android:layout_alignParentBottom="true"
                     android:layout_width="fill_parent"
-                    android:layout_height="1dp"
-                    android:background="#b6b6b6" />
+                    android:layout_height="@dimen/divider_height"
+                    android:background="@color/primary_dark_material_light"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -101,8 +102,8 @@
                 <TextView
                     android:layout_alignParentBottom="true"
                     android:layout_width="fill_parent"
-                    android:layout_height="1dp"
-                    android:background="#b6b6b6" />
+                    android:layout_height="@dimen/divider_height"
+                    android:background="@color/primary_dark_material_light"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -135,8 +136,8 @@
                 <TextView
                     android:layout_alignParentBottom="true"
                     android:layout_width="fill_parent"
-                    android:layout_height="1dp"
-                    android:background="#b6b6b6"/>
+                    android:layout_height="@dimen/divider_height"
+                    android:background="@color/primary_dark_material_light"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -169,8 +170,8 @@
                 <TextView
                     android:layout_alignParentBottom="true"
                     android:layout_width="fill_parent"
-                    android:layout_height="1dp"
-                    android:background="#b6b6b6" />
+                    android:layout_height="@dimen/divider_height"
+                    android:background="@color/primary_dark_material_light"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -203,8 +204,8 @@
                 <TextView
                     android:layout_alignParentBottom="true"
                     android:layout_width="fill_parent"
-                    android:layout_height="1dp"
-                    android:background="#b6b6b6"/>
+                    android:layout_height="@dimen/divider_height"
+                    android:background="@color/primary_dark_material_light"/>
             </RelativeLayout>
 
             <RelativeLayout

@@ -1,5 +1,6 @@
 package edu.gvsu.cis.campbjos.hearthstonebuilder;
 
+import android.support.v7.app.ActionBar;
 import android.view.View;
 import android.view.animation.Animation;
 import android.widget.RelativeLayout;
@@ -10,11 +11,15 @@ import android.widget.RelativeLayout;
 public class SlideAnimationListener implements Animation.AnimationListener {
 
     View viewToAnimate;
+    ActionBar bar;
+    View spinners;
     RelativeLayout.LayoutParams rlParams;
 
-    public SlideAnimationListener(View viewToAnimate){
+    public SlideAnimationListener(View viewToAnimate, ActionBar bar, View spinners){
         this.viewToAnimate = viewToAnimate;
         rlParams = (RelativeLayout.LayoutParams) viewToAnimate.getLayoutParams();
+        this.bar = bar;
+        this.spinners = spinners;
     }
 
     @Override
@@ -26,6 +31,8 @@ public class SlideAnimationListener implements Animation.AnimationListener {
     public void onAnimationEnd(Animation animation) {
         //set margins back so the view can be scrolled to the bottom
         rlParams.setMargins(0, 0, 0, 0);
+        bar.setElevation(0);
+        spinners.setElevation(10);
         viewToAnimate.requestLayout();
     }
 

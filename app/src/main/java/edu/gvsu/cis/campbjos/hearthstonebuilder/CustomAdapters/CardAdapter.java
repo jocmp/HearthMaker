@@ -94,6 +94,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
       Picasso.with(context).load(card.getImageUrl())
               .placeholder(R.drawable.placeholder)
               .transform(cardCrop)
+
               .into(itemIcon);
 
       //switch rarity

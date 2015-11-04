@@ -4,17 +4,59 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/activity_scrolling" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context=".ScrollingActivity"
+    tools:showIn="@layout/activity_detail" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context=".DetailActivity"
     android:layout_gravity="fill_vertical">
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:columnCount="2"
+        android:rowCount="3"
+        android:padding="16dp">
 
-    <TextView
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingTop="16dp"
-        android:textStyle="italic"
-        android:id="@+id/cardDetails"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="1">
+            <ImageView
+                android:id="@+id/classGridImage"
+                android:layout_width="48dp"
+                android:layout_height="48dp"/>
+            <TextView
+                android:id="@+id/classDetail"
+                android:layout_toEndOf="@+id/classGridImage"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:gravity="center_vertical"
+                android:paddingLeft="5dp"/>
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_columnSpan="1"
+            android:layout_gravity="fill_horizontal">
+            <ImageView
+                android:id="@+id/rarityGridImage"
+                android:layout_width="48dp"
+                android:layout_height="48dp"/>
+            <TextView
+                android:id="@+id/rarityDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:gravity="center_vertical"
+                android:layout_alignParentRight="true"
+                android:paddingLeft="5dp"/>
+        </RelativeLayout>
+
+        <TextView
+            android:textStyle="italic"
+            android:id="@+id/cardDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="2"/>
+    </GridLayout>
 
 </android.support.v4.widget.NestedScrollView>

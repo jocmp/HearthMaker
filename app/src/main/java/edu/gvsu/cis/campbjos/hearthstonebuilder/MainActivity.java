@@ -32,6 +32,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
@@ -52,8 +53,8 @@ import edu.gvsu.cis.campbjos.hearthstonebuilder.services.HearthService;
 
 
 public class MainActivity extends AppCompatActivity implements
-    CardViewFragment.OnFragmentInteractionListener, NavigationView.OnNavigationItemSelectedListener,
-      DeckFragment.DeckFragmentListener, NewDeckDialog.DialogListener{
+        CardViewFragment.OnFragmentInteractionListener, NavigationView.OnNavigationItemSelectedListener,
+        DeckFragment.DeckFragmentListener, NewDeckDialog.DialogListener{
 
   @InjectView(R.id.spinner_class)
   Spinner mClassSpinner;
@@ -99,7 +100,8 @@ public class MainActivity extends AppCompatActivity implements
   static {
     spinners = new ArrayList<>();
     idArray = new int[]{R.array.card_class,
-      R.array.cost, R.array.card_type, R.array.rarity, R.array.card_set};
+        R.array.cost, R.array.card_type, R.array.rarity, R.array.card_set};
+
   }
 
   @Override
@@ -216,11 +218,11 @@ public class MainActivity extends AppCompatActivity implements
     // ActionBarDrawerToggle ties together the the proper interactions
     // between the sliding drawer and the action bar app icon
     mDrawerToggle = new ActionBarDrawerToggle(
-        this,                  /* host Activity */
-        mDrawerLayout,          /* DrawerLayout object */
-        mToolbar,  /* nav drawer image to replace 'Up' caret */
-        R.string.drawer_open,  /* "open drawer" description for accessibility */
-        R.string.drawer_close  /* "close drawer" description for accessibility */
+            this,                  /* host Activity */
+            mDrawerLayout,          /* DrawerLayout object */
+            mToolbar,  /* nav drawer image to replace 'Up' caret */
+            R.string.drawer_open,  /* "open drawer" description for accessibility */
+            R.string.drawer_close  /* "close drawer" description for accessibility */
     ) {
       public void onDrawerClosed(View view) {
         getSupportActionBar().setTitle(mTitle);
@@ -307,6 +309,30 @@ public class MainActivity extends AppCompatActivity implements
     getMenuInflater().inflate(R.menu.navigation_drawer, menu);
 
 
+    final MenuItem item = menu.findItem(R.id.action_search);
+    //item.setActionView(R.layout.iv_rotate);
+    //ImageView refresh = (ImageView) item.getActionView();
+    final ImageView image = new ImageView(this);
+    ViewGroup.MarginLayoutParams layoutParams = new ViewGroup.MarginLayoutParams(
+            ViewGroup.MarginLayoutParams.WRAP_CONTENT, ViewGroup.MarginLayoutParams.WRAP_CONTENT);
+    image.setLayoutParams(layoutParams);
+    image.setImageResource(R.drawable.ic_filter_list_24dp);
+    image.setPadding(50, 0, 50, 0);
+
+    image.setOnClickListener(new View.OnClickListener() {
+                               @Override
+                               public void onClick(View v) {
+                                 if (mSpinnerView.getVisibility() == View.VISIBLE)
+                                   image.setImageResource(R.drawable.rev_ic_filter_list_24dp);
+                                 else
+                                   image.setImageResource(R.drawable.ic_filter_list_24dp);
+
+                                 onOptionsItemSelected(item);
+                               }
+                             }
+    );
+    item.setActionView(image);
+
     return super.onCreateOptionsMenu(menu);
   }
 
@@ -333,15 +359,16 @@ public class MainActivity extends AppCompatActivity implements
 
     switch (item.getItemId()) {
       case R.id.action_search:
-        //rotate(item);
+        rotate(item);
         if (mSpinnerView.getVisibility() == View.VISIBLE) {
+          getSupportActionBar().setElevation(1);
           setBarUpAnimation(mSpinnerView);
           setListUpAnimation(mContentFrame);
           //mSpinnerView.setVisibility(View.INVISIBLE);
           mSpinnerView.setVisibility(View.GONE);
           getSupportActionBar().setSubtitle(null);
-
         } else {
+          getSupportActionBar().setElevation(1);
           mSpinnerView.setVisibility(View.VISIBLE);
           setListDownAnimation(mContentFrame);
           setBarDownAnimation(mSpinnerView);
@@ -356,8 +383,15 @@ public class MainActivity extends AppCompatActivity implements
     }
   }
 
+  private void rotate(MenuItem item){
+    Animation rotation = AnimationUtils.loadAnimation(this, R.anim.rotate);
+    rotation.setFillAfter(true);
+    item.getActionView().startAnimation(rotation);
+  }
+
   private void setBarUpAnimation(View viewToAnimate){
     Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_up);
+    animation.setAnimationListener(new SlideUpAnimationListener(getSupportActionBar()));
     viewToAnimate.startAnimation(animation);
   }
 
@@ -378,11 +412,11 @@ public class MainActivity extends AppCompatActivity implements
     //set the margin to negative so the animation does not truncate the bottom
     rlParams.setMargins(0, 0, 0, viewToAnimate.getHeight() * -1);
     //Custom SlideAnimationListener to set the margin back once the animation is complete
-    animation.setAnimationListener(new SlideAnimationListener(viewToAnimate));
+    animation.setAnimationListener(new SlideAnimationListener(viewToAnimate, getSupportActionBar(), mSpinnerView));
     viewToAnimate.startAnimation(animation);
   }
   @OnItemSelected({R.id.spinner_class, R.id.spinner_cost, R.id.spinner_type, R.id.spinner_rarity,
-                    R.id.spinner_set})
+          R.id.spinner_set})
   public void onSpinnerItemSelected() {
     mMainActivityPresenter.getCardFilter(
 
@@ -400,7 +434,7 @@ public class MainActivity extends AppCompatActivity implements
       mSetSpinner.setVisibility(View.VISIBLE);
       setExpand.setVisibility(View.INVISIBLE);
     }
-    
+
     if (mRaritySpinner.getSelectedItem().toString().equals("CLEAR")) {
       mRaritySpinner.setVisibility(View.INVISIBLE);
       rarityExpand.setVisibility(View.VISIBLE);
@@ -408,7 +442,7 @@ public class MainActivity extends AppCompatActivity implements
       mRaritySpinner.setVisibility(View.VISIBLE);
       rarityExpand.setVisibility(View.INVISIBLE);
     }
-    
+
     if (mTypeSpinner.getSelectedItem().toString().equals("CLEAR")) {
       mTypeSpinner.setVisibility(View.INVISIBLE);
       typeExpand.setVisibility(View.VISIBLE);
@@ -416,7 +450,7 @@ public class MainActivity extends AppCompatActivity implements
       mTypeSpinner.setVisibility(View.VISIBLE);
       typeExpand.setVisibility(View.INVISIBLE);
     }
-    
+
     if (mCostSpinner.getSelectedItem().toString().equals("CLEAR")) {
       mCostSpinner.setVisibility(View.INVISIBLE);
       costExpand.setVisibility(View.VISIBLE);
@@ -424,7 +458,7 @@ public class MainActivity extends AppCompatActivity implements
       mCostSpinner.setVisibility(View.VISIBLE);
       costExpand.setVisibility(View.INVISIBLE);
     }
-    
+
     if (mClassSpinner.getSelectedItem().toString().equals("CLEAR")) {
       mClassSpinner.setVisibility(View.INVISIBLE);
       classExpand.setVisibility(View.VISIBLE);
@@ -489,8 +523,8 @@ public class MainActivity extends AppCompatActivity implements
     setNavigationMenuItem(deckId, newDeckName+" "+count);
     mFragment = DeckFragment.newInstance(type, deckId, newDeckName+" "+count);
     getFragmentManager().beginTransaction()
-        .replace(R.id.content_frame, mFragment)
-        .commit();
+            .replace(R.id.content_frame, mFragment)
+            .commit();
     mDrawerLayout.closeDrawer(mDrawerList);
     if (mSpinnerView.getVisibility() == View.VISIBLE) {
       mSpinnerView.setVisibility(View.GONE);

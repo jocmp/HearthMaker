@@ -50,10 +50,7 @@ import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.presenters.MainActivityPresenter;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.services.HearthService;
 
-/**
- * This example illustrates a common usage of the DrawerLayout widget in the Android support
- * library.
- */
+
 public class MainActivity extends AppCompatActivity implements
     CardViewFragment.OnFragmentInteractionListener, NavigationView.OnNavigationItemSelectedListener,
       DeckFragment.DeckFragmentListener, NewDeckDialog.DialogListener{
@@ -98,13 +95,11 @@ public class MainActivity extends AppCompatActivity implements
   private int count;
 
   private static ArrayList<Spinner> spinners;
-  private static List<List<Card>> UserDecks;
   private static int[] idArray;
   static {
     spinners = new ArrayList<>();
     idArray = new int[]{R.array.card_class,
       R.array.cost, R.array.card_type, R.array.rarity, R.array.card_set};
-    UserDecks = new ArrayList<>();
   }
 
   @Override
@@ -112,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     ButterKnife.inject(this);
-    setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     mTitle = mDrawerTitle = getTitle();
     mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
     Toolbar mToolbar = (Toolbar) findViewById(R.id.activity_toolbar);
@@ -122,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements
     // set a custom shadow that overlays the main content when the drawer opens
     mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
     mDrawerList.setNavigationItemSelectedListener(this);
+    mMainActivityPresenter.loadDecks();
 
     setExpand = (ImageView) findViewById(R.id.expand_set);
 
@@ -257,13 +253,14 @@ public class MainActivity extends AppCompatActivity implements
 
   private void setSpinnerAdapter(Spinner currentSpinner, int arrayId) {
     ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-            this, arrayId, R.layout.spinner_item);
+        this, arrayId, R.layout.spinner_item);
     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     currentSpinner.setAdapter(adapter);
   }
 
   private void selectItem(int position) {
     // update the main content by replacing fragments
+    MenuItem currentItem = mDrawerList.getMenu().findItem(position);
     switch (position) {
       case R.id.nav_catalog:
         mFragment = CardViewFragment.newInstance();
@@ -272,16 +269,21 @@ public class MainActivity extends AppCompatActivity implements
         createNewDeckDialog();
         return;
       default:
-        mFragment = CardViewFragment.newInstance();
+        if (currentItem.getGroupId() == R.id.navigation_deck_group){
+          mFragment =
+              DeckFragment.newInstance(
+                  // TODO add class type as first parameter
+                  -1, currentItem.getItemId(), (String) currentItem.getTitle());
+        }
         break;
     }
+
     FragmentManager fragmentManager = getFragmentManager();
     FragmentTransaction ft = fragmentManager.beginTransaction();
     ft.replace(R.id.content_frame, mFragment);
     ft.commit();
 
     // Close the drawer
-    MenuItem currentItem = mDrawerList.getMenu().findItem(position);
     currentItem.setChecked(true);
     setTitle(currentItem.getTitle());
     mDrawerLayout.closeDrawer(mDrawerList);
@@ -304,21 +306,6 @@ public class MainActivity extends AppCompatActivity implements
   public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.navigation_drawer, menu);
 
-//    final MenuItem item = menu.findItem(R.id.action_search);
-//    item.setActionView(R.layout.iv_rotate);
-//    ImageView refresh = (FrameLayout) item.getActionView();
-//
-//    refresh.setOnClickListener(new View.OnClickListener() {
-//      @Override
-//      public void onClick(View v) {
-//        if (mSpinnerView.getVisibility() == View.VISIBLE)
-//          v.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.rev_ic_filter_list_24dp));
-//        else
-//          v.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_filter_list_24dp));
-//
-//        onOptionsItemSelected(item);
-//      }
-//    });
 
     return super.onCreateOptionsMenu(menu);
   }
@@ -352,7 +339,7 @@ public class MainActivity extends AppCompatActivity implements
           setListUpAnimation(mContentFrame);
           //mSpinnerView.setVisibility(View.INVISIBLE);
           mSpinnerView.setVisibility(View.GONE);
-          getSupportActionBar().setSubtitle("");
+          getSupportActionBar().setSubtitle(null);
 
         } else {
           mSpinnerView.setVisibility(View.VISIBLE);
@@ -368,12 +355,6 @@ public class MainActivity extends AppCompatActivity implements
         return true;
     }
   }
-
-//  private void rotate(MenuItem item){
-//    Animation rotation = AnimationUtils.loadAnimation(this, R.anim.rotate);
-//    item.getActionView().startAnimation(rotation);
-//    rotation.setFillAfter(true);
-//  }
 
   private void setBarUpAnimation(View viewToAnimate){
     Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_up);
@@ -454,8 +435,13 @@ public class MainActivity extends AppCompatActivity implements
   }
 
   public void setSubscriberResult(List<Card> list) {
+    if (mFragment.getClass() == CardViewFragment.class) {
       CardViewFragment cardViewFragment = (CardViewFragment) mFragment;
       cardViewFragment.setCardList(list);
+    } else {
+      DeckFragment deckFragment = (DeckFragment) mFragment;
+      deckFragment.setCardList(list);
+    }
   }
 
   public String getCollectibleOption() {
@@ -472,8 +458,13 @@ public class MainActivity extends AppCompatActivity implements
   }
 
   public void setNotifyListEmpty() {
-    CardViewFragment cardViewFragment = (CardViewFragment) mFragment;
-    cardViewFragment.setListEmpty();
+    if (mFragment.getClass() == CardViewFragment.class) {
+      CardViewFragment cardViewFragment = (CardViewFragment) mFragment;
+      cardViewFragment.setListEmpty();
+    } else {
+      DeckFragment deckFragment = (DeckFragment) mFragment;
+      deckFragment.setListEmpty();
+    }
   }
 
   @Override
@@ -482,26 +473,21 @@ public class MainActivity extends AppCompatActivity implements
     return true;
   }
 
-  @Override
-  public void onFragmentInteraction(Uri uri) {
-
+  public void setNavigationMenuItem(int menuItemId, String menuItemName) {
+    mDrawerList.getMenu().findItem(R.id.navigation_deck_item).getSubMenu().add(
+        R.id.navigation_deck_group, menuItemId, Menu.NONE, menuItemName);
   }
 
   public Fragment getActivityFragment() {
     return mFragment;
   }
 
-  private void createNewDeck(int className) {
-    String[] classes = getResources().getStringArray(R.array.card_class_dialog);
-    count++;
-    mDrawerList.getMenu().add(
-        R.id.group_user_cards, 1000*count, Menu.NONE, classes[className]+count);
-  }
-
   @Override
-  public void onDialogComplete(int type) {
-    createNewDeck(type);
-    mFragment = DeckFragment.newInstance(type);
+  public void onDialogComplete(int type, int deckId, String newDeckName) {
+    // TODO remove count and add deck name support
+    count++;
+    setNavigationMenuItem(deckId, newDeckName+" "+count);
+    mFragment = DeckFragment.newInstance(type, deckId, newDeckName+" "+count);
     getFragmentManager().beginTransaction()
         .replace(R.id.content_frame, mFragment)
         .commit();
@@ -509,5 +495,6 @@ public class MainActivity extends AppCompatActivity implements
     if (mSpinnerView.getVisibility() == View.VISIBLE) {
       mSpinnerView.setVisibility(View.GONE);
     }
+    setTitle(newDeckName+" "+count);
   }
 }

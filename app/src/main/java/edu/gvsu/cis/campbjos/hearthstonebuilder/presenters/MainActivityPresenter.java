@@ -3,9 +3,20 @@ package edu.gvsu.cis.campbjos.hearthstonebuilder.presenters;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,11 +78,37 @@ public class MainActivityPresenter {
           @Override
           public void onNext(JsonObject jsonObject) {
             JsonUtil.parse(jsonObject, cardList);
-            if (mView.getActivityFragment().getClass() == CardViewFragment.class) {
-              mView.setSubscriberResult(cardList);
-            }
+            mView.setSubscriberResult(cardList);
           }
         });
+  }
+
+  public void loadDecks() {
+    JsonObject currentDeckObject;
+    JsonParser jsonParser = new JsonParser();
+    for (String fileName : mView.fileList()) {
+      currentDeckObject = readFileStreamToJson(fileName, jsonParser);
+      if (currentDeckObject != null) {
+        mView.setNavigationMenuItem(
+            currentDeckObject.get("id").getAsInt(),
+            currentDeckObject.get("name").getAsString());
+      }
+    }
+  }
+
+  private JsonObject readFileStreamToJson(String fileName, JsonParser parser) {
+    FileInputStream fis = null;
+    JsonObject fileObject = new JsonObject();
+    try {
+      fis = mView.openFileInput(fileName);
+      fileObject = parser.parse(getString(fis)).getAsJsonObject();
+      fis.close();
+    } catch (FileNotFoundException e) {
+      return null;
+    } catch (IOException e) {
+      return null;
+    }
+    return fileObject;
   }
 
   private String getKeyFromManifest(String key) {
@@ -86,4 +123,20 @@ public class MainActivityPresenter {
     return EMPTY_STRING;
   }
 
+  private static String getString(FileInputStream stream) throws IOException {
+
+    BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+    StringBuilder sb = new StringBuilder();
+
+    String line = null;
+    try {
+      while ((line = reader.readLine()) != null) {
+        sb.append(line).append("\n");
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    Log.d("getting FileInputStream", sb.toString());
+    return sb.toString();
+  }
 }

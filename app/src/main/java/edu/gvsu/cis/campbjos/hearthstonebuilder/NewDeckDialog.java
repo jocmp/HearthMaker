@@ -3,10 +3,13 @@ package edu.gvsu.cis.campbjos.hearthstonebuilder;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * @author josiah
@@ -16,6 +19,8 @@ public class NewDeckDialog extends DialogFragment {
 
   private DialogListener hostActivity;
   private int checked;
+
+  @NonNull
   @Override
   public Dialog onCreateDialog(Bundle savedInstanceState) {
 
@@ -36,14 +41,16 @@ public class NewDeckDialog extends DialogFragment {
         .setPositiveButton("Create", new DialogInterface.OnClickListener() {
       @Override
       public void onClick(DialogInterface dialog, int id) {
-        hostActivity.onDialogComplete(checked);
+        String[] classes = getResources().getStringArray(R.array.card_class_dialog);
+        hostActivity.onDialogComplete(checked,
+            classes.hashCode()+UUID.randomUUID().hashCode(), classes[checked]);
        getDialog().dismiss();
       }
     })
         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
           @Override
           public void onClick(DialogInterface dialog, int id) {
-
+            dismiss();
           }
         });
 
@@ -51,6 +58,6 @@ public class NewDeckDialog extends DialogFragment {
   }
 
   public interface DialogListener {
-    void onDialogComplete(int type);
+    void onDialogComplete(int type, int id, String name);
   }
 }

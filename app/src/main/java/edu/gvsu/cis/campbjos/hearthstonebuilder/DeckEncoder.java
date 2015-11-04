@@ -2,6 +2,8 @@ package edu.gvsu.cis.campbjos.hearthstonebuilder;
 
 import com.google.gson.stream.JsonWriter;
 
+import android.util.Log;
+
 import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Deck;
 

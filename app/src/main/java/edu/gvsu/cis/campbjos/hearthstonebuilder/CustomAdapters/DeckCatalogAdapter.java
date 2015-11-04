@@ -9,21 +9,22 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.R;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.UI.CardIconCrop;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.presenters.DeckFragmentPresenter;
 
-public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
+import java.util.List;
+
+public class DeckCatalogAdapter extends RecyclerView.Adapter<DeckCatalogAdapter.ViewHolder> {
 
   private List<Card> cardData;
 
-  public CardAdapter(List<Card> myDataset) {
+  public DeckCatalogAdapter(List<Card> myDataset) {
     cardData = myDataset;
   }
 
@@ -68,7 +69,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
      * @param view   view
      * @param parent Parent context
      */
-    public ViewHolder(View view, Context parent) {
+    public ViewHolder(final View view, final Context parent) {
       super(view);
       cardView = view;
       itemIcon = (ImageView) cardView.findViewById(R.id.card_icon);

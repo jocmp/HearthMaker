@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android" android:checkableBehavior="single">
 
-    <group android:checkableBehavior="single">
-        <item android:id="@+id/nav_catalog" android:icon="@android:drawable/ic_menu_slideshow"
-            android:title="Catalog" />
-    </group>
-    <group android:id="@+id/group_user_cards" android:title="Decks" android:checkableBehavior="single">
-    </group>
-    <group android:id="@+id/group_nav_new_deck" android:checkableBehavior="single">
-        <item android:id="@+id/nav_new_deck" android:icon="@android:drawable/btn_star"
+    <item android:id="@+id/nav_catalog" android:icon="@drawable/ic_recent_actors_24dp"
+        android:title="Catalog" />
+    <item
+        android:id="@+id/navigation_deck_item"
+        android:title="@string/navigation_deck_subheader">
+        <menu>
+            <group android:id="@+id/navigation_deck_group" />
+        </menu>
+    </item>
+    <group android:id="@+id/nav_new_deck_group">
+        <item android:id="@+id/nav_new_deck" android:icon="@drawable/ic_add_24dp"
             android:title="Create new deck" />
     </group>
 </menu>

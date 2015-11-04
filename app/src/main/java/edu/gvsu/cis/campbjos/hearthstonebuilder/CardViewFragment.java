@@ -68,18 +68,23 @@ public class CardViewFragment extends Fragment {
     adapter = new CardAdapter(cards);
     mCategoryRecycler.setAdapter(adapter);
     mCategoryRecycler.addOnItemTouchListener(
-        new RecyclerItemClickListener(getActivity(),
+        new RecyclerItemClickListener(getActivity(), mCategoryRecycler,
             new RecyclerItemClickListener.OnItemClickListener() {
               @Override
               public void onItemClick(View view, int position) {
-                Intent intent = new Intent(getActivity() ,DetailActivity.class);
+                Intent intent = new Intent(getActivity(), DetailActivity.class);
                 intent.putExtra("card", adapter.getPositionInfo(position).getImageUrl());
                 intent.putExtra("name", adapter.getPositionInfo(position).getCardName());
                 intent.putExtra("flavor", adapter.getPositionInfo(position).getFlavor());
                 startActivity(intent);
               }
-            })
-    );
+
+              @Override
+              public void onItemLongClick(View view, int position) {
+
+              }
+
+            }));
     mCategoryRecycler.addItemDecoration
         (new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
     return mCardFragmentView;
@@ -116,6 +121,7 @@ public class CardViewFragment extends Fragment {
     mLoadingView.setVisibility(View.GONE);
     adapter.notifyDataSetChanged();
   }
+
   public interface OnFragmentInteractionListener {
     void getAllCards();
   }

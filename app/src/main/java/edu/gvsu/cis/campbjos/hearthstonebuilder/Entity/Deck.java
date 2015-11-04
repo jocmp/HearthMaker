@@ -11,10 +11,12 @@ public class Deck {
 
   private String deckName;
   private List<Card> cardList;
+  private int id;
 
-  public Deck (String deckName, List<Card> cardList) {
+  public Deck (String deckName, int id) {
     this.deckName = deckName;
-    this.cardList = cardList;
+    this.id = id;
+    this.cardList = new ArrayList<>();
   }
 
   public String getDeckName() {
@@ -26,7 +28,7 @@ public class Deck {
   }
 
   public int getId() {
-    return this.deckName.hashCode();
+    return this.id;
   }
 
   public void setDeckName(String deckName) {

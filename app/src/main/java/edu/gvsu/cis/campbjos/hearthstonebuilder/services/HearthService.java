@@ -2,10 +2,8 @@ package edu.gvsu.cis.campbjos.hearthstonebuilder.services;
 
 import com.google.gson.JsonObject;
 
-import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
-import edu.gvsu.cis.campbjos.hearthstonebuilder.NetworkUtil;
-
 import retrofit.RestAdapter;
+import retrofit.client.OkClient;
 import retrofit.http.GET;
 import retrofit.http.Header;
 import retrofit.http.Query;
@@ -41,5 +39,6 @@ public class HearthService {
     @GET("/cards")
     public Observable<JsonObject> getCardResponse(
         @Header("X-Mashape-Key") String key, @Query("collectible") String query);
+
   }
 }

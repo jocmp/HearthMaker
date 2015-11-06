@@ -1,6 +1,7 @@
 package edu.gvsu.cis.campbjos.hearthstonebuilder;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.content.ContextCompat;
@@ -24,15 +25,15 @@ public class DetailActivity extends AppCompatActivity {
   ImageView cardImage;
   @InjectView(R.id.toolbar_layout)
   CollapsingToolbarLayout cToolLayout;
-  @InjectView(R.id.cardDetails)
-  TextView cardData;
-  @InjectView(R.id.classDetail)
-  TextView classDetail;
-  @InjectView(R.id.classGridImage)
-  ImageView classImage;
-  @InjectView(R.id.rarityDetail)
+  @InjectView(R.id.flavor_text)
+  TextView flavorText;
+  @InjectView(R.id.class_name)
+  TextView className;
+  @InjectView(R.id.class_icon)
+  ImageView classIcon;
+  @InjectView(R.id.rarity_detail)
   TextView rarityDetail;
-  @InjectView(R.id.rarityGridImage)
+  @InjectView(R.id.rarity_image_big)
   ImageView rarityImage;
 
   @Override
@@ -41,6 +42,10 @@ public class DetailActivity extends AppCompatActivity {
     setContentView(R.layout.activity_detail);
     ButterKnife.inject(this);
     setSupportActionBar(toolbar);
+
+    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    getSupportActionBar().setHomeButtonEnabled(true);
+    getSupportActionBar().setDisplayShowHomeEnabled(true);
 
     Intent intent = getIntent();
     String imageURL = intent.getStringExtra("card");
@@ -53,42 +58,44 @@ public class DetailActivity extends AppCompatActivity {
       cardRarity = "Common";
     }
 
+    cToolLayout.setExpandedTitleColor(Color.parseColor("#00FFFFFF"));
+
     rarityDetail.setText(cardRarity);
-    cardData.setText(cardFlavor);
-    classDetail.setText(cardClass);
+    flavorText.setText(cardFlavor);
+    className.setText(cardClass);
     cToolLayout.setTitle(cardName);
     Picasso.with(this).load(imageURL).into(cardImage);
 
     switch (cardClass) {
       case "Warrior":
-        classImage.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.warrior_icon));
+        classIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.warrior_icon));
         break;
       case "Neutral":
-        classImage.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.placeholder));
+        classIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.placeholder));
         break;
       case "Druid":
-        classImage.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.druid_icon));
+        classIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.druid_icon));
         break;
       case "Hunter":
-        classImage.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.hunter_icon));
+        classIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.hunter_icon));
         break;
       case "Mage":
-        classImage.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.mage_icon));
+        classIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.mage_icon));
         break;
       case "Paladin":
-        classImage.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.paladin_icon));
+        classIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.paladin_icon));
         break;
       case "Priest":
-        classImage.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.priest_icon));
+        classIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.priest_icon));
         break;
       case "Rogue":
-        classImage.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.rogue_icon));
+        classIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.rogue_icon));
         break;
       case "Shaman":
-        classImage.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.shaman_icon));
+        classIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.shaman_icon));
         break;
       case "Warlock":
-        classImage.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.warlock_icon));
+        classIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.warlock_icon));
         break;
       default:
         break;
@@ -128,12 +135,13 @@ public class DetailActivity extends AppCompatActivity {
     // Handle action bar item clicks here. The action bar will
     // automatically handle clicks on the Home/Up button, so long
     // as you specify a parent activity in AndroidManifest.xml.
-    int id = item.getItemId();
 
-    //noinspection SimplifiableIfStatement
-    if (id == R.id.action_settings) {
-      return true;
+    switch (item.getItemId()) {
+      case android.R.id.home:
+        onBackPressed();
+        return true;
     }
+
     return super.onOptionsItemSelected(item);
   }
 }

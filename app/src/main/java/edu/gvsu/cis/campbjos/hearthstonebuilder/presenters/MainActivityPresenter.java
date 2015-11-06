@@ -5,17 +5,13 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.util.Log;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +74,9 @@ public class MainActivityPresenter {
           @Override
           public void onNext(JsonObject jsonObject) {
             JsonUtil.parse(jsonObject, cardList);
-            mView.setSubscriberResult(cardList);
+            //initial ordering of cards.
+            mView.setSubscriberResult(CardFilter.filterCards(cardList, "CLEAR", "CLEAR", "CLEAR","CLEAR", "CLEAR", ""));
+            //mView.setSubscriberResult(cardList);
           }
         });
   }

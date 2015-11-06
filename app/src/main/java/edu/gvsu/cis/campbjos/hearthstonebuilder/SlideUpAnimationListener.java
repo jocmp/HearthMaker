@@ -21,7 +21,6 @@ public class SlideUpAnimationListener implements Animation.AnimationListener {
 
     @Override
     public void onAnimationEnd(Animation animation) {
-        //set margins back so the view can be scrolled to the bottom
         bar.setElevation(10);
     }
 

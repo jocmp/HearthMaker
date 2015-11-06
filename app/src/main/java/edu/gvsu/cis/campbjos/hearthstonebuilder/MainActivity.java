@@ -21,7 +21,6 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -361,6 +360,8 @@ public class MainActivity extends AppCompatActivity implements
       case R.id.action_search:
         rotate(item);
         if (mSpinnerView.getVisibility() == View.VISIBLE) {
+          //going up
+          mSpinnerView.setElevation(0);
           getSupportActionBar().setElevation(1);
           setBarUpAnimation(mSpinnerView);
           setListUpAnimation(mContentFrame);
@@ -368,6 +369,7 @@ public class MainActivity extends AppCompatActivity implements
           mSpinnerView.setVisibility(View.GONE);
           getSupportActionBar().setSubtitle(null);
         } else {
+          mSpinnerView.setElevation(0);
           getSupportActionBar().setElevation(1);
           mSpinnerView.setVisibility(View.VISIBLE);
           setListDownAnimation(mContentFrame);

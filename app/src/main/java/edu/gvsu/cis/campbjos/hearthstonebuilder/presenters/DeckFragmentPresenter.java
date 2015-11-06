@@ -47,6 +47,7 @@ import rx.schedulers.Schedulers;
 public class DeckFragmentPresenter {
 
   private DeckFragment mView;
+
   /**
    * Presenter class for {@link CardViewFragment}.
    * @param fragment The fragment's containing class

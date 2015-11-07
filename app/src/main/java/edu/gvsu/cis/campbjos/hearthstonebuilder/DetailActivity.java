@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -35,6 +37,12 @@ public class DetailActivity extends AppCompatActivity {
   TextView rarityDetail;
   @InjectView(R.id.rarity_image_big)
   ImageView rarityImage;
+  @InjectView(R.id.card_type)
+  TextView typeDetail;
+  @InjectView(R.id.dust_cost)
+  TextView dustDetail;
+  @InjectView(R.id.card_set)
+  TextView setDetail;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +61,27 @@ public class DetailActivity extends AppCompatActivity {
     String cardFlavor = intent.getStringExtra("flavor");
     String cardClass = intent.getStringExtra("class");
     String cardRarity = intent.getStringExtra("rarity");
+    String cardSet = intent.getStringExtra("set");
+    String cardType = intent.getStringExtra("type");
+    String dustCost = "N/A";
+
+    switch (cardRarity) {
+      case "Free":
+        dustCost = "0";
+        break;
+      case "Common":
+        dustCost = "40";
+        break;
+      case "Rare":
+        dustCost = "100";
+        break;
+      case "Epic":
+        dustCost = "400";
+        break;
+      case "Legendary":
+        dustCost = "1600";
+        break;
+    }
 
     if (cardRarity != null && cardRarity.equals("Free")) {
       cardRarity = "Common";
@@ -61,9 +90,12 @@ public class DetailActivity extends AppCompatActivity {
     cToolLayout.setExpandedTitleColor(Color.parseColor("#00FFFFFF"));
 
     rarityDetail.setText(cardRarity);
-    flavorText.setText(cardFlavor);
+    flavorText.setText("\""+cardFlavor+"\"");
     className.setText(cardClass);
     cToolLayout.setTitle(cardName);
+    typeDetail.setText(cardType);
+    dustDetail.setText(dustCost);
+    setDetail.setText(cardSet);
     Picasso.with(this).load(imageURL).into(cardImage);
 
     switch (cardClass) {
@@ -105,9 +137,6 @@ public class DetailActivity extends AppCompatActivity {
       case "Common":
         rarityImage.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.rarity_common_500));
         break;
-      case "Free":
-        rarityImage.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.rarity_common_500));
-        break;
       case "Rare":
         rarityImage.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.rarity_rare_500));
         break;
@@ -120,6 +149,7 @@ public class DetailActivity extends AppCompatActivity {
       default:
         break;
     }
+
   }
   
 

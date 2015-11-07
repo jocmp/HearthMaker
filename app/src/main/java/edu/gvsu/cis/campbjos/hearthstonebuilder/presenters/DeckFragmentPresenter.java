@@ -125,6 +125,8 @@ public class DeckFragmentPresenter {
     intent.putExtra("flavor", card.getFlavor());
     intent.putExtra("class", card.getPlayerClass());
     intent.putExtra("rarity", card.getRarity());
+    intent.putExtra("set",card.getCardSet());
+    intent.putExtra("type",card.getType());
     mView.startActivity(intent);
   }
 }

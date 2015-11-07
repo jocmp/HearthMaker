@@ -78,12 +78,22 @@ public class CardViewFragment extends Fragment {
                 intent.putExtra("flavor", adapter.getPositionInfo(position).getFlavor());
                 intent.putExtra("class", adapter.getPositionInfo(position).getPlayerClass());
                 intent.putExtra("rarity", adapter.getPositionInfo(position).getRarity());
+                intent.putExtra("set",adapter.getPositionInfo(position).getCardSet());
+                intent.putExtra("type",adapter.getPositionInfo(position).getType());
                 startActivity(intent);
               }
 
               @Override
               public void onItemLongClick(View view, int position) {
-
+                Intent intent = new Intent(getActivity(), DetailActivity.class);
+                intent.putExtra("card", adapter.getPositionInfo(position).getImageUrl());
+                intent.putExtra("name", adapter.getPositionInfo(position).getCardName());
+                intent.putExtra("flavor", adapter.getPositionInfo(position).getFlavor());
+                intent.putExtra("class", adapter.getPositionInfo(position).getPlayerClass());
+                intent.putExtra("rarity", adapter.getPositionInfo(position).getRarity());
+                intent.putExtra("set",adapter.getPositionInfo(position).getCardSet());
+                intent.putExtra("type",adapter.getPositionInfo(position).getType());
+                startActivity(intent);
               }
 
             }));

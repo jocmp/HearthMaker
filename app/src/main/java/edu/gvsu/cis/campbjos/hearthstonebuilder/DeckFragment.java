@@ -67,7 +67,7 @@ public class DeckFragment extends Fragment {
   private static final String ARG_PARAM1 = "param1";
   private static final String ARG_PARAM2 = "param2";
   private static final String ARG_PARAM3 = "param3";
-  // TODO: Rename and change types of parameters
+
   private int mParam1;
   private String mNameParam;
   private int mDeckIdParam;

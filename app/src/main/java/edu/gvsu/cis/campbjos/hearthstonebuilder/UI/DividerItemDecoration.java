@@ -35,11 +35,13 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
   };
   private Drawable mDivider;
   private int mOrientation;
+  private Context context;
 
   public DividerItemDecoration(Context context, int orientation) {
     final TypedArray a = context.obtainStyledAttributes(ATTRS);
     mDivider = a.getDrawable(0);
     a.recycle();
+    this.context = context;
     setOrientation(orientation);
   }
 
@@ -74,6 +76,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
       mDivider.setBounds(left, top, right, bottom);
       //set color. Added by Chad 10/30/2015
       mDivider.setColorFilter(Color.parseColor("#B6B6B6"), PorterDuff.Mode.ADD);
+      //mDivider.setColorFilter(ContextCompat.getColor(context, R.color.primary_dark_material_light), PorterDuff.Mode.ADD);
       mDivider.draw(c);
     }
   }

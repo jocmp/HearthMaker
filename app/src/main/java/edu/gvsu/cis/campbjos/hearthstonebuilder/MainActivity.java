@@ -16,13 +16,13 @@
 
 package edu.gvsu.cis.campbjos.hearthstonebuilder;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -279,7 +279,7 @@ public class MainActivity extends AppCompatActivity implements
         break;
     }
 
-    FragmentManager fragmentManager = getFragmentManager();
+    FragmentManager fragmentManager = getSupportFragmentManager();
     FragmentTransaction ft = fragmentManager.beginTransaction();
     ft.replace(R.id.content_frame, mFragment);
     ft.commit();
@@ -524,7 +524,7 @@ public class MainActivity extends AppCompatActivity implements
     count++;
     setNavigationMenuItem(deckId, newDeckName+" "+count);
     mFragment = DeckFragment.newInstance(type, deckId, newDeckName+" "+count);
-    getFragmentManager().beginTransaction()
+    getSupportFragmentManager().beginTransaction()
             .replace(R.id.content_frame, mFragment)
             .commit();
     mDrawerLayout.closeDrawer(mDrawerList);

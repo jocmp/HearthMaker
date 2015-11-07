@@ -75,8 +75,8 @@ public class MainActivityPresenter {
           public void onNext(JsonObject jsonObject) {
             JsonUtil.parse(jsonObject, cardList);
             //initial ordering of cards.
-            mView.setSubscriberResult(CardFilter.filterCards(cardList, "CLEAR", "CLEAR", "CLEAR","CLEAR", "CLEAR", ""));
-            //mView.setSubscriberResult(cardList);
+            mView.setSubscriberResult(
+                CardFilter.filterCards(cardList, "CLEAR", "CLEAR", "CLEAR","CLEAR", "CLEAR", ""));
           }
         });
   }

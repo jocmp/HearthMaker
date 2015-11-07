@@ -7,6 +7,44 @@
     tools:showIn="@layout/activity_detail" android:layout_width="match_parent"
     android:layout_height="match_parent" tools:context=".DetailActivity"
     android:layout_gravity="fill_vertical">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/class_icon"
+        android:layout_width="48dp"
+        android:layout_height="48dp" />
+    <TextView
+        android:id="@+id/class_name"
+        android:layout_toEndOf="@+id/class_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:gravity="center_vertical"
+        android:paddingLeft="5dp"/>
+
+    <ImageView
+        android:id="@+id/rarity_image_big"
+        android:layout_width="48dp"
+        android:layout_alignParentEnd="true"
+        android:layout_height="48dp" />
+    <TextView
+        android:id="@+id/rarity_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_toStartOf="@+id/rarity_image_big"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:gravity="center_vertical" />
+    <TextView
+        android:textStyle="italic"
+        android:layout_below="@+id/class_name"
+        android:id="@+id/flavor_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</RelativeLayout>
+<!--
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,6 +55,7 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="left"
             android:layout_columnSpan="1">
             <ImageView
                 android:id="@+id/classGridImage"
@@ -34,7 +73,6 @@
         </RelativeLayout>
         <RelativeLayout
             android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
             android:layout_columnSpan="1"
             android:layout_gravity="fill_horizontal">
             <ImageView
@@ -45,10 +83,9 @@
                 android:id="@+id/rarityDetail"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:gravity="center_vertical"
                 android:layout_alignParentRight="true"
-                android:paddingLeft="5dp"/>
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:gravity="center_vertical" />
         </RelativeLayout>
 
         <TextView
@@ -58,5 +95,6 @@
             android:layout_height="wrap_content"
             android:layout_columnSpan="2"/>
     </GridLayout>
+    -->
 
 </android.support.v4.widget.NestedScrollView>

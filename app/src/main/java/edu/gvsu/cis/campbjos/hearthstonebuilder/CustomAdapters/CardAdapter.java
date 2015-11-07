@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
@@ -81,7 +80,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
       itemHealthDurabilityImage = (ImageView) cardView.findViewById(R.id.health_image);
       itemHealthDurabilityGrid = (RelativeLayout) cardView.findViewById(R.id.health_grid);
       context = parent;
-      cardCrop  = new CardIconCrop();
+      cardCrop = CardIconCrop.getCardIconCrop();
     }
 
     private void setEntry(Card card) {

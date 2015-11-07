@@ -15,8 +15,17 @@ import com.squareup.picasso.Transformation;
  */
 public class CardIconCrop implements Transformation {
 
-    public CardIconCrop () {
-        //empty construction
+    private static CardIconCrop cardCrop;
+
+    private CardIconCrop () {
+
+    }
+
+    public static CardIconCrop getCardIconCrop(){
+        if (cardCrop == null){
+            cardCrop = new CardIconCrop();
+        }
+        return cardCrop;
     }
 
     @Override public Bitmap transform(Bitmap source) {

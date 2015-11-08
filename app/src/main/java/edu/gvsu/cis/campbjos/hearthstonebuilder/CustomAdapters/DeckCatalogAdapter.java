@@ -9,16 +9,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.R;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.UI.CardIconCrop;
-import edu.gvsu.cis.campbjos.hearthstonebuilder.presenters.DeckFragmentPresenter;
-
-import java.util.List;
 
 public class DeckCatalogAdapter extends RecyclerView.Adapter<DeckCatalogAdapter.ViewHolder> {
 
@@ -82,7 +80,7 @@ public class DeckCatalogAdapter extends RecyclerView.Adapter<DeckCatalogAdapter.
       itemHealthDurabilityImage = (ImageView) cardView.findViewById(R.id.health_image);
       itemHealthDurabilityGrid = (RelativeLayout) cardView.findViewById(R.id.health_grid);
       context = parent;
-      cardCrop  = new CardIconCrop();
+      cardCrop = CardIconCrop.getCardIconCrop();
     }
 
     private void setEntry(Card card) {

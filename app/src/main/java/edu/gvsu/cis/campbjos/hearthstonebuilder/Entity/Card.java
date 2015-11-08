@@ -1,7 +1,5 @@
 package edu.gvsu.cis.campbjos.hearthstonebuilder.Entity;
 
-import android.graphics.Bitmap;
-
 /**
  * Class to hold HS Card values.
  *
@@ -34,7 +32,7 @@ public class Card {
    * @param cardName        The card name
    * @param cardSet         the set name
    * @param type            The card type
-   * @param race         The faction of the card
+   * @param race            The faction of the card
    * @param rarity          The rarity of the card
    * @param cost            The mana cost of this card
    * @param attack          The attack of the card
@@ -50,7 +48,7 @@ public class Card {
   public Card(String cardId, String cardName, String cardSet, String type,
               String race, String rarity, int cost, int attack, int health,
               int durability, String textDescription, String flavor, String artist,
-              boolean isCollectible, String imageUrl, String imgGold, Bitmap image) {
+              boolean isCollectible, String imageUrl, String imgGold) {
     this.cardId = cardId;
     this.name = cardName;
     this.cardSet = cardSet;

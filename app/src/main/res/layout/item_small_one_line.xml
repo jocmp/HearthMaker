@@ -24,19 +24,61 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/list_item"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="30dp"
     android:background="?android:attr/selectableItemBackground"
     android:clickable="true">
 
+        <edu.gvsu.cis.campbjos.hearthstonebuilder.UI.BelweBoldTextView
+            android:id="@+id/mana_cost_deck"
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="17dp"
+            android:textAlignment="center"
+            android:text="15"
+            android:background="#4587f7"
+            android:shadowColor="#000000"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="3"
+            android:textColor="#FFFFFF"/>
+    <!--
+    <TextView
+        android:id="@+id/mana_cost_deck"
+        android:layout_width="10dp"
+        android:layout_height="fill_parent"
+        android:background="#4587f7"
+        android:textColor="#FFFFFF" />
+        -->
+    <!--
+    <TextView
+        android:id="@+id/amount"
+        android:layout_width="15dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:textSize="14sp"
+        android:textAlignment="center"
+        android:text="2"
+        android:layout_alignParentEnd="true"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:background="@color/primary_dark_material_light"
+        android:textColor="#FFFFFF" />
+-->
     <TextView
         android:id="@+id/item_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_marginStart="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
         android:textSize="14sp"
+        android:ellipsize="end"
         android:maxLines="1"
+        android:singleLine="true"
         android:textAppearance="?attr/textAppearanceListItem"
         android:textColor="?android:attr/textColorPrimary"
-        tools:text="you are here" />
+        tools:text="you are here"
+        android:layout_toEndOf="@id/mana_cost_deck"/>
+        <!--android:layout_toStartOf="@id/amount"-->
+
 
 </RelativeLayout>

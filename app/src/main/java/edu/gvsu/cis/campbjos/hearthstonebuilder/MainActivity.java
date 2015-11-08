@@ -18,6 +18,7 @@ package edu.gvsu.cis.campbjos.hearthstonebuilder;
 
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -40,20 +41,21 @@ import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.Spinner;
 
+import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.presenters.MainActivityPresenter;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.services.HearthService;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnItemSelected;
-import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
-import edu.gvsu.cis.campbjos.hearthstonebuilder.presenters.MainActivityPresenter;
-import edu.gvsu.cis.campbjos.hearthstonebuilder.services.HearthService;
 
 
 public class MainActivity extends AppCompatActivity implements
-        CardViewFragment.OnFragmentInteractionListener, NavigationView.OnNavigationItemSelectedListener,
-        DeckFragment.DeckFragmentListener, NewDeckDialog.DialogListener{
+    CardViewFragment.OnFragmentInteractionListener, NavigationView.OnNavigationItemSelectedListener,
+    DeckFragment.DeckFragmentListener, NewDeckDialog.DialogListener {
 
   @InjectView(R.id.spinner_class)
   Spinner mClassSpinner;
@@ -96,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements
 
   private static ArrayList<Spinner> spinners;
   private static int[] idArray;
+
   static {
     spinners = new ArrayList<>();
     idArray = new int[]{R.array.card_class,
@@ -168,22 +171,22 @@ public class MainActivity extends AppCompatActivity implements
       @Override
       public boolean onQueryTextSubmit(String query) {
         mMainActivityPresenter.getCardFilter(
-                mClassSpinner.getSelectedItem().toString(),
-                mCostSpinner.getSelectedItem().toString(),
-                mTypeSpinner.getSelectedItem().toString(),
-                mRaritySpinner.getSelectedItem().toString(),
-                mSetSpinner.getSelectedItem().toString(), query);
+            mClassSpinner.getSelectedItem().toString(),
+            mCostSpinner.getSelectedItem().toString(),
+            mTypeSpinner.getSelectedItem().toString(),
+            mRaritySpinner.getSelectedItem().toString(),
+            mSetSpinner.getSelectedItem().toString(), query);
         return false;
       }
 
       @Override
       public boolean onQueryTextChange(String newText) {
         mMainActivityPresenter.getCardFilter(
-                mClassSpinner.getSelectedItem().toString(),
-                mCostSpinner.getSelectedItem().toString(),
-                mTypeSpinner.getSelectedItem().toString(),
-                mRaritySpinner.getSelectedItem().toString(),
-                mSetSpinner.getSelectedItem().toString(), newText);
+            mClassSpinner.getSelectedItem().toString(),
+            mCostSpinner.getSelectedItem().toString(),
+            mTypeSpinner.getSelectedItem().toString(),
+            mRaritySpinner.getSelectedItem().toString(),
+            mSetSpinner.getSelectedItem().toString(), newText);
         return false;
       }
     });
@@ -203,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements
         mTypeSpinner.setSelection(0);
         mSetSpinner.setVisibility(View.INVISIBLE);
         mSetSpinner.setSelection(0);
-        searchView.setQuery("",true);
+        searchView.setQuery("", true);
         searchView.onActionViewCollapsed();
       }
     });
@@ -217,11 +220,11 @@ public class MainActivity extends AppCompatActivity implements
     // ActionBarDrawerToggle ties together the the proper interactions
     // between the sliding drawer and the action bar app icon
     mDrawerToggle = new ActionBarDrawerToggle(
-            this,                  /* host Activity */
-            mDrawerLayout,          /* DrawerLayout object */
-            mToolbar,  /* nav drawer image to replace 'Up' caret */
-            R.string.drawer_open,  /* "open drawer" description for accessibility */
-            R.string.drawer_close  /* "close drawer" description for accessibility */
+        this,                  /* host Activity */
+        mDrawerLayout,          /* DrawerLayout object */
+        mToolbar,  /* nav drawer image to replace 'Up' caret */
+        R.string.drawer_open,  /* "open drawer" description for accessibility */
+        R.string.drawer_close  /* "close drawer" description for accessibility */
     ) {
       public void onDrawerClosed(View view) {
         getSupportActionBar().setTitle(mTitle);
@@ -270,7 +273,7 @@ public class MainActivity extends AppCompatActivity implements
         createNewDeckDialog();
         return;
       default:
-        if (currentItem.getGroupId() == R.id.navigation_deck_group){
+        if (currentItem.getGroupId() == R.id.navigation_deck_group) {
           mFragment =
               DeckFragment.newInstance(
                   // TODO add class type as first parameter
@@ -313,7 +316,7 @@ public class MainActivity extends AppCompatActivity implements
     //ImageView refresh = (ImageView) item.getActionView();
     final ImageView image = new ImageView(this);
     ViewGroup.MarginLayoutParams layoutParams = new ViewGroup.MarginLayoutParams(
-            ViewGroup.MarginLayoutParams.WRAP_CONTENT, ViewGroup.MarginLayoutParams.WRAP_CONTENT);
+        ViewGroup.MarginLayoutParams.WRAP_CONTENT, ViewGroup.MarginLayoutParams.WRAP_CONTENT);
     image.setLayoutParams(layoutParams);
     image.setImageResource(R.drawable.ic_filter_list_24dp);
     image.setPadding(50, 0, 50, 0);
@@ -361,16 +364,20 @@ public class MainActivity extends AppCompatActivity implements
         rotate(item);
         if (mSpinnerView.getVisibility() == View.VISIBLE) {
           //going up
-          mSpinnerView.setElevation(0);
-          getSupportActionBar().setElevation(1);
+          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mSpinnerView.setElevation(0);
+            getSupportActionBar().setElevation(1);
+          }
           setBarUpAnimation(mSpinnerView);
           setListUpAnimation(mContentFrame);
           //mSpinnerView.setVisibility(View.INVISIBLE);
           mSpinnerView.setVisibility(View.GONE);
           getSupportActionBar().setSubtitle(null);
         } else {
-          mSpinnerView.setElevation(0);
-          getSupportActionBar().setElevation(1);
+          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mSpinnerView.setElevation(0);
+            getSupportActionBar().setElevation(1);
+          }
           mSpinnerView.setVisibility(View.VISIBLE);
           setListDownAnimation(mContentFrame);
           setBarDownAnimation(mSpinnerView);
@@ -385,29 +392,29 @@ public class MainActivity extends AppCompatActivity implements
     }
   }
 
-  private void rotate(MenuItem item){
+  private void rotate(MenuItem item) {
     Animation rotation = AnimationUtils.loadAnimation(this, R.anim.rotate);
     rotation.setFillAfter(true);
     item.getActionView().startAnimation(rotation);
   }
 
-  private void setBarUpAnimation(View viewToAnimate){
+  private void setBarUpAnimation(View viewToAnimate) {
     Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_up);
     animation.setAnimationListener(new SlideUpAnimationListener(getSupportActionBar()));
     viewToAnimate.startAnimation(animation);
   }
 
-  private void setBarDownAnimation(View viewToAnimate){
+  private void setBarDownAnimation(View viewToAnimate) {
     Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_down);
     viewToAnimate.startAnimation(animation);
   }
 
-  private void setListUpAnimation(View viewToAnimate){
+  private void setListUpAnimation(View viewToAnimate) {
     Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_up_list);
     viewToAnimate.startAnimation(animation);
   }
 
-  private void setListDownAnimation(View viewToAnimate){
+  private void setListDownAnimation(View viewToAnimate) {
     Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_down_list);
 
     RelativeLayout.LayoutParams rlParams = (RelativeLayout.LayoutParams) viewToAnimate.getLayoutParams();
@@ -417,22 +424,23 @@ public class MainActivity extends AppCompatActivity implements
     animation.setAnimationListener(new SlideAnimationListener(viewToAnimate, getSupportActionBar(), mSpinnerView));
     viewToAnimate.startAnimation(animation);
   }
+
   @OnItemSelected({R.id.spinner_class, R.id.spinner_cost, R.id.spinner_type, R.id.spinner_rarity,
-          R.id.spinner_set})
+      R.id.spinner_set})
   public void onSpinnerItemSelected() {
     mMainActivityPresenter.getCardFilter(
 
-            mClassSpinner.getSelectedItem().toString(),
-            mCostSpinner.getSelectedItem().toString(),
-            mTypeSpinner.getSelectedItem().toString(),
-            mRaritySpinner.getSelectedItem().toString(),
-            mSetSpinner.getSelectedItem().toString(),
-            searchView.getQuery().toString()
+        mClassSpinner.getSelectedItem().toString(),
+        mCostSpinner.getSelectedItem().toString(),
+        mTypeSpinner.getSelectedItem().toString(),
+        mRaritySpinner.getSelectedItem().toString(),
+        mSetSpinner.getSelectedItem().toString(),
+        searchView.getQuery().toString()
     );
     if (mSetSpinner.getSelectedItem().toString().equals("CLEAR")) {
       mSetSpinner.setVisibility(View.INVISIBLE);
       setExpand.setVisibility(View.VISIBLE);
-    } else{
+    } else {
       mSetSpinner.setVisibility(View.VISIBLE);
       setExpand.setVisibility(View.INVISIBLE);
     }
@@ -440,7 +448,7 @@ public class MainActivity extends AppCompatActivity implements
     if (mRaritySpinner.getSelectedItem().toString().equals("CLEAR")) {
       mRaritySpinner.setVisibility(View.INVISIBLE);
       rarityExpand.setVisibility(View.VISIBLE);
-    } else{
+    } else {
       mRaritySpinner.setVisibility(View.VISIBLE);
       rarityExpand.setVisibility(View.INVISIBLE);
     }
@@ -448,7 +456,7 @@ public class MainActivity extends AppCompatActivity implements
     if (mTypeSpinner.getSelectedItem().toString().equals("CLEAR")) {
       mTypeSpinner.setVisibility(View.INVISIBLE);
       typeExpand.setVisibility(View.VISIBLE);
-    } else{
+    } else {
       mTypeSpinner.setVisibility(View.VISIBLE);
       typeExpand.setVisibility(View.INVISIBLE);
     }
@@ -456,7 +464,7 @@ public class MainActivity extends AppCompatActivity implements
     if (mCostSpinner.getSelectedItem().toString().equals("CLEAR")) {
       mCostSpinner.setVisibility(View.INVISIBLE);
       costExpand.setVisibility(View.VISIBLE);
-    } else{
+    } else {
       mCostSpinner.setVisibility(View.VISIBLE);
       costExpand.setVisibility(View.INVISIBLE);
     }
@@ -464,7 +472,7 @@ public class MainActivity extends AppCompatActivity implements
     if (mClassSpinner.getSelectedItem().toString().equals("CLEAR")) {
       mClassSpinner.setVisibility(View.INVISIBLE);
       classExpand.setVisibility(View.VISIBLE);
-    } else{
+    } else {
       mClassSpinner.setVisibility(View.VISIBLE);
       classExpand.setVisibility(View.INVISIBLE);
     }
@@ -522,15 +530,19 @@ public class MainActivity extends AppCompatActivity implements
   public void onDialogComplete(int type, int deckId, String newDeckName) {
     // TODO remove count and add deck name support
     count++;
-    setNavigationMenuItem(deckId, newDeckName+" "+count);
-    mFragment = DeckFragment.newInstance(type, deckId, newDeckName+" "+count);
+    setNavigationMenuItem(deckId, newDeckName + " " + count);
+    mFragment = DeckFragment.newInstance(type, deckId, newDeckName + " " + count);
     getSupportFragmentManager().beginTransaction()
-            .replace(R.id.content_frame, mFragment)
-            .commit();
+        .replace(R.id.content_frame, mFragment)
+        .commit();
     mDrawerLayout.closeDrawer(mDrawerList);
     if (mSpinnerView.getVisibility() == View.VISIBLE) {
       mSpinnerView.setVisibility(View.GONE);
     }
-    setTitle(newDeckName+" "+count);
+    setTitle(newDeckName + " " + count);
+  }
+
+  public MainActivityPresenter getPresenter() {
+    return this.mMainActivityPresenter;
   }
 }

@@ -13,6 +13,12 @@ public class Deck {
   private List<Card> cardList;
   private int id;
 
+  /**
+   * Public constructor for {@link Deck} class.
+   *
+   * @param deckName Deck name
+   * @param id Unique deck id
+   */
   public Deck (String deckName, int id) {
     this.deckName = deckName;
     this.id = id;

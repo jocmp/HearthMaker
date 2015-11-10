@@ -39,6 +39,8 @@ public class DetailActivity extends AppCompatActivity {
   ImageView rarityImage;
   @InjectView(R.id.card_type)
   TextView typeDetail;
+  @InjectView(R.id.Empty)
+  ImageView typeIcon;
   @InjectView(R.id.dust_cost)
   TextView dustDetail;
   @InjectView(R.id.card_set)
@@ -150,6 +152,17 @@ public class DetailActivity extends AppCompatActivity {
         break;
     }
 
+    switch(cardType) {
+      case ("Minion"):
+        typeIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.minion_icon));
+        break;
+      case ("Spell"):
+        typeIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.spell_icon));
+        break;
+      case ("Weapon"):
+        typeIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.weapon_icon));
+        break;
+    }
   }
   
 

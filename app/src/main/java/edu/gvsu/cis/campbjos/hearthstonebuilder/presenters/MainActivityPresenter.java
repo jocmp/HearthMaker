@@ -53,6 +53,11 @@ public class MainActivityPresenter {
         CardFilter.filterCards(cardList, cardClass, cost, type, rarity, set, query));
   }
 
+  public boolean resetFilter() {
+    CardFilter.resetFilter(cardList);
+    return true;
+  }
+
   public void loadCards() {
 
     mHearthService.getApi()

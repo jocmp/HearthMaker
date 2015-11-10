@@ -41,7 +41,8 @@ public class JsonUtil {
           // Create our card instance
           Card card = new Card();
           // Set the entire object as a String
-          card.setCardJson(jsonCardObject.toString());
+          card.setCardJson(checkKeyToString(jsonCardObject, "card"));
+          card.setCardCount(checkCardCount(jsonCardObject, "cardCount"));
           card.setCardId(checkKeyToString(jsonCardObject, "cardId"));
           card.setCardName(checkKeyToString(jsonCardObject, "name"));
           card.setCardSet(checkKeyToString(jsonCardObject, "cardSet"));
@@ -88,6 +89,14 @@ public class JsonUtil {
       return obj.get(key).getAsInt();
     } else {
       return -1;
+    }
+  }
+
+  private static int checkCardCount(JsonObject obj, String key) throws JSONException {
+    if (obj.has(key)) {
+      return obj.get(key).getAsInt();
+    } else {
+      return 0;
     }
   }
 }

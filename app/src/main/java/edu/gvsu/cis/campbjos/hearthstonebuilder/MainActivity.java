@@ -258,7 +258,7 @@ public class MainActivity extends AppCompatActivity implements
   private void setSpinnerAdapter(Spinner currentSpinner, int arrayId) {
     ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
         this, arrayId, R.layout.spinner_item);
-    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
     currentSpinner.setAdapter(adapter);
   }
 
@@ -267,6 +267,7 @@ public class MainActivity extends AppCompatActivity implements
     MenuItem currentItem = mDrawerList.getMenu().findItem(position);
     switch (position) {
       case R.id.nav_catalog:
+        mMainActivityPresenter.resetFilter();
         mFragment = CardViewFragment.newInstance();
         break;
       case R.id.nav_new_deck:

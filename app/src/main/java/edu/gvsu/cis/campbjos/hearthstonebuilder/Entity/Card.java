@@ -26,6 +26,7 @@ public class Card {
   private String img;
   private String imgGold;
   private String cardJson;
+  private int cardCount;
 
   /**
    * @param cardId          The card id
@@ -213,5 +214,13 @@ public class Card {
 
   public void setCardJson(String cardJson) {
     this.cardJson = cardJson;
+  }
+
+  public void setCardCount(int count) {
+    this.cardCount = count;
+  }
+
+  public int getCardCount() {
+    return cardCount;
   }
 }

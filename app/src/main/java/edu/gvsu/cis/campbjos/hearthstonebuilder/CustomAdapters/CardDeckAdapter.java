@@ -13,6 +13,8 @@ import java.util.List;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.R;
 
+import butterknife.InjectView;
+
 public class CardDeckAdapter extends RecyclerView.Adapter<CardDeckAdapter.ViewHolder> {
 
   private List<Card> cardData;
@@ -47,6 +49,7 @@ public class CardDeckAdapter extends RecyclerView.Adapter<CardDeckAdapter.ViewHo
   public static class ViewHolder extends RecyclerView.ViewHolder {
     private TextView itemTitle;
     private TextView manaCost;
+    private TextView amountTextView;
     private View cardView;
     private Context context;
     private Card currentCard;
@@ -60,6 +63,7 @@ public class CardDeckAdapter extends RecyclerView.Adapter<CardDeckAdapter.ViewHo
     public ViewHolder(View view, Context parent) {
       super(view);
         cardView = view;
+        amountTextView = (TextView) cardView.findViewById(R.id.amountTextView);
         itemTitle = (TextView) cardView.findViewById(R.id.item_title);
         manaCost = (TextView) cardView.findViewById(R.id.mana_cost_deck);
         context = parent;
@@ -69,9 +73,13 @@ public class CardDeckAdapter extends RecyclerView.Adapter<CardDeckAdapter.ViewHo
       //sets text values. These are used by all cards
       currentCard = card;
       itemTitle.setText(currentCard.getCardName());
-      manaCost.setText(Integer.toString(card.getCost()));
-
-
+      manaCost.setText(String.valueOf(card.getCost()));
+      if (card.getCardCount() < 2) {
+        amountTextView.setVisibility(View.GONE);
+      } else {
+        amountTextView.setText(String.valueOf(card.getCardCount()));
+        amountTextView.setVisibility(View.VISIBLE);
+      }
       switch (currentCard.getPlayerClass()) {
         case "Warrior":
           cardView.setBackgroundColor(ContextCompat.getColor(context, R.color.warrior));

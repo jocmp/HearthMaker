@@ -8,10 +8,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import edu.gvsu.cis.campbjos.hearthstonebuilder.CustomAdapters.CardAdapter;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.CustomAdapters.CardDeckAdapter;
@@ -26,6 +28,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -164,13 +167,20 @@ public class DeckFragment extends Fragment {
             new RecyclerItemClickListener.OnItemClickListener() {
               @Override
               public void onItemClick(View view, int position) {
-                deck.getCardList().remove(position);
-                deckAdapter.notifyItemRemoved(position);
+                Card current = deck.getCardList().get(position);
+                int count = current.getCardCount();
+                if (count > 1) {
+                  count--;
+                  current.setCardCount(count);
+                  deckAdapter.notifyItemChanged(position);
+                } else {
+                  deck.getCardList().remove(position);
+                  deckAdapter.notifyItemRemoved(position);
+                }
               }
-
               @Override
               public void onItemLongClick(View view, int position) {
-
+                // Do nothing
               }
             }));
     mDeckRecyclerView.addItemDecoration
@@ -217,7 +227,23 @@ public class DeckFragment extends Fragment {
   }
 
   public void addDeckCard(Card card) {
-    deck.getCardList().add(card);
+    int indexFound = -1;
+    int size = deck.getCardList().size();
+    for (int k = 0; k < size; k++) {
+      if (deck.getCardList().get(k).getCardId().equals(card.getCardId())) {
+        indexFound = k;
+      }
+    }
+    if (indexFound != -1) {
+      int count = deck.getCardList().get(indexFound).getCardCount();
+      if (count < 2) {
+        count++;
+        deck.getCardList().get(indexFound).setCardCount(count);
+      }
+    } else {
+      card.setCardCount(1);
+      deck.getCardList().add(card);
+    }
     deckAdapter.notifyDataSetChanged();
   }
 

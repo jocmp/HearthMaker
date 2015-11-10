@@ -30,10 +30,10 @@
 
         <edu.gvsu.cis.campbjos.hearthstonebuilder.UI.BelweBoldTextView
             android:id="@+id/mana_cost_deck"
-            android:layout_width="20dp"
+            android:layout_width="16dp"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:textSize="17dp"
+            android:textSize="14sp"
             android:textAlignment="center"
             android:text="15"
             android:background="#4587f7"
@@ -42,17 +42,9 @@
             android:shadowDy="2"
             android:shadowRadius="3"
             android:textColor="#FFFFFF"/>
-    <!--
+
     <TextView
-        android:id="@+id/mana_cost_deck"
-        android:layout_width="10dp"
-        android:layout_height="fill_parent"
-        android:background="#4587f7"
-        android:textColor="#FFFFFF" />
-        -->
-    <!--
-    <TextView
-        android:id="@+id/amount"
+        android:id="@+id/amountTextView"
         android:layout_width="15dp"
         android:layout_height="match_parent"
         android:gravity="center"
@@ -63,7 +55,7 @@
         android:textAppearance="?attr/textAppearanceListItem"
         android:background="@color/primary_dark_material_light"
         android:textColor="#FFFFFF" />
--->
+
     <TextView
         android:id="@+id/item_title"
         android:layout_marginStart="5dp"
@@ -77,8 +69,8 @@
         android:textAppearance="?attr/textAppearanceListItem"
         android:textColor="?android:attr/textColorPrimary"
         tools:text="you are here"
-        android:layout_toEndOf="@id/mana_cost_deck"/>
-        <!--android:layout_toStartOf="@id/amount"-->
+        android:layout_toEndOf="@id/mana_cost_deck"
+        android:layout_toStartOf="@id/amountTextView" />
 
 
 </RelativeLayout>

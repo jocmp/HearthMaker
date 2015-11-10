@@ -37,7 +37,10 @@ public class DeckEncoder {
   private static void writeCardArray(JsonWriter writer, Deck deck) throws IOException {
     writer.beginArray();
     for (Card card : deck.getCardList()) {
-      writer.value(card.getCardJson());
+      writer.beginObject();
+      writer.name("cardCount").value(card.getCardCount());
+      writer.name("card").value(card.getCardJson());
+      writer.endObject();
     }
     writer.endArray();
   }

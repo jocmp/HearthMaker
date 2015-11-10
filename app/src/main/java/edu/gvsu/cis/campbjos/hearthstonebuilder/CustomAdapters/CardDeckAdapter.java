@@ -36,7 +36,7 @@ public class CardDeckAdapter extends RecyclerView.Adapter<CardDeckAdapter.ViewHo
 
   @Override
   public void onBindViewHolder(ViewHolder holder, int position) {
-    holder.setEntry(cardData.get(position));
+        holder.setEntry(cardData.get(position));
   }
 
   @Override

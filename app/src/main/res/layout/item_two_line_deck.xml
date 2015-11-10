@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  Copyright 2014 Google Inc. All rights reserved.
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+       http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<!--
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="0dp"
+    card_view:cardCornerRadius="6dp">
+    -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/list_item"
+    android:layout_width="match_parent"
+    android:layout_height="82dp"
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:mode="twoLine">
+
+    <ImageView
+        android:id="@+id/card_icon"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="12dp" />
+
+    <TextView
+        android:id="@+id/item_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingLeft="60dp"
+        android:layout_marginRight="10dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textSize="16sp"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/icon_grid"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textColor="?android:attr/textColorPrimary"
+        tools:text="you are here" />
+
+    <TextView
+        android:id="@+id/item_subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:textSize="14sp"
+        android:layout_alignParentStart="true"
+        android:paddingLeft="60dp"
+        android:layout_below="@+id/item_title"
+        android:layout_toStartOf="@+id/icon_grid"
+        android:layout_marginRight="10dp"
+        android:paddingBottom="16dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:textColor="?android:attr/textColorSecondary"
+        tools:text="you are here" />
+
+    <GridLayout
+        android:id="@+id/icon_grid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:columnCount="2"
+        android:paddingRight="10dp"
+        android:rowCount="2"
+        android:paddingTop="10dp"
+        android:layout_alignParentEnd="true">
+
+        <RelativeLayout
+            android:layout_marginLeft="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="1"
+            android:layout_rowSpan="1">
+            <ImageView
+                android:layout_marginTop="3dp"
+                android:id="@+id/mana_image"
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:gravity="center"
+                android:src="@drawable/mana_crystal"/>
+            <edu.gvsu.cis.campbjos.hearthstonebuilder.UI.BelweBoldTextView
+                android:id="@+id/mana_cost"
+                android:layout_width="wrap_content"
+                android:layout_height="17dp"
+                android:gravity="center"
+                android:textSize="17dp"
+                android:shadowColor="#000000"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="3"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:layout_centerHorizontal="true"/>
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/rarity"
+            android:layout_width="15dp"
+            android:layout_height="20dp"
+            android:layout_columnSpan="1"
+            android:layout_rowSpan="1"
+            android:layout_marginTop="1dp"
+            android:layout_gravity="center"/>
+
+        <edu.gvsu.cis.campbjos.hearthstonebuilder.UI.BelweBoldTextView
+            android:id="@+id/attack"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_columnSpan="1"
+            android:layout_rowSpan="1"
+            android:gravity="center"
+            android:textSize="17dp"
+            android:shadowColor="#000000"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="3"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
+
+        <RelativeLayout
+            android:id="@+id/health_grid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="1"
+            android:layout_rowSpan="1" >
+            <ImageView
+                android:id="@+id/health_image"
+                android:layout_width="19dp"
+                android:layout_height="25dp" />
+            <edu.gvsu.cis.campbjos.hearthstonebuilder.UI.BelweBoldTextView
+                android:id="@+id/health"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:textSize="17dp"
+                android:gravity="center"
+                android:shadowColor="#000000"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="3"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:layout_centerHorizontal="true" />
+        </RelativeLayout>
+
+    </GridLayout>
+</RelativeLayout>

@@ -34,7 +34,7 @@ public class DeckCatalogAdapter extends RecyclerView.Adapter<DeckCatalogAdapter.
   public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     return new ViewHolder(LayoutInflater
         .from(parent.getContext())
-        .inflate(R.layout.item_two_line, parent, false), parent.getContext());
+        .inflate(R.layout.item_two_line_deck, parent, false), parent.getContext());
   }
 
   @Override

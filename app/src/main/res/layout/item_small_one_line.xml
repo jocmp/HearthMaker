@@ -35,27 +35,32 @@
             android:gravity="center"
             android:textSize="14sp"
             android:textAlignment="center"
-            android:text="15"
             android:background="#4587f7"
             android:shadowColor="#000000"
             android:shadowDx="2"
             android:shadowDy="2"
             android:shadowRadius="3"
             android:textColor="#FFFFFF"/>
-
+    <ImageView
+        android:id="@+id/item_title_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:layout_toEndOf="@id/mana_cost_deck"
+        android:alpha="0.3"/>
     <TextView
         android:id="@+id/amountTextView"
-        android:layout_width="15dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center"
         android:textSize="14sp"
         android:textAlignment="center"
-        android:text="2"
+        android:paddingRight="3dp"
+        android:paddingLeft="3dp"
         android:layout_alignParentEnd="true"
         android:textAppearance="?attr/textAppearanceListItem"
         android:background="@color/primary_dark_material_light"
         android:textColor="#FFFFFF" />
-
     <TextView
         android:id="@+id/item_title"
         android:layout_marginStart="5dp"

@@ -14,8 +14,6 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -154,13 +152,13 @@ public class DetailActivity extends AppCompatActivity {
 
     switch(cardType) {
       case ("Minion"):
-        typeIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.minion_icon));
+        typeIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.minion_icon2));
         break;
       case ("Spell"):
-        typeIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.spell_icon));
+        typeIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.spell_icon2));
         break;
       case ("Weapon"):
-        typeIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.weapon_icon));
+        typeIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.weapon_icon2));
         break;
     }
   }

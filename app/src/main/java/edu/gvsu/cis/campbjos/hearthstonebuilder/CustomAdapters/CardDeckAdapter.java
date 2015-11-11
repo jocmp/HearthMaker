@@ -6,14 +6,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.R;
-
-import butterknife.InjectView;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.UI.DeckListCrop;
 
 public class CardDeckAdapter extends RecyclerView.Adapter<CardDeckAdapter.ViewHolder> {
 
@@ -53,6 +55,8 @@ public class CardDeckAdapter extends RecyclerView.Adapter<CardDeckAdapter.ViewHo
     private View cardView;
     private Context context;
     private Card currentCard;
+    private DeckListCrop deckListCrop;
+    private ImageView itemTitleBackground;
 
     /**
      * Viewholder class for each RecyclerView item.
@@ -67,6 +71,8 @@ public class CardDeckAdapter extends RecyclerView.Adapter<CardDeckAdapter.ViewHo
         itemTitle = (TextView) cardView.findViewById(R.id.item_title);
         manaCost = (TextView) cardView.findViewById(R.id.mana_cost_deck);
         context = parent;
+        itemTitleBackground = (ImageView) cardView.findViewById(R.id.item_title_background);
+        deckListCrop = DeckListCrop.getDeckListCrop();
     }
 
     private void setEntry(Card card) {
@@ -80,6 +86,11 @@ public class CardDeckAdapter extends RecyclerView.Adapter<CardDeckAdapter.ViewHo
         amountTextView.setText(String.valueOf(card.getCardCount()));
         amountTextView.setVisibility(View.VISIBLE);
       }
+
+      Picasso.with(context).load(card.getImageUrl())
+              .transform(deckListCrop)
+              .into(itemTitleBackground);
+
       switch (currentCard.getPlayerClass()) {
         case "Warrior":
           cardView.setBackgroundColor(ContextCompat.getColor(context, R.color.warrior));

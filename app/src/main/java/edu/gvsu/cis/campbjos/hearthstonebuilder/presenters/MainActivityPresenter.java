@@ -59,7 +59,6 @@ public class MainActivityPresenter {
   }
 
   public void loadCards() {
-
     mHearthService.getApi()
         .getCardResponse(getKeyFromManifest(mView.getManifestHearthApiKey()),
             mView.getCollectibleOption())

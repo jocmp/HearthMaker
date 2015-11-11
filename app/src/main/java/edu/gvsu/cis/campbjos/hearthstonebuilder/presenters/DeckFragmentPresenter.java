@@ -77,10 +77,12 @@ public class DeckFragmentPresenter {
     Gson gson = new Gson();
     currentDeckObject = readFileStreamToJson(fileName, jsonParser);
     if (currentDeckObject != null) {
+      List<Card> tempList = mView.getFragmentDeck().getCardList();
       for (JsonElement elem : currentDeckObject.get("cards").getAsJsonArray()) {
-        String temp = gson.fromJson(elem, String.class);
-        JsonObject jsonObject = jsonParser.parse(temp).getAsJsonObject();
-        JsonUtil.parseJsonCard(jsonObject, mView.getFragmentDeck().getCardList());
+        // String temp = gson.fromJson(elem, String.class);
+        JsonObject jsonObject = jsonParser.parse(elem.getAsString()).getAsJsonObject();
+        // JsonUtil.parseJsonCard(jsonObject, mView.getFragmentDeck().getCardList());
+        tempList.add(gson.fromJson(jsonObject, Card.class));
       }
     }
     mView.getDeckAdapter().notifyDataSetChanged();

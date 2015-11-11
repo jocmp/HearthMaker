@@ -117,12 +117,9 @@ public class CardFilter {
   }
 
   private static boolean textFilterCard(String textFilter, Card card) {
-    if (card.getCardName().toLowerCase().contains(textFilter.toLowerCase())
-        || card.getTextDescription().toLowerCase().contains(textFilter.toLowerCase())
-        || card.getRace().toLowerCase().contains(textFilter.toLowerCase())) {
-      return true;
-    }
-    return false;
+    return card.getCardName() != null && card.getCardName().toLowerCase().contains(textFilter.toLowerCase())
+        || card.getText() != null && card.getText().toLowerCase().contains(textFilter.toLowerCase())
+        || card.getRace() != null && card.getRace().toLowerCase().contains(textFilter.toLowerCase());
   }
 
   public static void resetFilter(List<Card> list) {

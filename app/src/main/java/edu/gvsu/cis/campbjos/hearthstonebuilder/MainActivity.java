@@ -84,15 +84,13 @@ public class MainActivity extends AppCompatActivity implements
   private HearthService mHearthService;
   private Fragment mFragment;
 
-
-  ImageView setExpand;
-  ImageView rarityExpand;
-  ImageView typeExpand;
-  ImageView costExpand;
-  ImageView classExpand;
-  ImageView clearAll;
-
-  SearchView searchView;
+  private ImageView setExpand;
+  private ImageView rarityExpand;
+  private ImageView typeExpand;
+  private ImageView costExpand;
+  private ImageView classExpand;
+  private ImageView clearAll;
+  private SearchView searchView;
 
   private int count;
 
@@ -103,7 +101,6 @@ public class MainActivity extends AppCompatActivity implements
     spinners = new ArrayList<>();
     idArray = new int[]{R.array.card_class,
         R.array.cost, R.array.card_type, R.array.rarity, R.array.card_set};
-
   }
 
   @Override
@@ -122,8 +119,6 @@ public class MainActivity extends AppCompatActivity implements
     mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
     mDrawerList.setNavigationItemSelectedListener(this);
     mMainActivityPresenter.loadDecks();
-
-    setExpand = (ImageView) findViewById(R.id.expand_set);
 
     setExpand = (ImageView) findViewById(R.id.expand_set);
     setExpand.setOnClickListener(new View.OnClickListener() {
@@ -164,7 +159,6 @@ public class MainActivity extends AppCompatActivity implements
         mClassSpinner.performClick();
       }
     });
-
 
     searchView = (SearchView) findViewById(R.id.searchView);
     searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -247,7 +241,6 @@ public class MainActivity extends AppCompatActivity implements
     for (int k = 0; k < 5; k++) {
       setSpinnerAdapter(spinners.get(k), idArray[k]);
     }
-
     mCollectibleOption = "1";
     mManifestHearthApiKey = "hearthstone_api_key";
 
@@ -269,6 +262,9 @@ public class MainActivity extends AppCompatActivity implements
       case R.id.nav_catalog:
         mMainActivityPresenter.resetFilter();
         mFragment = CardViewFragment.newInstance();
+        if (mSpinnerView.getVisibility() == View.VISIBLE) {
+          mSpinnerView.setVisibility(View.GONE);
+        }
         break;
       case R.id.nav_new_deck:
         createNewDeckDialog();
@@ -279,6 +275,10 @@ public class MainActivity extends AppCompatActivity implements
               DeckFragment.newInstance(
                   // TODO add class type as first parameter
                   -1, currentItem.getItemId(), (String) currentItem.getTitle());
+          if (mSpinnerView.getVisibility() == View.VISIBLE) {
+            mSpinnerView.setVisibility(View.GONE);
+            getSupportActionBar().setSubtitle(null);
+          }
         }
         break;
     }
@@ -530,6 +530,7 @@ public class MainActivity extends AppCompatActivity implements
   @Override
   public void onDialogComplete(int type, int deckId, String newDeckName) {
     // TODO remove count and add deck name support
+    String[] adapterArr = {"CLEAR", newDeckName, "NEUTRAL"};
     count++;
     setNavigationMenuItem(deckId, newDeckName + " " + count);
     mFragment = DeckFragment.newInstance(type, deckId, newDeckName + " " + count);
@@ -539,6 +540,7 @@ public class MainActivity extends AppCompatActivity implements
     mDrawerLayout.closeDrawer(mDrawerList);
     if (mSpinnerView.getVisibility() == View.VISIBLE) {
       mSpinnerView.setVisibility(View.GONE);
+      getSupportActionBar().setSubtitle(null);
     }
     setTitle(newDeckName + " " + count);
   }

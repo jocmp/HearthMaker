@@ -87,7 +87,7 @@ public class DeckCatalogAdapter extends RecyclerView.Adapter<DeckCatalogAdapter.
       //sets text values. These are used by all cards
       currentCard = card;
       itemTitle.setText(currentCard.getCardName());
-      itemSubtitle.setText(currentCard.getTextDescription());
+      itemSubtitle.setText(currentCard.getText());
       itemManaCost.setText(Integer.toString(card.getCost()));
 
       Picasso.with(context).load(card.getImageUrl())

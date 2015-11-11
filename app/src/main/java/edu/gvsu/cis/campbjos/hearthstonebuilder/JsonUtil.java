@@ -1,8 +1,12 @@
 package edu.gvsu.cis.campbjos.hearthstonebuilder;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
+
+import android.util.Log;
 
 import org.json.JSONException;
 import org.jsoup.Jsoup;
@@ -17,7 +21,10 @@ import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
  * @author HearthMaker Team
  */
 public class JsonUtil {
-
+  private static Gson gson;
+  static {
+    gson = new Gson();
+  }
   /**
    * @param jsonResponse Json response
    * @param cardList     Master list of all the collectible cards
@@ -36,67 +43,19 @@ public class JsonUtil {
   }
 
   public static void parseJsonCard(JsonObject jsonCardObject, List<Card> cards) {
-      try {
-        if (!checkKeyToString(jsonCardObject, "type").equals("Hero")) {
-          // Create our card instance
-          Card card = new Card();
-          // Set the entire object as a String
-          card.setCardJson(checkKeyToString(jsonCardObject, "card"));
-          card.setCardCount(checkCardCount(jsonCardObject, "cardCount"));
-          card.setCardId(checkKeyToString(jsonCardObject, "cardId"));
-          card.setCardName(checkKeyToString(jsonCardObject, "name"));
-          card.setCardSet(checkKeyToString(jsonCardObject, "cardSet"));
-          card.setType(checkKeyToString(jsonCardObject, "type"));
-          card.setRarity(checkKeyToString(jsonCardObject, "rarity"));
-          card.setAttack(checkKeyToInt(jsonCardObject, "attack"));
-          card.setDurability(checkKeyToInt(jsonCardObject, "durability"));
-          card.setTextDescription(Jsoup.parse(checkKeyToString(
-              jsonCardObject, "text")).text());
-          card.setFlavor(checkKeyToString(jsonCardObject, "flavor"));
-          card.setArtist(checkKeyToString(jsonCardObject, "artist"));
-          card.setIsCollectible(jsonCardObject.get("collectible").getAsBoolean());
-          card.setImageUrl(checkKeyToString(jsonCardObject, "img"));
-          card.setGoldImageUrl(checkKeyToString(jsonCardObject, "imgGold"));
-          card.setCost(checkKeyToInt(jsonCardObject, "cost"));
-          card.setRace(checkKeyToString(jsonCardObject, "race"));
-          card.setHealth(checkKeyToInt(jsonCardObject, "health"));
-          //if there is no player class then the card is neutral
-          if (checkKeyToString(jsonCardObject, "playerClass").isEmpty()) {
-            card.setPlayerClass("Neutral");
-          } else {
-            card.setPlayerClass(checkKeyToString(jsonCardObject, "playerClass"));
-          }
-          // Add to entire list
-          cards.add(card);
-        }
-      } catch (JSONException e) {
-        e.printStackTrace();
-      }
+    Card card = new Card();
+    try {
+      card = gson.fromJson(jsonCardObject, Card.class);
+    } catch (JsonSyntaxException syn) {
+      Log.d("Card failed", jsonCardObject.toString());
+      Log.d("Check it", card.toString());
     }
-
-
-  // Not every card has a particular key
-  private static String checkKeyToString(JsonObject obj, String key) throws JSONException {
-    if (obj.has(key)) {
-      return obj.get(key).getAsString();
-    } else {
-      return "";
+    if (card.getPlayerClass() == null) {
+      card.setPlayerClass("Neutral");
     }
-  }
-
-  private static int checkKeyToInt(JsonObject obj, String key) throws JSONException {
-    if (obj.has(key)) {
-      return obj.get(key).getAsInt();
-    } else {
-      return -1;
-    }
-  }
-
-  private static int checkCardCount(JsonObject obj, String key) throws JSONException {
-    if (obj.has(key)) {
-      return obj.get(key).getAsInt();
-    } else {
-      return 0;
-    }
+    String text = card.getText() != null ? card.getText() : "";
+    card.setText(Jsoup.parse(text).text());
+    if (!jsonCardObject.get("type").getAsString().equals("Hero"))
+      cards.add(card);
   }
 }

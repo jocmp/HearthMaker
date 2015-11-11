@@ -1,5 +1,8 @@
 package edu.gvsu.cis.campbjos.hearthstonebuilder.Entity;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Class to hold HS Card values.
  *
@@ -8,24 +11,62 @@ package edu.gvsu.cis.campbjos.hearthstonebuilder.Entity;
  */
 
 public class Card {
+  @SerializedName("cardId")
+  @Expose
   private String cardId;
+  @SerializedName("name")
+  @Expose
   private String name;
+  @SerializedName("cardSet")
+  @Expose
   private String cardSet;
+  @SerializedName("type")
+  @Expose
   private String type;
+  @SerializedName("race")
+  @Expose
   private String race;
+  @SerializedName("rarity")
+  @Expose
   private String rarity;
+  @SerializedName("cost")
+  @Expose
   private int cost;
+  @SerializedName("attack")
+  @Expose
   private int attack;
+  @SerializedName("health")
+  @Expose
   private int health;
+  @SerializedName("durability")
+  @Expose
   private int durability;
+  @SerializedName("text")
+  @Expose
   private String text;
+  @SerializedName("flavor")
+  @Expose
   private String flavor;
+  @SerializedName("artist")
+  @Expose
   private String artist;
+  @SerializedName("collectible")
+  @Expose
   private boolean isCollectible;
+  @SerializedName("playerClass")
+  @Expose
   private String playerClass;
+  @SerializedName("img")
+  @Expose
   private String img;
+  @SerializedName("imgGold")
+  @Expose
   private String imgGold;
+  @SerializedName("cardJson")
+  @Expose
   private String cardJson;
+  @SerializedName("cardCount")
+  @Expose
   private int cardCount;
 
   /**
@@ -39,7 +80,7 @@ public class Card {
    * @param attack          The attack of the card
    * @param health          The health of the card
    * @param durability      The durability of the card. Used for weapons.
-   * @param textDescription The text of the card when it is in your hand.
+   * @param text The text of the card when it is in your hand.
    * @param flavor          inPlayText
    * @param artist          flavor
    * @param isCollectible   Boolean indicates if the card is collectible.
@@ -48,7 +89,7 @@ public class Card {
    */
   public Card(String cardId, String cardName, String cardSet, String type,
               String race, String rarity, int cost, int attack, int health,
-              int durability, String textDescription, String flavor, String artist,
+              int durability, String text, String flavor, String artist,
               boolean isCollectible, String imageUrl, String imgGold) {
     this.cardId = cardId;
     this.name = cardName;
@@ -60,7 +101,7 @@ public class Card {
     this.attack = attack;
     this.health = health;
     this.durability = durability;
-    this.text = textDescription;
+    this.text = text;
     this.flavor = flavor;
     this.artist = artist;
     this.isCollectible = isCollectible;
@@ -152,12 +193,12 @@ public class Card {
     this.health = health;
   }
 
-  public String getTextDescription() {
+  public String getText() {
     return text;
   }
 
-  public void setTextDescription(String textDescription) {
-    this.text = textDescription;
+  public void setText(String text) {
+    this.text = text;
   }
 
   public String getFlavor() {

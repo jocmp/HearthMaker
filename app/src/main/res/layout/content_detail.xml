@@ -46,7 +46,7 @@
 
     <TextView
         android:textStyle="italic"
-        android:layout_below="@+id/card_set"
+        android:layout_below="@+id/card_text"
         android:id="@+id/flavor_text"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_width="wrap_content"
@@ -98,5 +98,97 @@
         android:layout_centerHorizontal="true"
         android:layout_height="48dp"
         android:layout_marginBottom="16dp"/>
+
+    <ImageView
+        android:id="@+id/mana_icon"
+        android:src="@drawable/mana_crystal_500"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/card_set"
+        android:layout_marginLeft="32dp"
+        android:layout_marginBottom="16dp"/>
+    <edu.gvsu.cis.campbjos.hearthstonebuilder.UI.BelweBoldTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/mana_cost"
+        android:layout_alignLeft="@id/mana_icon"
+        android:layout_alignTop="@id/mana_icon"
+        android:layout_alignRight="@id/mana_icon"
+        android:layout_alignBottom="@id/mana_icon"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:shadowColor="#000000"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="3"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"/>
+
+    <ImageView
+        android:id="@+id/attack_icon"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/mana_icon"
+        android:layout_marginLeft="32dp"
+        android:layout_marginBottom="16dp" />
+    <edu.gvsu.cis.campbjos.hearthstonebuilder.UI.BelweBoldTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/attack_value"
+        android:layout_alignLeft="@id/attack_icon"
+        android:layout_alignTop="@id/attack_icon"
+        android:layout_alignRight="@id/attack_icon"
+        android:layout_alignBottom="@id/attack_icon"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:shadowColor="#000000"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="3"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"/>
+
+    <ImageView
+        android:id="@+id/health_icon"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/mana_icon"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="32dp"
+        android:layout_marginBottom="16dp" />
+    <edu.gvsu.cis.campbjos.hearthstonebuilder.UI.BelweBoldTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/health_value"
+        android:layout_alignLeft="@id/health_icon"
+        android:layout_alignTop="@id/health_icon"
+        android:layout_alignRight="@id/health_icon"
+        android:layout_alignBottom="@id/health_icon"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:shadowColor="#000000"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="3"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/card_text"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_below="@+id/attack_icon"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:id="@+id/artist_name"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_below="@+id/flavor_text"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_marginBottom="16dp"/>
+
 </RelativeLayout>
 </android.support.v4.widget.NestedScrollView>

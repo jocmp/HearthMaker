@@ -43,6 +43,20 @@ public class DetailActivity extends AppCompatActivity {
   TextView dustDetail;
   @InjectView(R.id.card_set)
   TextView setDetail;
+  @InjectView(R.id.mana_cost)
+  TextView manaDetail;
+  @InjectView(R.id.attack_icon)
+  ImageView attackIcon;
+  @InjectView(R.id.attack_value)
+  TextView attackDetail;
+  @InjectView(R.id.health_icon)
+  ImageView healthIcon;
+  @InjectView(R.id.health_value)
+  TextView healthDetail;
+  @InjectView(R.id.card_text)
+  TextView textDetail;
+  @InjectView(R.id.artist_name)
+  TextView artistDetail;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +77,12 @@ public class DetailActivity extends AppCompatActivity {
     String cardRarity = intent.getStringExtra("rarity");
     String cardSet = intent.getStringExtra("set");
     String cardType = intent.getStringExtra("type");
+    int cardHealth = intent.getIntExtra("health",0);
+    int cardAttack = intent.getIntExtra("attack",0);
+    String cardArtist = intent.getStringExtra("artist");
+    int cardMana = intent.getIntExtra("cost", 0);
+    int cardDura = intent.getIntExtra("durability",0);
+    String cardText = intent.getStringExtra("text");
     String dustCost = "N/A";
 
     switch (cardRarity) {
@@ -84,18 +104,26 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     if (cardRarity != null && cardRarity.equals("Free")) {
-      cardRarity = "Common";
+      cardRarity = "Basic";
+    }
+
+    cardText=cardText.replaceAll("[$#]","");
+    if (cardText == "") {
+      cardText = "No Card Text";
     }
 
     cToolLayout.setExpandedTitleColor(Color.parseColor("#00FFFFFF"));
 
     rarityDetail.setText(cardRarity);
-    flavorText.setText("\""+cardFlavor+"\"");
+    flavorText.setText("-\""+cardFlavor+"\"");
     className.setText(cardClass);
     cToolLayout.setTitle(cardName);
     typeDetail.setText(cardType);
+    textDetail.setText(cardText);
     dustDetail.setText(dustCost);
+    artistDetail.setText("Artist: "+cardArtist);
     setDetail.setText(cardSet);
+    manaDetail.setText(String.valueOf(cardMana));
     Picasso.with(this).load(imageURL).into(cardImage);
 
     switch (cardClass) {
@@ -134,6 +162,9 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     switch (cardRarity) {
+      case "Basic":
+        rarityImage.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.rarity_common_500));
+        break;
       case "Common":
         rarityImage.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.rarity_common_500));
         break;
@@ -153,12 +184,20 @@ public class DetailActivity extends AppCompatActivity {
     switch(cardType) {
       case ("Minion"):
         typeIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.minion_icon2));
+        attackDetail.setText(String.valueOf(cardAttack));
+        attackIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.attack_minion_500));
+        healthDetail.setText(String.valueOf(cardHealth));
+        healthIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.health_minion_500));
         break;
       case ("Spell"):
         typeIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.spell_icon2));
         break;
       case ("Weapon"):
+        attackDetail.setText(String.valueOf(cardAttack));
+        attackIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.attack_weapon_500));
         typeIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.weapon_icon2));
+        healthDetail.setText(String.valueOf(cardDura));
+        healthIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.durability_weapon_500));
         break;
     }
   }

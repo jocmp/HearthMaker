@@ -73,13 +73,22 @@ public class CardViewFragment extends Fragment {
               @Override
               public void onItemClick(View view, int position) {
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
+                //Important Intents
                 intent.putExtra("card", adapter.getPositionInfo(position).getImageUrl());
                 intent.putExtra("name", adapter.getPositionInfo(position).getCardName());
                 intent.putExtra("flavor", adapter.getPositionInfo(position).getFlavor());
                 intent.putExtra("class", adapter.getPositionInfo(position).getPlayerClass());
                 intent.putExtra("rarity", adapter.getPositionInfo(position).getRarity());
                 intent.putExtra("set",adapter.getPositionInfo(position).getCardSet());
-                intent.putExtra("type",adapter.getPositionInfo(position).getType());
+                intent.putExtra("type", adapter.getPositionInfo(position).getType());
+
+                //Alt. Intents
+                intent.putExtra("health", adapter.getPositionInfo(position).getHealth());
+                intent.putExtra("attack", adapter.getPositionInfo(position).getAttack());
+                intent.putExtra("artist", adapter.getPositionInfo(position).getArtist());
+                intent.putExtra("cost", adapter.getPositionInfo(position).getCost());
+                intent.putExtra("text", adapter.getPositionInfo(position).getText());
+                intent.putExtra("durability", adapter.getPositionInfo(position).getDurability());
                 startActivity(intent);
               }
 
@@ -93,6 +102,13 @@ public class CardViewFragment extends Fragment {
                 intent.putExtra("rarity", adapter.getPositionInfo(position).getRarity());
                 intent.putExtra("set",adapter.getPositionInfo(position).getCardSet());
                 intent.putExtra("type",adapter.getPositionInfo(position).getType());
+
+                //Alt. Intents
+                intent.putExtra("health", adapter.getPositionInfo(position).getHealth());
+                intent.putExtra("attack", adapter.getPositionInfo(position).getAttack());
+                intent.putExtra("artist", adapter.getPositionInfo(position).getArtist());
+                intent.putExtra("mana", adapter.getPositionInfo(position).getCost());
+                intent.putExtra("text", adapter.getPositionInfo(position).getText());
                 startActivity(intent);
               }
 

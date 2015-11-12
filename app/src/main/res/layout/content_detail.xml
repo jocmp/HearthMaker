@@ -44,14 +44,7 @@
         android:gravity="center_vertical"
         android:layout_marginBottom="16dp"/>
 
-    <TextView
-        android:textStyle="italic"
-        android:layout_below="@+id/card_text"
-        android:id="@+id/flavor_text"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"/>
+
 
     <ImageView
         android:id="@+id/Empty"
@@ -96,11 +89,18 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_width="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_height="48dp"
-        android:layout_marginBottom="16dp"/>
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"/>
+
+    <TextView
+        android:layout_below="@id/card_set"
+        android:layout_width="fill_parent"
+        android:layout_height=".5dp"
+        android:background="@color/primary_dark_material_light"/>
 
     <ImageView
         android:id="@+id/mana_icon"
+        android:layout_marginTop="12dp"
         android:src="@drawable/mana_crystal_500"
         android:layout_width="48dp"
         android:layout_height="48dp"
@@ -176,9 +176,25 @@
     <TextView
         android:id="@+id/card_text"
         android:layout_width="wrap_content"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/attack_icon"
         android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_marginBottom="12dp"/>
+
+    <TextView
+        android:layout_below="@id/card_text"
+        android:layout_width="fill_parent"
+        android:layout_height=".5dp"
+        android:background="@color/primary_dark_material_light"/>
+
+    <TextView
+        android:textStyle="italic"
+        android:layout_below="@+id/card_text"
+        android:id="@+id/flavor_text"
+        android:layout_marginTop="24dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"/>
 
     <TextView

@@ -94,6 +94,7 @@
         <item>Goblins vs Gnomes</item>
         <item>Blackrock Mountain</item>
         <item>The Grand Tournament</item>
+        <item>The League of Explorers</item>
     </string-array>
     <string name="title_activity_detail">DetailActivity</string>
     <string name="large_text">

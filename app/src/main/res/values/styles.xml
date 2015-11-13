@@ -14,7 +14,8 @@
     <style name="filter_style">
         <item name="android:background">@color/primary_material_light</item>
         <item name="android:popupBackground">@android:color/white</item>
-
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:minWidth">150dp</item>
         <item name="android:layout_marginStart">@dimen/activity_vertical_margin</item>
         <item name="android:layout_marginEnd">@dimen/activity_vertical_margin</item>
     </style>

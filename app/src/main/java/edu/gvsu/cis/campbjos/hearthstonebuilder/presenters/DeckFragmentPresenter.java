@@ -129,6 +129,13 @@ public class DeckFragmentPresenter {
     intent.putExtra("rarity", card.getRarity());
     intent.putExtra("set",card.getCardSet());
     intent.putExtra("type",card.getType());
+
+    //Alt. Intents
+    intent.putExtra("health", card.getHealth());
+    intent.putExtra("attack", card.getAttack());
+    intent.putExtra("artist", card.getArtist());
+    intent.putExtra("mana", card.getCost());
+    intent.putExtra("text", card.getText());
     mView.startActivity(intent);
   }
 }

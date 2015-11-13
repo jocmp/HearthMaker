@@ -88,7 +88,7 @@ public class MainActivityPresenter {
   public void loadDecks() {
     JsonObject currentDeckObject;
     JsonParser jsonParser = new JsonParser();
-    for (int k = 1;k < mView.fileList().length; k++) {
+    for (int k = 2;k < mView.fileList().length; k++) {
       currentDeckObject = readFileStreamToJson(mView.fileList()[k], jsonParser);
       if (currentDeckObject != null) {
         mView.setNavigationMenuItem(

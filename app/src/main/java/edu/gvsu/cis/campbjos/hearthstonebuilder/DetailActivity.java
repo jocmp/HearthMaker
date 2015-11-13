@@ -7,6 +7,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,7 +41,7 @@ public class DetailActivity extends AppCompatActivity {
   ImageView rarityImage;
   @InjectView(R.id.card_type)
   TextView typeDetail;
-  @InjectView(R.id.Empty)
+  @InjectView(R.id.type_icon)
   ImageView typeIcon;
   @InjectView(R.id.dust_cost)
   TextView dustDetail;
@@ -117,6 +118,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     cardText=cardText.replaceAll("[$#]","");
+
     if (cardText == "") {
       cardText = "No Card Text";
     }
@@ -124,6 +126,8 @@ public class DetailActivity extends AppCompatActivity {
     cToolLayout.setExpandedTitleColor(Color.parseColor("#00FFFFFF"));
 
     rarityDetail.setText(cardRarity);
+    //get rid of html tags
+    cardFlavor = Html.fromHtml(cardFlavor).toString();
     flavorText.setText("-\""+cardFlavor+"\"");
     className.setText(cardClass);
     cToolLayout.setTitle(cardName);

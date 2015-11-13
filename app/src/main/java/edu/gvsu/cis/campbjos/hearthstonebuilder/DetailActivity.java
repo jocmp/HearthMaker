@@ -9,13 +9,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.UI.CardIconCrop;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -57,6 +60,12 @@ public class DetailActivity extends AppCompatActivity {
   TextView textDetail;
   @InjectView(R.id.artist_name)
   TextView artistDetail;
+  @InjectView(R.id.health_layout)
+  RelativeLayout healthLayout;
+  @InjectView(R.id.attack_layout)
+  RelativeLayout attackLayout;
+  @InjectView(R.id.card_icon)
+  ImageView cardIcon;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +134,7 @@ public class DetailActivity extends AppCompatActivity {
     setDetail.setText(cardSet);
     manaDetail.setText(String.valueOf(cardMana));
     Picasso.with(this).load(imageURL).into(cardImage);
+    Picasso.with(this).load(imageURL).transform(CardIconCrop.getCardIconCrop()).into(cardIcon);
 
     switch (cardClass) {
       case "Warrior":
@@ -191,6 +201,8 @@ public class DetailActivity extends AppCompatActivity {
         break;
       case ("Spell"):
         typeIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.spell_icon2));
+        healthLayout.setVisibility(View.GONE);
+        attackLayout.setVisibility(View.GONE);
         break;
       case ("Weapon"):
         attackDetail.setText(String.valueOf(cardAttack));

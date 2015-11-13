@@ -255,7 +255,7 @@ public class MainActivity extends AppCompatActivity implements
     currentSpinner.setAdapter(adapter);
   }
 
-  private void selectItem(int position) {
+  public void selectItem(int position) {
     // update the main content by replacing fragments
     MenuItem currentItem = mDrawerList.getMenu().findItem(position);
     switch (position) {

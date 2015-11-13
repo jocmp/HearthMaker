@@ -247,11 +247,14 @@ public class DeckFragment extends Fragment {
     deckAdapter.notifyDataSetChanged();
   }
 
+  public List<Card> getAdapterCards() {
+    return cards;
+  }
   public Deck getFragmentDeck() {
-    return this.deck;
+    return deck;
   }
 
   public RecyclerView.Adapter getDeckAdapter() {
-    return this.deckAdapter;
+    return deckAdapter;
   }
 }

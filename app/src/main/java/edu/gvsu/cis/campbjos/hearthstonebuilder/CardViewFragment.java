@@ -137,4 +137,8 @@ public class CardViewFragment extends Fragment {
   public interface OnFragmentInteractionListener {
     void getAllCards();
   }
+
+  public List<Card> getCards() {
+    return cards;
+  }
 }

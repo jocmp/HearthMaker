@@ -38,37 +38,9 @@ public class MainActivityTest
   }
 
   @UiThreadTest
-  public void testLoadCards() {
-    mTestMainActivity.getPresenter().loadCards();
-    assertEquals(false, mTestMainActivity.getPresenter().getCardList().isEmpty());
-  }
-
-  @UiThreadTest
-  public void testSetTitle() throws Exception {
-    mTestMainActivity.setTitle("Test");
-    assertEquals("Test", mTestMainActivity.getTitle());
-  }
-
-  @UiThreadTest
-  public void testSetTitleNull() throws Exception {
-    mTestMainActivity.setTitle("Test");
-    assertEquals("Test", mTestMainActivity.getTitle());
-    mTestMainActivity.setSupportActionBar(null);
-    mTestMainActivity.setTitle("This shouldn't pass");
-    assertEquals("Test", mTestMainActivity.getTitle());
-  }
-
-  @UiThreadTest
-  public void testSetSubscriberResultCardView() throws Exception {
-    List<Card> testList = new ArrayList<>(4);
-    CardViewFragment cardViewFragment =
-        (CardViewFragment) mTestMainActivity.getActivityFragment();
-    mTestMainActivity.selectItem(R.id.nav_catalog);
-    for (int i = 0; i < 4; i++) {
-      testList.add(new Card());
-    }
-    assertNotNull(cardViewFragment);
-    mTestMainActivity.setSubscriberResult(testList);
-    assertEquals(4, cardViewFragment.getCards().size());
+  public void testLoadDecks() {
+    mTestMainActivity.getNavigationView().getMenu().clear();
+    String[] testFileList = {"-100000", "100000", "-10.001", "rJunk"};
+    mTestMainActivity.getPresenter().loadDecks(testFileList);
   }
 }

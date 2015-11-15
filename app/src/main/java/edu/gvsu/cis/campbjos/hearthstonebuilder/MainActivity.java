@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements
     // set a custom shadow that overlays the main content when the drawer opens
     mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
     mDrawerList.setNavigationItemSelectedListener(this);
-    mMainActivityPresenter.loadDecks();
+    mMainActivityPresenter.loadDecks(this.fileList());
 
     setExpand = (ImageView) findViewById(R.id.expand_set);
     setExpand.setOnClickListener(new View.OnClickListener() {
@@ -547,5 +547,9 @@ public class MainActivity extends AppCompatActivity implements
 
   public MainActivityPresenter getPresenter() {
     return this.mMainActivityPresenter;
+  }
+
+  public NavigationView getNavigationView() {
+    return mDrawerList;
   }
 }

@@ -76,14 +76,13 @@ public class DeckFragmentPresenter {
     JsonParser jsonParser = new JsonParser();
     Gson gson = new Gson();
     currentDeckObject = readFileStreamToJson(fileName, jsonParser);
-    if (currentDeckObject != null) {
-      List<Card> tempList = mView.getFragmentDeck().getCardList();
-      for (JsonElement elem : currentDeckObject.get("cards").getAsJsonArray()) {
-        // String temp = gson.fromJson(elem, String.class);
-        JsonObject jsonObject = jsonParser.parse(elem.getAsString()).getAsJsonObject();
-        // JsonUtil.parseJsonCard(jsonObject, mView.getFragmentDeck().getCardList());
-        tempList.add(gson.fromJson(jsonObject, Card.class));
-      }
+    if (currentDeckObject == null) {
+      return;
+    }
+    List<Card> tempList = mView.getFragmentDeck().getCardList();
+    for (JsonElement elem : currentDeckObject.get("cards").getAsJsonArray()) {
+      JsonObject jsonObject = jsonParser.parse(elem.getAsString()).getAsJsonObject();
+      tempList.add(gson.fromJson(jsonObject, Card.class));
     }
     mView.getDeckAdapter().notifyDataSetChanged();
   }
@@ -116,7 +115,6 @@ public class DeckFragmentPresenter {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    // Log.d("CAMPBELL", sb.toString());
     return sb.toString();
   }
 
@@ -129,8 +127,7 @@ public class DeckFragmentPresenter {
     intent.putExtra("rarity", card.getRarity());
     intent.putExtra("set",card.getCardSet());
     intent.putExtra("type",card.getType());
-
-    //Alt. Intents
+    // Alternate extras
     intent.putExtra("health", card.getHealth());
     intent.putExtra("attack", card.getAttack());
     intent.putExtra("artist", card.getArtist());

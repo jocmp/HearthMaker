@@ -28,7 +28,6 @@ public class JsonUtil {
   /**
    * @param jsonResponse Json response
    * @param cardList     Master list of all the collectible cards
-   * @throws JSONException if we can't parse through the Json response
    */
   public static void parse(JsonObject jsonResponse, List<Card> cardList) {
     cardList.clear();
@@ -43,19 +42,20 @@ public class JsonUtil {
   }
 
   public static void parseJsonCard(JsonObject jsonCardObject, List<Card> cards) {
+    if (jsonCardObject.get("type").getAsString().equals("Hero")) {
+      return;
+    }
     Card card = new Card();
     try {
       card = gson.fromJson(jsonCardObject, Card.class);
     } catch (JsonSyntaxException syn) {
-      Log.d("Card failed", jsonCardObject.toString());
-      Log.d("Check it", card.toString());
+
     }
     if (card.getPlayerClass() == null) {
       card.setPlayerClass("Neutral");
     }
     String text = card.getText() != null ? card.getText() : "";
     card.setText(Jsoup.parse(text).text());
-    if (!jsonCardObject.get("type").getAsString().equals("Hero"))
-      cards.add(card);
+    cards.add(card);
   }
 }

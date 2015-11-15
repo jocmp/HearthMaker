@@ -85,11 +85,21 @@ public class MainActivityPresenter {
         });
   }
 
-  public void loadDecks() {
+  public void loadDecks(String[] fileList) {
+    Double fileId = 0D;
     JsonObject currentDeckObject;
     JsonParser jsonParser = new JsonParser();
-    for (int k = 2;k < mView.fileList().length; k++) {
-      currentDeckObject = readFileStreamToJson(mView.fileList()[k], jsonParser);
+    int fileSize = fileList.length;
+    for (String file : fileList) {
+      try {
+        fileId = Double.parseDouble(file);
+        if (Double.isNaN(fileId)) {
+          break;
+        }
+      } catch (NumberFormatException numExcept) {
+        break;
+      }
+      currentDeckObject = readFileStreamToJson(file, jsonParser);
       if (currentDeckObject != null) {
         mView.setNavigationMenuItem(
             currentDeckObject.get("id").getAsInt(),

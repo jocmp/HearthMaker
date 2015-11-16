@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" android:checkableBehavior="single">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:id="@+id/nav_catalog" android:icon="@drawable/ic_recent_actors_24dp"
         android:title="Catalog" />
@@ -12,6 +12,7 @@
     </item>
     <group android:id="@+id/nav_new_deck_group">
         <item android:id="@+id/nav_new_deck" android:icon="@drawable/ic_add_24dp"
+            android:checkable="false"
             android:title="Create new deck" />
     </group>
 </menu>

@@ -16,6 +16,8 @@
 
 package edu.gvsu.cis.campbjos.hearthstonebuilder;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Build;
@@ -92,10 +94,11 @@ public class MainActivity extends AppCompatActivity implements
   private ImageView clearAll;
   private SearchView searchView;
 
-  private int count;
+  private MenuItem mPreviousMenuItem;
 
   private static ArrayList<Spinner> spinners;
   private static int[] idArray;
+  private String[] classes;
 
   static {
     spinners = new ArrayList<>();
@@ -241,11 +244,13 @@ public class MainActivity extends AppCompatActivity implements
     for (int k = 0; k < 5; k++) {
       setSpinnerAdapter(spinners.get(k), idArray[k]);
     }
+
     mCollectibleOption = "1";
     mManifestHearthApiKey = "hearthstone_api_key";
+    classes = getResources().getStringArray(R.array.card_class_dialog);
 
     mSpinnerView.setVisibility(View.GONE);
-    selectItem(R.id.nav_catalog);
+    onNavigationItemSelected(mDrawerList.getMenu().findItem(R.id.nav_catalog));
   }
 
   private void setSpinnerAdapter(Spinner currentSpinner, int arrayId) {
@@ -255,10 +260,9 @@ public class MainActivity extends AppCompatActivity implements
     currentSpinner.setAdapter(adapter);
   }
 
-  public void selectItem(int position) {
+  public void selectItem(MenuItem currentItem) {
     // update the main content by replacing fragments
-    MenuItem currentItem = mDrawerList.getMenu().findItem(position);
-    switch (position) {
+    switch (currentItem.getItemId()) {
       case R.id.nav_catalog:
         mMainActivityPresenter.resetFilter();
         mFragment = CardViewFragment.newInstance();
@@ -287,9 +291,7 @@ public class MainActivity extends AppCompatActivity implements
     FragmentTransaction ft = fragmentManager.beginTransaction();
     ft.replace(R.id.content_frame, mFragment);
     ft.commit();
-
     // Close the drawer
-    currentItem.setChecked(true);
     setTitle(currentItem.getTitle());
     mDrawerLayout.closeDrawer(mDrawerList);
   }
@@ -514,7 +516,12 @@ public class MainActivity extends AppCompatActivity implements
 
   @Override
   public boolean onNavigationItemSelected(MenuItem menuItem) {
-    selectItem(menuItem.getItemId());
+    menuItem.setChecked(true);
+    if (mPreviousMenuItem != null) {
+      mPreviousMenuItem.setChecked(false);
+    }
+    mPreviousMenuItem = menuItem;
+    selectItem(menuItem);
     return true;
   }
 
@@ -528,21 +535,21 @@ public class MainActivity extends AppCompatActivity implements
   }
 
   @Override
-  public void onDialogComplete(int type, int deckId, String newDeckName) {
-    // TODO remove count and add deck name support
-    String[] adapterArr = {"CLEAR", newDeckName, "NEUTRAL"};
-    count++;
-    setNavigationMenuItem(deckId, newDeckName + " " + count);
-    mFragment = DeckFragment.newInstance(type, deckId, newDeckName + " " + count);
-    getSupportFragmentManager().beginTransaction()
-        .replace(R.id.content_frame, mFragment)
-        .commit();
-    mDrawerLayout.closeDrawer(mDrawerList);
-    if (mSpinnerView.getVisibility() == View.VISIBLE) {
-      mSpinnerView.setVisibility(View.GONE);
-      getSupportActionBar().setSubtitle(null);
+  public void onDialogComplete(int type, int deckId, String deckName) {
+    if (deckName.trim().isEmpty()) {
+      SharedPreferences preferences = getPreferences(Context.MODE_PRIVATE);
+      SharedPreferences.Editor editor = preferences.edit();
+      String className = classes[type];
+
+      deckName = "";
+      int count = preferences.getInt(className, 0);
+      count++;
+      deckName = String.format("%s %d", className, count);
+      editor.putInt(className, count);
+      editor.apply();
     }
-    setTitle(newDeckName + " " + count);
+    setNavigationMenuItem(deckId, deckName);
+    onNavigationItemSelected(mDrawerList.getMenu().findItem(deckId));
   }
 
   public MainActivityPresenter getPresenter() {

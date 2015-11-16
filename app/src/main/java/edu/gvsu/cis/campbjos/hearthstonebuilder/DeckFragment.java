@@ -183,8 +183,8 @@ public class DeckFragment extends Fragment {
                 // Do nothing
               }
             }));
-    mDeckRecyclerView.addItemDecoration
-        (new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+    //mDeckRecyclerView.addItemDecoration
+    //    (new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
     mListener.getAllCards();
     return mDeckFragmentView;
   }

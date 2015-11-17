@@ -1,11 +1,11 @@
 package edu.gvsu.cis.campbjos.hearthstonebuilder;
 
-import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
 
 /**
  * @author HearthMaker Team
@@ -55,6 +55,49 @@ public class CardFilter {
     return sortedCards;
   }
 
+  public static ArrayList<Card> deckFilterCards(
+          List<Card> cards, String classFilter,
+          String manaCostFilter, String typeFilter,
+          String rarityFilter, String cardSetFilter,
+          String textFilter, String currentClass) {
+
+    //structure to sort the cards by mana cost.
+    ArrayList<Card> sortedCards = new ArrayList<>();
+    ArrayList<ArrayList<Card>> filteredCards = new ArrayList<>();
+    int size;
+    int i;
+    for (i = 0, size = cards.size(); i < size; i++) {
+      Card currentCard = cards.get(i);
+      //does the card meet all filtering set on it?
+      if (deckClassFilterCard(classFilter, currentClass, currentCard)
+              && manaCostFilterCard(manaCostFilter, currentCard)
+              && typeFilterCard(typeFilter, currentCard)
+              && rarityFilterCard(rarityFilter, currentCard)
+              && cardSetFilterCard(cardSetFilter, currentCard)
+              && textFilterCard(textFilter, currentCard)) {
+        //index in filteredCards to add the currentCard
+        int costIndex = currentCard.getCost();
+        //if this cost has not been initialized then initialize it
+        if (filteredCards.size() <= costIndex) {
+          for (int c = filteredCards.size(); c <= costIndex; c++) {
+            //add an empty arrayList to the index
+            filteredCards.add(new ArrayList<Card>());
+          }
+        }
+        //get the arrayList at the mana cost index and add the current card
+        filteredCards.get(costIndex).add(currentCard);
+      }
+    }
+    //after putting the cards into their index, go through and all to the final list
+    int k;
+    int filterSize;
+    for (k = 0, size = filteredCards.size(); k < size; k++) {
+      Collections.sort(filteredCards.get(k), ALPHABETICAL_ORDER);
+      sortedCards.addAll(filteredCards.get(k));
+    }
+    return sortedCards;
+  }
+
   private static Comparator<Card> ALPHABETICAL_ORDER = new Comparator<Card>() {
     public int compare(Card card1, Card card2) {
       int res = String.CASE_INSENSITIVE_ORDER.compare(card1.getCardName(), card2.getCardName());
@@ -64,6 +107,15 @@ public class CardFilter {
       return res;
     }
   };
+
+  private static boolean deckClassFilterCard(String classFilter, String currentClass, Card card) {
+    if (classFilter.equals("CLEAR") && (card.getPlayerClass().equals("Neutral") || card.getPlayerClass().equals(currentClass))) {
+      return true;
+    } else if (classFilter.equals(card.getPlayerClass())) {
+      return true;
+    }
+    return false;
+  }
 
   private static boolean classFilterCard(String classFilter, Card card) {
     if (classFilter.equals("CLEAR")) {

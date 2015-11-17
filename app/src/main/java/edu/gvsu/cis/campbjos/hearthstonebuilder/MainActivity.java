@@ -188,7 +188,6 @@ public class MainActivity extends AppCompatActivity implements
       }
     });
 
-
     clearAll = (ImageView) findViewById(R.id.clear_all);
     clearAll.setOnClickListener(new View.OnClickListener() {
       @Override

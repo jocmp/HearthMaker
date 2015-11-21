@@ -188,7 +188,7 @@ public class DeckFragment extends Fragment implements FragmentView {
   public void setCardList(List<Card> list) {
     catalogCards.clear();
     catalogCards.addAll(list);
-    if (cards.isEmpty())
+    if (catalogCards.isEmpty())
       mEmptyTextView.setVisibility(View.VISIBLE);
     else
       mEmptyTextView.setVisibility(View.GONE);
@@ -203,7 +203,6 @@ public class DeckFragment extends Fragment implements FragmentView {
     catalogAdapter.notifyDataSetChanged();
   }
 
-<<<<<<< HEAD
   @Override
   public void setProgress(boolean isLoading) {
     if (isLoading){
@@ -214,21 +213,11 @@ public class DeckFragment extends Fragment implements FragmentView {
       mEmptyTextView.setVisibility(View.VISIBLE);
     }
   }
-
-  public interface DeckFragmentListener {
-    void getAllCards();
-    void clearAllCards();
-    void deleteDeck();
-    String renameDeck();
-  }
-
   public void clearAllCards(){
     deck.getCardList().clear();
     deckAdapter.notifyDataSetChanged();
   }
 
-=======
->>>>>>> 2562de46d346043934a9e93220356ac023b0b4ef
   public void addDeckCard(Card card) {
     int indexFound = -1;
     int size = deck.getCardList().size();
@@ -298,5 +287,7 @@ public class DeckFragment extends Fragment implements FragmentView {
     public void getAllCards();
     public void updateSubtitle(String amount);
     public void updateSpinner(String className);
+    public void clearAllCards();
+    public void deleteDeck();
   }
 }

@@ -582,10 +582,6 @@ public class MainActivity extends AppCompatActivity implements
 
   }
 
-  @Override
-  public String renameDeck() {
-    return null;
-  }
 
   public void setNotifyListEmpty() {
     if (mFragment.getClass() == CardViewFragment.class) {

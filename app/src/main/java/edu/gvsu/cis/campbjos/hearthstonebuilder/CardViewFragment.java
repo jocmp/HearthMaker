@@ -91,6 +91,7 @@ public class CardViewFragment extends Fragment {
                 intent.putExtra("cost",intentCard.getCost());
                 intent.putExtra("text",intentCard.getText());
                 intent.putExtra("durability",intentCard.getDurability());
+                intent.putExtra("gold",intentCard.getGoldImageUrl());
                 startActivity(intent);
               }
 
@@ -105,8 +106,8 @@ public class CardViewFragment extends Fragment {
                 intent.putExtra("flavor",intentCard.getFlavor());
                 intent.putExtra("class",intentCard.getPlayerClass());
                 intent.putExtra("rarity",intentCard.getRarity());
-                intent.putExtra("set",adapter.getPositionInfo(position).getCardSet());
-                intent.putExtra("type",adapter.getPositionInfo(position).getType());
+                intent.putExtra("set",intentCard.getCardSet());
+                intent.putExtra("type",intentCard.getType());
 
                 //Alt. Intents
                 intent.putExtra("health",intentCard.getHealth());
@@ -114,6 +115,7 @@ public class CardViewFragment extends Fragment {
                 intent.putExtra("artist",intentCard.getArtist());
                 intent.putExtra("mana",intentCard.getCost());
                 intent.putExtra("text",intentCard.getText());
+                intent.putExtra("gold",intentCard.getGoldImageUrl());
                 startActivity(intent);
               }
 

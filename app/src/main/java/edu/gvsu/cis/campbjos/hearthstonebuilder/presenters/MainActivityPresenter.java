@@ -78,7 +78,7 @@ public class MainActivityPresenter {
           @Override
           public void onNext(JsonObject jsonObject) {
             JsonUtil.parse(jsonObject, cardList);
-            //initial ordering of cards.
+            // initial ordering of cards.
             mView.setSubscriberResult(
                 CardFilter.filterCards(cardList, "CLEAR", "CLEAR", "CLEAR", "CLEAR", "CLEAR", ""));
           }
@@ -86,18 +86,19 @@ public class MainActivityPresenter {
   }
 
   public void loadDecks(String[] fileList) {
+    String[] files = fileList;
     Double fileId = 0D;
     JsonObject currentDeckObject;
     JsonParser jsonParser = new JsonParser();
-    int fileSize = fileList.length;
-    for (String file : fileList) {
+    int fileSize = files.length;
+    for (String file : files) {
       try {
         fileId = Double.parseDouble(file);
         if (Double.isNaN(fileId)) {
           break;
         }
       } catch (NumberFormatException numExcept) {
-        break;
+        continue;
       }
       currentDeckObject = readFileStreamToJson(file, jsonParser);
       if (currentDeckObject != null) {

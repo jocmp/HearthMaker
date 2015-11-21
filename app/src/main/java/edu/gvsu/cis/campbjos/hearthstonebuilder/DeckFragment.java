@@ -50,7 +50,6 @@ public class DeckFragment extends Fragment {
   @InjectView(R.id.empty_event_text)
   TextView mEmptyTextView;
 
-
   private View mDeckFragmentView;
 
   // TODO: Rename parameter arguments, choose names that match
@@ -102,8 +101,6 @@ public class DeckFragment extends Fragment {
     fragment.setArguments(args);
     return fragment;
   }
-
-
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -224,10 +221,6 @@ public class DeckFragment extends Fragment {
     catalogAdapter.notifyDataSetChanged();
   }
 
-  public interface DeckFragmentListener {
-    void getAllCards();
-  }
-
   public void addDeckCard(Card card) {
     int indexFound = -1;
     int size = deck.getCardList().size();
@@ -247,6 +240,11 @@ public class DeckFragment extends Fragment {
       deck.getCardList().add(card);
     }
     deckAdapter.notifyDataSetChanged();
+    int count = 0;
+    for (Card current : deck.getCardList()) {
+      count += current.getCardCount();
+    }
+    mListener.updateSubtitle(String.valueOf(count));
   }
 
   public List<Card> getAdapterCards() {
@@ -258,5 +256,10 @@ public class DeckFragment extends Fragment {
 
   public RecyclerView.Adapter getDeckAdapter() {
     return deckAdapter;
+  }
+
+  public interface DeckFragmentListener {
+    public void updateSubtitle(String amount);
+    public void getAllCards();
   }
 }

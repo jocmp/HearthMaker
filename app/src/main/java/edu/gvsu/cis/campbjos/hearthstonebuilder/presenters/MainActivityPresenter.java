@@ -94,10 +94,8 @@ public class MainActivityPresenter {
     for (String file : files) {
       try {
         fileId = Double.parseDouble(file);
-        if (Double.isNaN(fileId)) {
-          break;
-        }
       } catch (NumberFormatException numExcept) {
+        // Hm. That was weird. . .
         continue;
       }
       currentDeckObject = readFileStreamToJson(file, jsonParser);

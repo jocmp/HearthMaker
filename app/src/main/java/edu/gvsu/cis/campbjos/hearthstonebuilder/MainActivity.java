@@ -499,6 +499,11 @@ public class MainActivity extends AppCompatActivity implements
   }
 
   @Override
+  public void updateSubtitle(String amount) {
+    getSupportActionBar().setSubtitle(amount);
+  }
+
+  @Override
   public void getAllCards() {
     mMainActivityPresenter.loadCards();
   }

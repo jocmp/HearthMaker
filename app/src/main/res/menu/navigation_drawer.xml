@@ -20,6 +20,12 @@
     <item android:id="@+id/action_search"
         android:icon="@drawable/ic_filter_list_24dp"
         android:title="@string/action_search"
-        app:showAsAction="ifRoom|withText">
-        </item>
+        app:showAsAction="ifRoom|withText"/>
+
+    <item android:id="@+id/rename_deck" android:title="Rename Deck"
+        android:orderInCategory="100" app:showAsAction="never"/>
+    <item android:id="@+id/clear_all" android:title="Clear All Cards"
+        android:orderInCategory="100" app:showAsAction="never"/>
+    <item android:id="@+id/delete_deck" android:title="Delete Deck"
+        android:orderInCategory="100" app:showAsAction="never"/>
 </menu>

@@ -93,6 +93,7 @@ public class DetailActivity extends AppCompatActivity {
     int cardMana = intent.getIntExtra("cost", 0);
     int cardDura = intent.getIntExtra("durability",0);
     String cardText = intent.getStringExtra("text");
+    String goldURL = intent.getStringExtra("gold");
     String dustCost = "N/A";
 
     switch (cardRarity) {

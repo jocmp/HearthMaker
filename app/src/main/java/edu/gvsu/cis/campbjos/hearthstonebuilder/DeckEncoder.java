@@ -33,6 +33,7 @@ public class DeckEncoder {
 
   private static void writeDeck(JsonWriter writer, Gson gson, Deck deck) throws IOException {
     writer.beginObject();
+    writer.name("deckClass").value(deck.getDeckClass());
     writer.name("name").value(deck.getDeckName());
     writer.name("id").value(deck.getId());
     writer.name("cards");

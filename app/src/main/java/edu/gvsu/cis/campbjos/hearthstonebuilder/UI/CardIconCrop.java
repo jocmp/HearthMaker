@@ -57,7 +57,7 @@ public class CardIconCrop implements Transformation {
     paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
     canvas.drawBitmap(scaledSquare, rect, rect, paint);
 
-    //recycle old bitmaps
+    // recycle old bitmaps
     if (output != source) {
       scaledSquare.recycle();
       source.recycle();

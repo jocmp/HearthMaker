@@ -44,6 +44,7 @@ import android.widget.SearchView;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -95,14 +96,16 @@ public class MainActivity extends AppCompatActivity implements
 
   private MenuItem mPreviousMenuItem;
 
+  private ArrayAdapter<String> mClassSpinnerAdapter;
+  private List<String> currentClasses;
   private static ArrayList<Spinner> spinners;
   private static int[] idArray;
-  private String[] classes;
+  private String[] dialogClasses;
+  private String currentDeckClass;
 
   static {
     spinners = new ArrayList<>();
-    idArray = new int[]{R.array.card_class,
-        R.array.cost, R.array.card_type, R.array.rarity, R.array.card_set};
+    idArray = new int[]{R.array.cost, R.array.card_type, R.array.rarity, R.array.card_set};
   }
 
   @Override
@@ -231,21 +234,28 @@ public class MainActivity extends AppCompatActivity implements
         invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
       }
     };
+
     mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-    spinners.add(mClassSpinner);
+    dialogClasses = getResources().getStringArray(R.array.card_class_dialog);
+    currentClasses = new ArrayList<>();
+    currentClasses.addAll(Arrays.asList(dialogClasses));
+
+    mClassSpinnerAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item, currentClasses);
+    mClassSpinnerAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+    mClassSpinner.setAdapter(mClassSpinnerAdapter);
     spinners.add(mCostSpinner);
     spinners.add(mTypeSpinner);
     spinners.add(mRaritySpinner);
     spinners.add(mSetSpinner);
 
-    for (int k = 0; k < 5; k++) {
+    for (int k = 0; k < 4; k++) {
       setSpinnerAdapter(spinners.get(k), idArray[k]);
     }
 
     mCollectibleOption = "1";
     mManifestHearthApiKey = "hearthstone_api_key";
-    classes = getResources().getStringArray(R.array.card_class_dialog);
+    currentDeckClass = "";
 
     mSpinnerView.setVisibility(View.GONE);
     onNavigationItemSelected(mDrawerList.getMenu().findItem(R.id.nav_catalog));
@@ -259,6 +269,11 @@ public class MainActivity extends AppCompatActivity implements
   }
 
   public void selectItem(MenuItem currentItem) {
+    // Reset Spinner positions
+    mClassSpinner.setSelection(0);
+    for (Spinner spinner : spinners) {
+      spinner.setSelection(0);
+    }
     // update the main content by replacing fragments
     switch (currentItem.getItemId()) {
       case R.id.nav_catalog:
@@ -267,6 +282,10 @@ public class MainActivity extends AppCompatActivity implements
         if (mSpinnerView.getVisibility() == View.VISIBLE) {
           mSpinnerView.setVisibility(View.GONE);
         }
+        currentClasses.clear();
+        currentClasses.add("CLEAR");
+        currentClasses.addAll(Arrays.asList(dialogClasses));
+        mClassSpinnerAdapter.notifyDataSetChanged();
         break;
       case R.id.nav_new_deck:
         createNewDeckDialog();
@@ -274,10 +293,9 @@ public class MainActivity extends AppCompatActivity implements
       default:
         if (currentItem.getGroupId() == R.id.navigation_deck_group) {
           mFragment =
-              DeckFragment.newInstance(
-                  // TODO add class type as first parameter
-                  -1, currentItem.getItemId(), (String) currentItem.getTitle());
-
+              DeckFragment.newInstance(currentDeckClass,
+                  currentItem.getItemId(), (String) currentItem.getTitle());
+          currentDeckClass = "";
           if (mSpinnerView.getVisibility() == View.VISIBLE) {
             mSpinnerView.setVisibility(View.GONE);
             getSupportActionBar().setSubtitle(null);
@@ -439,15 +457,27 @@ public class MainActivity extends AppCompatActivity implements
   @OnItemSelected({R.id.spinner_class, R.id.spinner_cost, R.id.spinner_type, R.id.spinner_rarity,
       R.id.spinner_set})
   public void onSpinnerItemSelected() {
-    mMainActivityPresenter.getCardFilter(
-
-        mClassSpinner.getSelectedItem().toString(),
-        mCostSpinner.getSelectedItem().toString(),
-        mTypeSpinner.getSelectedItem().toString(),
-        mRaritySpinner.getSelectedItem().toString(),
-        mSetSpinner.getSelectedItem().toString(),
-        searchView.getQuery().toString()
-    );
+    if (mFragment.getClass() == DeckFragment.class) {
+      DeckFragment deckFragment = (DeckFragment) mFragment;
+      mMainActivityPresenter.getCardFilter(
+          mClassSpinner.getSelectedItem().toString(),
+          mCostSpinner.getSelectedItem().toString(),
+          mTypeSpinner.getSelectedItem().toString(),
+          mRaritySpinner.getSelectedItem().toString(),
+          mSetSpinner.getSelectedItem().toString(),
+          searchView.getQuery().toString(),
+          deckFragment.getFragmentDeck().getDeckClass()
+      );
+    } else {
+      mMainActivityPresenter.getCardFilter(
+          mClassSpinner.getSelectedItem().toString(),
+          mCostSpinner.getSelectedItem().toString(),
+          mTypeSpinner.getSelectedItem().toString(),
+          mRaritySpinner.getSelectedItem().toString(),
+          mSetSpinner.getSelectedItem().toString(),
+          searchView.getQuery().toString()
+      );
+    }
     if (mSetSpinner.getSelectedItem().toString().equals("CLEAR")) {
       mSetSpinner.setVisibility(View.INVISIBLE);
       setExpand.setVisibility(View.VISIBLE);
@@ -495,7 +525,14 @@ public class MainActivity extends AppCompatActivity implements
       cardViewFragment.setCardList(list);
     } else {
       DeckFragment deckFragment = (DeckFragment) mFragment;
-      deckFragment.setCardList(list);
+      deckFragment.setCardList(CardFilter.deckFilterCards(list,
+          mClassSpinner.getSelectedItem().toString(),
+          mCostSpinner.getSelectedItem().toString(),
+          mTypeSpinner.getSelectedItem().toString(),
+          mRaritySpinner.getSelectedItem().toString(),
+          mSetSpinner.getSelectedItem().toString(),
+          searchView.getQuery().toString(),
+          deckFragment.getFragmentDeck().getDeckClass()));
     }
   }
 
@@ -505,6 +542,20 @@ public class MainActivity extends AppCompatActivity implements
 
   public String getManifestHearthApiKey() {
     return mManifestHearthApiKey;
+  }
+
+  @Override
+  public void updateSubtitle(String amount) {
+    getSupportActionBar().setSubtitle(amount);
+  }
+
+  @Override
+  public void updateSpinner(String className) {
+    currentClasses.clear();
+    currentClasses.add("CLEAR");
+    currentClasses.add(className);
+    currentClasses.add("Neutral");
+    mClassSpinnerAdapter.notifyDataSetChanged();
   }
 
   @Override
@@ -545,10 +596,10 @@ public class MainActivity extends AppCompatActivity implements
 
   @Override
   public void onDialogComplete(int type, int deckId, String deckName) {
+    String className = dialogClasses[type];
     if (deckName.trim().isEmpty()) {
       SharedPreferences preferences = getPreferences(Context.MODE_PRIVATE);
       SharedPreferences.Editor editor = preferences.edit();
-      String className = classes[type];
 
       deckName = "";
       int count = preferences.getInt(className, 0);
@@ -557,6 +608,7 @@ public class MainActivity extends AppCompatActivity implements
       editor.putInt(className, count);
       editor.apply();
     }
+    currentDeckClass = className;
     setNavigationMenuItem(deckId, deckName);
     onNavigationItemSelected(mDrawerList.getMenu().findItem(deckId));
   }

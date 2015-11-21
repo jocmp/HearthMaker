@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -50,7 +51,6 @@ public class DeckFragment extends Fragment {
   @InjectView(R.id.empty_event_text)
   TextView mEmptyTextView;
 
-
   private View mDeckFragmentView;
 
   // TODO: Rename parameter arguments, choose names that match
@@ -61,9 +61,9 @@ public class DeckFragment extends Fragment {
   private DeckCatalogAdapter catalogAdapter;
   private CardDeckAdapter deckAdapter;
   
-  private DeckFragmentListener mListener;
+  private DeckFragmentListener hostActivity;
   private DeckFragmentPresenter mDeckFragmentPresenter;
-  private List<Card> cards;
+  private List<Card> catalogCards;
   private Deck deck;
   private String deckName;
 
@@ -71,10 +71,9 @@ public class DeckFragment extends Fragment {
   private static final String ARG_PARAM2 = "param2";
   private static final String ARG_PARAM3 = "param3";
 
-  private int mParam1;
+  private String mDeckClassParam;
   private String mNameParam;
   private int mDeckIdParam;
-
 
   /**
    * Use this factory method to create a new instance of this fragment using the provided
@@ -83,46 +82,34 @@ public class DeckFragment extends Fragment {
    * @param type Parameter 1.
    * @return A new instance of fragment DeckFragment.
    */
-  public static DeckFragment newInstance(int type, int deckId, String deckName) {
+  public static DeckFragment newInstance(String type, int deckId, String deckName) {
     DeckFragment fragment = new DeckFragment();
     Bundle args = new Bundle();
-    args.putInt(ARG_PARAM1, type);
+    args.putString(ARG_PARAM1, type);
     args.putInt(ARG_PARAM2, deckId);
     args.putString(ARG_PARAM3, deckName);
     fragment.setArguments(args);
     return fragment;
   }
 
-  public static DeckFragment newInstance(String deckName) {
-    DeckFragment fragment = new DeckFragment();
-    Bundle args = new Bundle();
-    args.putInt(ARG_PARAM1, -1);
-    args.putInt(ARG_PARAM2, -1);
-    args.putString(ARG_PARAM3, deckName);
-    fragment.setArguments(args);
-    return fragment;
-  }
-
-
-
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     mDeckFragmentPresenter = new DeckFragmentPresenter(this);
     if (getArguments() != null) {
-      mParam1 = getArguments().getInt(ARG_PARAM1);
+      mDeckClassParam = getArguments().getString(ARG_PARAM1);
       mDeckIdParam = getArguments().getInt(ARG_PARAM2);
       mNameParam = getArguments().getString(ARG_PARAM3);
     }
-    cards = new ArrayList<>();
-    deck = new Deck(mNameParam, mDeckIdParam);
+    catalogCards = new ArrayList<>();
+    deck = new Deck(mDeckClassParam, mNameParam, mDeckIdParam);
   }
 
   @Override
   public void onResume() {
     super.onResume();
     mDeckFragmentPresenter.loadDeck(String.valueOf(mDeckIdParam));
-    catalogAdapter.notifyDataSetChanged();
+    hostActivity.updateSpinner(deck.getDeckClass());
   }
 
   @Override
@@ -139,7 +126,7 @@ public class DeckFragment extends Fragment {
     mCatalogRecyclerView.setHasFixedSize(true);
     mCatalogRecyclerView.isVerticalScrollBarEnabled();
     mCatalogRecyclerView.setLayoutManager(mLayoutManager);
-    catalogAdapter = new DeckCatalogAdapter(cards);
+    catalogAdapter = new DeckCatalogAdapter(catalogCards);
     mCatalogRecyclerView.setAdapter(catalogAdapter);
     mCatalogRecyclerView.addOnItemTouchListener(
         new RecyclerItemClickListener(getActivity(), mCatalogRecyclerView,
@@ -152,11 +139,11 @@ public class DeckFragment extends Fragment {
               @Override
               public void onItemLongClick(View view, int position) {
                 mDeckFragmentPresenter.startDetailIntent(catalogAdapter.getPositionInfo(position));
+
               }
             }));
     mCatalogRecyclerView.addItemDecoration
         (new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
-
     RecyclerView.LayoutManager mDeckLayoutManager = new LinearLayoutManager(getActivity(),
         LinearLayoutManager.VERTICAL, false);
     mDeckRecyclerView.setHasFixedSize(true);
@@ -185,16 +172,14 @@ public class DeckFragment extends Fragment {
                 // Do nothing
               }
             }));
-    //mDeckRecyclerView.addItemDecoration
-    //    (new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
-    mListener.getAllCards();
+    hostActivity.getAllCards();
     return mDeckFragmentView;
   }
 
   @Override
   public void onAttach(Context activity) {
     super.onAttach(activity);
-    mListener = (DeckFragmentListener) activity;
+    hostActivity = (DeckFragmentListener) activity;
   }
 
   @Override
@@ -206,26 +191,22 @@ public class DeckFragment extends Fragment {
   @Override
   public void onDetach() {
     super.onDetach();
-    mListener = null;
+    hostActivity = null;
   }
 
   public void setCardList(List<Card> list) {
-    cards.clear();
-    cards.addAll(list);
+    catalogCards.clear();
+    catalogCards.addAll(list);
     mEmptyTextView.setVisibility(View.GONE);
     mLoadingView.setVisibility(View.GONE);
     catalogAdapter.notifyDataSetChanged();
   }
 
   public void setListEmpty() {
-    cards.clear();
+    catalogCards.clear();
     mEmptyTextView.setVisibility(View.VISIBLE);
     mLoadingView.setVisibility(View.GONE);
     catalogAdapter.notifyDataSetChanged();
-  }
-
-  public interface DeckFragmentListener {
-    void getAllCards();
   }
 
   public void addDeckCard(Card card) {
@@ -247,10 +228,15 @@ public class DeckFragment extends Fragment {
       deck.getCardList().add(card);
     }
     deckAdapter.notifyDataSetChanged();
+    int count = 0;
+    for (Card current : deck.getCardList()) {
+      count += current.getCardCount();
+    }
+    hostActivity.updateSubtitle(String.valueOf(count));
   }
 
   public List<Card> getAdapterCards() {
-    return cards;
+    return catalogCards;
   }
   public Deck getFragmentDeck() {
     return deck;
@@ -258,5 +244,11 @@ public class DeckFragment extends Fragment {
 
   public RecyclerView.Adapter getDeckAdapter() {
     return deckAdapter;
+  }
+
+  public interface DeckFragmentListener {
+    public void getAllCards();
+    public void updateSubtitle(String amount);
+    public void updateSpinner(String className);
   }
 }

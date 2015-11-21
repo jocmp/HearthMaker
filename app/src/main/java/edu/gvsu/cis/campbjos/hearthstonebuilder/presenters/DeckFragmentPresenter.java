@@ -13,7 +13,6 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 
-import edu.gvsu.cis.campbjos.hearthstonebuilder.CardFilter;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.CardViewFragment;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.DeckEncoder;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.DeckFragment;
@@ -78,6 +77,9 @@ public class DeckFragmentPresenter {
     currentDeckObject = readFileStreamToJson(fileName, jsonParser);
     if (currentDeckObject == null) {
       return;
+    }
+    if (mView.getFragmentDeck().getDeckClass().isEmpty()) {
+      mView.getFragmentDeck().setDeckClass(currentDeckObject.get("deckClass").getAsString());
     }
     List<Card> tempList = mView.getFragmentDeck().getCardList();
     for (JsonElement elem : currentDeckObject.get("cards").getAsJsonArray()) {

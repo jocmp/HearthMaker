@@ -34,7 +34,7 @@ public class MainActivityPresenter {
   private MainActivity mView;
   private HearthService mHearthService;
   private List<Card> cardList;
-  private final String EMPTY_STRING = "";
+  private static final String EMPTY_STRING = "";
   private List<Card> filterList;
   /**
    * Presenter class for {@link CardViewFragment}.
@@ -51,6 +51,14 @@ public class MainActivityPresenter {
       String cardClass, String cost, String type, String rarity, String set, String query) {
     mView.setSubscriberResult(
         CardFilter.filterCards(cardList, cardClass, cost, type, rarity, set, query));
+  }
+
+  public void getCardFilter(
+      String cardClass,
+      String cost, String type, String rarity, String set, String query, String currentClass) {
+    mView.setSubscriberResult(
+        CardFilter.deckFilterCards(cardList,
+            cardClass, cost, type, rarity, set, query, currentClass));
   }
 
   public boolean resetFilter() {
@@ -94,10 +102,8 @@ public class MainActivityPresenter {
     for (String file : files) {
       try {
         fileId = Double.parseDouble(file);
-        if (Double.isNaN(fileId)) {
-          break;
-        }
       } catch (NumberFormatException numExcept) {
+        // Hm. That was weird. . .
         continue;
       }
       currentDeckObject = readFileStreamToJson(file, jsonParser);

@@ -133,6 +133,7 @@ public class DeckFragmentPresenter {
     intent.putExtra("artist", card.getArtist());
     intent.putExtra("mana", card.getCost());
     intent.putExtra("text", card.getText());
+    intent.putExtra("gold",card.getGoldImageUrl());
     mView.startActivity(intent);
   }
 }

@@ -144,7 +144,7 @@ public class DeckFragment extends Fragment {
     mCatalogRecyclerView.addOnItemTouchListener(
         new RecyclerItemClickListener(getActivity(), mCatalogRecyclerView,
             new RecyclerItemClickListener.OnItemClickListener() {
-              @Override4
+              @Override
               public void onItemClick(View view, int position) {
                 addDeckCard(catalogAdapter.getPositionInfo(position));
               }

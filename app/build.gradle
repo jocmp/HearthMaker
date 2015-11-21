@@ -88,4 +88,6 @@ dependencies {
     compile 'io.reactivex:rxandroid:0.24.0'
     androidTestCompile 'junit:junit:4.12'
     androidTestCompile "org.mockito:mockito-core:1.9.5"
+    compile 'pl.droidsonroids.gif:android-gif-drawable:1.1.+'
+    compile 'com.github.bumptech.glide:glide:3.6.1'
 }

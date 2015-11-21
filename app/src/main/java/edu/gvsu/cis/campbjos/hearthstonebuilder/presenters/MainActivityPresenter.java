@@ -3,7 +3,9 @@ package edu.gvsu.cis.campbjos.hearthstonebuilder.presenters;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.view.View;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -19,8 +21,10 @@ import java.util.List;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.CardFilter;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.CardViewFragment;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.FragmentView;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.JsonUtil;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.MainActivity;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.NetworkUtil;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.services.HearthService;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -50,7 +54,7 @@ public class MainActivityPresenter {
   public void getCardFilter(
       String cardClass, String cost, String type, String rarity, String set, String query) {
     mView.setSubscriberResult(
-        CardFilter.filterCards(cardList, cardClass, cost, type, rarity, set, query));
+            CardFilter.filterCards(cardList, cardClass, cost, type, rarity, set, query));
   }
 
   public boolean resetFilter() {
@@ -59,31 +63,47 @@ public class MainActivityPresenter {
   }
 
   public void loadCards() {
-    mHearthService.getApi()
-        .getCardResponse(getKeyFromManifest(mView.getManifestHearthApiKey()),
-            mView.getCollectibleOption())
-        .subscribeOn(Schedulers.newThread())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Observer<JsonObject>() {
-          @Override
-          public void onCompleted() {
+    if (NetworkUtil.isOnline(mView)) {
+      mHearthService.getApi()
+              .getCardResponse(getKeyFromManifest(mView.getManifestHearthApiKey()),
+                      mView.getCollectibleOption())
+              .subscribeOn(Schedulers.newThread())
+              .observeOn(AndroidSchedulers.mainThread())
+              .subscribe(new Observer<JsonObject>() {
+                @Override
+                public void onCompleted() {
 
-          }
+                }
 
-          @Override
-          public void onError(Throwable e) {
+                @Override
+                public void onError(Throwable e) {
 
-          }
+                }
 
-          @Override
-          public void onNext(JsonObject jsonObject) {
-            JsonUtil.parse(jsonObject, cardList);
-            // initial ordering of cards.
-            mView.setSubscriberResult(
-                CardFilter.filterCards(cardList, "CLEAR", "CLEAR", "CLEAR", "CLEAR", "CLEAR", ""));
-          }
-        });
+                @Override
+                public void onNext(JsonObject jsonObject) {
+                  JsonUtil.parse(jsonObject, cardList);
+                  // initial ordering of cards.
+                  mView.setSubscriberResult(
+                          CardFilter.filterCards(cardList, "CLEAR", "CLEAR", "CLEAR", "CLEAR", "CLEAR", ""));
+                }
+              });
+    } else {
+      final FragmentView fragmentView = (FragmentView) mView.getActivityFragment();
+      fragmentView.setProgress(false);
+
+      Snackbar.make(mView.getNavigationView(), "No network connection. Please reconnect and try again", Snackbar.LENGTH_INDEFINITE).setAction("Retry",
+              new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                  fragmentView.setProgress(true);
+                  loadCards();
+                  //mEmptyTextView.setVisibility(View.GONE);
+                }
+              }).show();
+    }
   }
+
 
   public void loadDecks(String[] fileList) {
     String[] files = fileList;

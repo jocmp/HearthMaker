@@ -5,17 +5,18 @@
     tools:context="edu.gvsu.cis.campbjos.hearthstonebuilder.fragment_card_view"
     android:background="@color/windowBackground">
 
+
+    <!--android:layout_centerVertical="true"-->
     <TextView
         android:id="@+id/empty_event_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_marginTop="100dp"
         android:text="@string/card_view_empty"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@android:color/darker_gray"
-        android:visibility="invisible"
-        android:layout_margin="16dp" />
+        android:visibility="gone" />
 
     <ProgressBar
         android:id="@+id/loading_spinner"

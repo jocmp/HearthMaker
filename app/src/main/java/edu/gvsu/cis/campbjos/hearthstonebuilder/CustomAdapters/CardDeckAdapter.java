@@ -80,7 +80,11 @@ public class CardDeckAdapter extends RecyclerView.Adapter<CardDeckAdapter.ViewHo
       currentCard = card;
       itemTitle.setText(currentCard.getCardName());
       manaCost.setText(String.valueOf(card.getCost()));
-      if (card.getCardCount() < 2) {
+      if (card.getRarity().equals("Legendary")){
+        amountTextView.setVisibility(View.VISIBLE);
+        amountTextView.setText("*");
+      }
+      else if (card.getCardCount() < 2) {
         amountTextView.setVisibility(View.GONE);
       } else {
         amountTextView.setText(String.valueOf(card.getCardCount()));

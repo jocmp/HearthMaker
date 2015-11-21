@@ -397,10 +397,18 @@ public class MainActivity extends AppCompatActivity implements
           setBarDownAnimation(mSpinnerView);
           getSupportActionBar().setSubtitle("Filter Cards");
         }
-        return true;
+        break;
+      case R.id.rename_deck:
+        break;
+      case R.id.clear_all:
+        clearAllCards();
+        break;
+      case R.id.delete_deck:
+        break;
       default:
-        return true;
+        break;
     }
+    return true;
   }
 
   private void rotate(MenuItem item) {
@@ -510,6 +518,22 @@ public class MainActivity extends AppCompatActivity implements
   @Override
   public void getAllCards() {
     mMainActivityPresenter.loadCards();
+  }
+
+  @Override
+  public void clearAllCards() {
+    DeckFragment deckFragment = (DeckFragment) mFragment;
+    deckFragment.clearAllCards();
+  }
+
+  @Override
+  public void deleteDeck() {
+
+  }
+
+  @Override
+  public String renameDeck() {
+    return null;
   }
 
   public void setNotifyListEmpty() {

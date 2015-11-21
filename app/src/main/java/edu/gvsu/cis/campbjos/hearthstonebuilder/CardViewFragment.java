@@ -2,7 +2,6 @@ package edu.gvsu.cis.campbjos.hearthstonebuilder;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,7 +19,7 @@ import edu.gvsu.cis.campbjos.hearthstonebuilder.CustomAdapters.CardAdapter;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.UI.DividerItemDecoration;
 
-public class CardViewFragment extends Fragment {
+public class CardViewFragment extends Fragment implements FragmentView {
 
   @InjectView(R.id.card_recyclerview)
   RecyclerView mCategoryRecycler;
@@ -48,8 +47,9 @@ public class CardViewFragment extends Fragment {
   @Override
   public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
+    //mLoadingView.setVisibility(View.VISIBLE);
     mListener.getAllCards();
-    mLoadingView.setVisibility(View.VISIBLE);
+
   }
 
   @Override
@@ -121,21 +121,8 @@ public class CardViewFragment extends Fragment {
 
             }));
     mCategoryRecycler.addItemDecoration
-        (new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+            (new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
     return mCardFragmentView;
-  }
-
-  public void onMessage(String s) {
-    final CardViewFragment frag = this;
-    Snackbar.make(mCardFragmentView, s, Snackbar.LENGTH_INDEFINITE).setAction("Retry",
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            mListener.getAllCards();
-            mEmptyTextView.setVisibility(View.GONE);
-            mLoadingView.setVisibility(View.VISIBLE);
-          }
-        }).show();
   }
 
   public View getProgressView() {
@@ -145,8 +132,12 @@ public class CardViewFragment extends Fragment {
   public void setCardList(List<Card> list) {
     cards.clear();
     cards.addAll(list);
-    mEmptyTextView.setVisibility(View.GONE);
+    if (cards.isEmpty())
+      mEmptyTextView.setVisibility(View.VISIBLE);
+    else
+      mEmptyTextView.setVisibility(View.GONE);
     mLoadingView.setVisibility(View.GONE);
+
     adapter.notifyDataSetChanged();
   }
 
@@ -155,6 +146,17 @@ public class CardViewFragment extends Fragment {
     mEmptyTextView.setVisibility(View.VISIBLE);
     mLoadingView.setVisibility(View.GONE);
     adapter.notifyDataSetChanged();
+  }
+
+  @Override
+  public void setProgress(boolean isLoading) {
+    if (isLoading){
+      mLoadingView.setVisibility(View.VISIBLE);
+      mEmptyTextView.setVisibility(View.GONE);
+    } else {
+      mLoadingView.setVisibility(View.GONE);
+      mEmptyTextView.setVisibility(View.VISIBLE);
+    }
   }
 
   public interface OnFragmentInteractionListener {

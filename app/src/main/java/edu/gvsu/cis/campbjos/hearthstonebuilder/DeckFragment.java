@@ -1,21 +1,23 @@
 package edu.gvsu.cis.campbjos.hearthstonebuilder;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import edu.gvsu.cis.campbjos.hearthstonebuilder.CustomAdapters.CardAdapter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.CustomAdapters.CardDeckAdapter;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.CustomAdapters.DeckCatalogAdapter;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
@@ -23,23 +25,13 @@ import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Deck;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.UI.DividerItemDecoration;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.presenters.DeckFragmentPresenter;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-
 
 /**
  * A simple {@link Fragment} subclass. Activities that contain this fragment must implement the
  * {@link DeckFragment.DeckFragmentListener} interface to handle interaction events. Use
  * the {@link DeckFragment#newInstance} factory method to create an instance of this fragment.
  */
-public class DeckFragment extends Fragment {
+public class DeckFragment extends Fragment implements FragmentView {
 
   @InjectView(R.id.catalog_recyclerview)
   RecyclerView mCatalogRecyclerView;
@@ -144,7 +136,7 @@ public class DeckFragment extends Fragment {
     mCatalogRecyclerView.addOnItemTouchListener(
         new RecyclerItemClickListener(getActivity(), mCatalogRecyclerView,
             new RecyclerItemClickListener.OnItemClickListener() {
-              @Override4
+              @Override
               public void onItemClick(View view, int position) {
                 addDeckCard(catalogAdapter.getPositionInfo(position));
               }
@@ -212,7 +204,10 @@ public class DeckFragment extends Fragment {
   public void setCardList(List<Card> list) {
     cards.clear();
     cards.addAll(list);
-    mEmptyTextView.setVisibility(View.GONE);
+    if (cards.isEmpty())
+      mEmptyTextView.setVisibility(View.VISIBLE);
+    else
+      mEmptyTextView.setVisibility(View.GONE);
     mLoadingView.setVisibility(View.GONE);
     catalogAdapter.notifyDataSetChanged();
   }
@@ -224,8 +219,27 @@ public class DeckFragment extends Fragment {
     catalogAdapter.notifyDataSetChanged();
   }
 
+  @Override
+  public void setProgress(boolean isLoading) {
+    if (isLoading){
+      mLoadingView.setVisibility(View.VISIBLE);
+      mEmptyTextView.setVisibility(View.GONE);
+    } else {
+      mLoadingView.setVisibility(View.GONE);
+      mEmptyTextView.setVisibility(View.VISIBLE);
+    }
+  }
+
   public interface DeckFragmentListener {
     void getAllCards();
+    void clearAllCards();
+    void deleteDeck();
+    String renameDeck();
+  }
+
+  public void clearAllCards(){
+    deck.getCardList().clear();
+    deckAdapter.notifyDataSetChanged();
   }
 
   public void addDeckCard(Card card) {
@@ -236,18 +250,46 @@ public class DeckFragment extends Fragment {
         indexFound = k;
       }
     }
+    //card has been found in the list
     if (indexFound != -1) {
       int count = deck.getCardList().get(indexFound).getCardCount();
-      if (count < 2) {
+      //card has been found and there is only one
+      if (count < 2 && !card.getRarity().equals("Legendary")) {
         count++;
         deck.getCardList().get(indexFound).setCardCount(count);
+      } else if (card.getRarity().equals("Legendary")){
+        Snackbar.make(mDeckFragmentView, "You can only have 1 " + card.getCardName(), Snackbar.LENGTH_SHORT).show();
+      } else {
+        String message = "You can only have 2 " + card.getCardName();
+        if (!message.substring(message.length()).equals("s"))
+                message += "s";
+        Snackbar.make(mDeckFragmentView, message, Snackbar.LENGTH_SHORT).show();
       }
+      //card has not been found at all
     } else {
       card.setCardCount(1);
       deck.getCardList().add(card);
     }
+    Collections.sort(deck.getCardList(), HEARTHSTONE_ORDER);
+
     deckAdapter.notifyDataSetChanged();
   }
+
+  private static Comparator<Card> HEARTHSTONE_ORDER = new Comparator<Card>() {
+    public int compare(Card card1, Card card2) {
+      if (card1.getCost() > card2.getCost())
+        return 1;
+      else if (card2.getCost() > card1.getCost()){
+        return -1;
+      }
+      //Alphabetical order
+      int res = String.CASE_INSENSITIVE_ORDER.compare(card1.getCardName(), card2.getCardName());
+      if (res == 0) {
+        res = card1.getCardName().compareTo(card2.getCardName());
+      }
+      return res;
+    }
+  };
 
   public List<Card> getAdapterCards() {
     return cards;

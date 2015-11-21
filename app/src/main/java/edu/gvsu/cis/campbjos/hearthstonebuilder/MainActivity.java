@@ -43,16 +43,15 @@ import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.Spinner;
 
-import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
-import edu.gvsu.cis.campbjos.hearthstonebuilder.presenters.MainActivityPresenter;
-import edu.gvsu.cis.campbjos.hearthstonebuilder.services.HearthService;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnItemSelected;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.presenters.MainActivityPresenter;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.services.HearthService;
 
 
 public class MainActivity extends AppCompatActivity implements
@@ -279,6 +278,7 @@ public class MainActivity extends AppCompatActivity implements
               DeckFragment.newInstance(
                   // TODO add class type as first parameter
                   -1, currentItem.getItemId(), (String) currentItem.getTitle());
+
           if (mSpinnerView.getVisibility() == View.VISIBLE) {
             mSpinnerView.setVisibility(View.GONE);
             getSupportActionBar().setSubtitle(null);
@@ -313,7 +313,6 @@ public class MainActivity extends AppCompatActivity implements
   public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.navigation_drawer, menu);
 
-
     final MenuItem item = menu.findItem(R.id.action_search);
     //item.setActionView(R.layout.iv_rotate);
     //ImageView refresh = (ImageView) item.getActionView();
@@ -337,6 +336,19 @@ public class MainActivity extends AppCompatActivity implements
                              }
     );
     item.setActionView(image);
+
+    MenuItem rename = menu.findItem(R.id.rename_deck);
+    MenuItem clear = menu.findItem(R.id.clear_all);
+    MenuItem delete = menu.findItem(R.id.delete_deck);
+    if (mFragment.getClass() == CardViewFragment.class) {
+      rename.setVisible(false);
+      clear.setVisible(false);
+      delete.setVisible(false);
+    } else {
+      rename.setVisible(true);
+      clear.setVisible(true);
+      delete.setVisible(true);
+    }
 
     return super.onCreateOptionsMenu(menu);
   }
@@ -386,11 +398,8 @@ public class MainActivity extends AppCompatActivity implements
           setBarDownAnimation(mSpinnerView);
           getSupportActionBar().setSubtitle("Filter Cards");
         }
-
-
         return true;
       default:
-        mSpinnerView.setVisibility(View.VISIBLE);
         return true;
     }
   }
@@ -522,6 +531,7 @@ public class MainActivity extends AppCompatActivity implements
     }
     mPreviousMenuItem = menuItem;
     selectItem(menuItem);
+    invalidateOptionsMenu();
     return true;
   }
 

@@ -57,7 +57,8 @@ import edu.gvsu.cis.campbjos.hearthstonebuilder.services.HearthService;
 
 public class MainActivity extends AppCompatActivity implements
     CardViewFragment.OnFragmentInteractionListener, NavigationView.OnNavigationItemSelectedListener,
-    DeckFragment.DeckFragmentListener, NewDeckDialog.DialogListener {
+    DeckFragment.DeckFragmentListener, RenameDeckDialog.DialogListener,
+    NewDeckDialog.DialogListener {
 
   @InjectView(R.id.spinner_class)
   Spinner mClassSpinner;
@@ -75,6 +76,11 @@ public class MainActivity extends AppCompatActivity implements
   View mSpinnerView;
   @InjectView(R.id.content_frame)
   View mContentFrame;
+
+  private static final int MENU_ITEM_DELETE = R.id.delete_deck;
+  private static final int MENU_ITEM_CLEAR = R.id.clear_all;
+  private static final int MENU_ITEM_RENAME = R.id.rename_deck;
+  private static final int MENU_ITEM_SEARCH = R.id.action_search;
 
   private DrawerLayout mDrawerLayout;
   private ActionBarDrawerToggle mDrawerToggle;
@@ -354,17 +360,14 @@ public class MainActivity extends AppCompatActivity implements
     );
     item.setActionView(image);
 
-    MenuItem rename = menu.findItem(R.id.rename_deck);
-    MenuItem clear = menu.findItem(R.id.clear_all);
-    MenuItem delete = menu.findItem(R.id.delete_deck);
     if (mFragment.getClass() == CardViewFragment.class) {
-      rename.setVisible(false);
-      clear.setVisible(false);
-      delete.setVisible(false);
+      menu.findItem(MENU_ITEM_RENAME).setVisible(false);
+      menu.findItem(MENU_ITEM_CLEAR).setVisible(false);
+      menu.findItem(MENU_ITEM_DELETE).setVisible(false);
     } else {
-      rename.setVisible(true);
-      clear.setVisible(true);
-      delete.setVisible(true);
+      menu.findItem(MENU_ITEM_RENAME).setVisible(true);
+      menu.findItem(MENU_ITEM_CLEAR).setVisible(true);
+      menu.findItem(MENU_ITEM_DELETE).setVisible(true);
     }
 
     return super.onCreateOptionsMenu(menu);
@@ -390,9 +393,8 @@ public class MainActivity extends AppCompatActivity implements
 
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
-
     switch (item.getItemId()) {
-      case R.id.action_search:
+      case MENU_ITEM_SEARCH:
         rotate(item);
         if (mSpinnerView.getVisibility() == View.VISIBLE) {
           //going up
@@ -415,6 +417,14 @@ public class MainActivity extends AppCompatActivity implements
           setBarDownAnimation(mSpinnerView);
           getSupportActionBar().setSubtitle("Filter Cards");
         }
+        return true;
+      case MENU_ITEM_CLEAR:
+        DeckFragment deckFragment = (DeckFragment) mFragment;
+        deckFragment.clearDeck();
+        return true;
+      // case MENU_ITEM_DELETE:
+      case MENU_ITEM_RENAME:
+        createRenameDialog();
         return true;
       default:
         return true;
@@ -619,5 +629,17 @@ public class MainActivity extends AppCompatActivity implements
 
   public NavigationView getNavigationView() {
     return mDrawerList;
+  }
+
+  public void createRenameDialog() {
+    new RenameDeckDialog().show(getSupportFragmentManager(), "renamedeck");
+  }
+
+  public void onRenameDeckResult(String name) {
+    DeckFragment deckFragment = (DeckFragment) mFragment;
+    deckFragment.setFragmentDeckName(name);
+    getSupportActionBar().setTitle(name);
+    mDrawerList.getMenu()
+        .findItem(deckFragment.getFragmentDeck().getId()).setTitle(name);
   }
 }

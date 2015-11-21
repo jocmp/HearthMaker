@@ -74,6 +74,7 @@ public class DeckFragment extends Fragment {
   private String mDeckClassParam;
   private String mNameParam;
   private int mDeckIdParam;
+  private int deckCardCount;
 
   /**
    * Use this factory method to create a new instance of this fragment using the provided
@@ -139,7 +140,6 @@ public class DeckFragment extends Fragment {
               @Override
               public void onItemLongClick(View view, int position) {
                 mDeckFragmentPresenter.startDetailIntent(catalogAdapter.getPositionInfo(position));
-
               }
             }));
     mCatalogRecyclerView.addItemDecoration
@@ -166,6 +166,8 @@ public class DeckFragment extends Fragment {
                   deck.getCardList().remove(position);
                   deckAdapter.notifyItemRemoved(position);
                 }
+                deckCardCount--;
+                hostActivity.updateSubtitle(String.valueOf(deckCardCount));
               }
               @Override
               public void onItemLongClick(View view, int position) {
@@ -232,7 +234,8 @@ public class DeckFragment extends Fragment {
     for (Card current : deck.getCardList()) {
       count += current.getCardCount();
     }
-    hostActivity.updateSubtitle(String.valueOf(count));
+    deckCardCount = count;
+    hostActivity.updateSubtitle(String.valueOf(deckCardCount));
   }
 
   public List<Card> getAdapterCards() {
@@ -246,6 +249,14 @@ public class DeckFragment extends Fragment {
     return deckAdapter;
   }
 
+  public void setFragmentDeckName(String name) {
+    deck.setDeckName(name);
+  }
+
+  public void clearDeck() {
+    deck.getCardList().clear();
+    deckAdapter.notifyDataSetChanged();
+  }
   public interface DeckFragmentListener {
     public void getAllCards();
     public void updateSubtitle(String amount);

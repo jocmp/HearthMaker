@@ -13,7 +13,6 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 
-import edu.gvsu.cis.campbjos.hearthstonebuilder.CardFilter;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.CardViewFragment;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.DeckEncoder;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.DeckFragment;
@@ -79,6 +78,9 @@ public class DeckFragmentPresenter {
     if (currentDeckObject == null) {
       return;
     }
+    if (mView.getFragmentDeck().getDeckClass().isEmpty()) {
+      mView.getFragmentDeck().setDeckClass(currentDeckObject.get("deckClass").getAsString());
+    }
     List<Card> tempList = mView.getFragmentDeck().getCardList();
     for (JsonElement elem : currentDeckObject.get("cards").getAsJsonArray()) {
       JsonObject jsonObject = jsonParser.parse(elem.getAsString()).getAsJsonObject();
@@ -133,6 +135,7 @@ public class DeckFragmentPresenter {
     intent.putExtra("artist", card.getArtist());
     intent.putExtra("mana", card.getCost());
     intent.putExtra("text", card.getText());
+    intent.putExtra("gold",card.getGoldImageUrl());
     mView.startActivity(intent);
   }
 }

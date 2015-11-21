@@ -20,9 +20,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/placeholder"
                 android:layout_marginTop="?attr/actionBarSize"
                 app:layout_collapseMode="parallax" />
+
+            <ImageView
+                android:id="@+id/gold_card"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="?attr/actionBarSize"
+                app:layout_collapseMode="parallax"/>
 
             <android.support.v7.widget.Toolbar android:id="@+id/toolbar"
                 android:layout_height="?attr/actionBarSize"

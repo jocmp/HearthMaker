@@ -115,7 +115,7 @@ public class DetailActivity extends AppCompatActivity {
     String goldURL = intent.getStringExtra("gold");
     dustCost = "N/A";
 
-    if(cardSet.equals("Basic")) {
+    if(cardSet.equals("Basic") || cardSet.equals("Reward")) {
       dustCost = "Uncraftable";
     }
     else {
@@ -144,7 +144,7 @@ public class DetailActivity extends AppCompatActivity {
 
     cardText = cardText.replaceAll("[$#]", "");
 
-    if (cardText == "") {
+    if (cardText.equals("")) {
       cardText = "No Card Text";
     }
 
@@ -272,7 +272,7 @@ public class DetailActivity extends AppCompatActivity {
           cardImage.setVisibility(View.INVISIBLE);
           gifImage.setVisibility(View.VISIBLE);
 
-          if(cardSet.equals("Basic")) {
+          if(cardSet.equals("Basic") || cardSet.equals("Reward")) {
             dustCost = "Uncraftable";
           }
           else {
@@ -299,7 +299,7 @@ public class DetailActivity extends AppCompatActivity {
           cardImage.setVisibility(View.VISIBLE);
           gifImage.setVisibility(View.INVISIBLE);
 
-          if(cardSet.equals("Basic")) {
+          if(cardSet.equals("Basic") || cardSet.equals("Reward")) {
             dustCost = "Uncraftable";
           }
           else {

@@ -37,6 +37,8 @@ public class DetailActivity extends AppCompatActivity {
   String cardRarity;
   String dustCost;
   String cardSet;
+  private final static int STAR_EMPTY = R.drawable.star_icon_empty;
+  private final static int STAR_FILLED = R.drawable.star_icon_filled;
 
   @InjectView(R.id.toolbar)
   Toolbar toolbar;
@@ -254,6 +256,12 @@ public class DetailActivity extends AppCompatActivity {
   public boolean onCreateOptionsMenu(Menu menu) {
     // Inflate the menu; this adds items to the action bar if it is present.
     getMenuInflater().inflate(R.menu.detail_toolbar, menu);
+    if(cardImage.getVisibility() == View.VISIBLE) {
+      menu.findItem(R.id.gold_card_button).setIcon(STAR_EMPTY);
+    }
+    else {
+      menu.findItem(R.id.gold_card_button).setIcon(STAR_FILLED);
+    }
     return true;
   }
 
@@ -324,6 +332,7 @@ public class DetailActivity extends AppCompatActivity {
         }
 
         dustDetail.setText(dustCost);
+        invalidateOptionsMenu();
         return true;
     }
 

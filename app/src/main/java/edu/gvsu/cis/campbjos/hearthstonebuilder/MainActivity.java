@@ -109,6 +109,8 @@ public class MainActivity extends AppCompatActivity implements
   private String[] dialogClasses;
   private String currentDeckClass;
 
+  private int classIcon;
+
   static {
     spinners = new ArrayList<>();
     idArray = new int[]{R.array.cost, R.array.card_type, R.array.rarity, R.array.card_set};
@@ -280,6 +282,9 @@ public class MainActivity extends AppCompatActivity implements
     for (Spinner spinner : spinners) {
       spinner.setSelection(0);
     }
+    // Reset Subtitle
+    updateSubtitle(null);
+
     // update the main content by replacing fragments
     switch (currentItem.getItemId()) {
       case R.id.nav_catalog:
@@ -364,10 +369,13 @@ public class MainActivity extends AppCompatActivity implements
       menu.findItem(MENU_ITEM_RENAME).setVisible(false);
       menu.findItem(MENU_ITEM_CLEAR).setVisible(false);
       menu.findItem(MENU_ITEM_DELETE).setVisible(false);
+      menu.findItem(R.id.class_icon).setVisible(false);
     } else {
       menu.findItem(MENU_ITEM_RENAME).setVisible(true);
       menu.findItem(MENU_ITEM_CLEAR).setVisible(true);
       menu.findItem(MENU_ITEM_DELETE).setVisible(true);
+      menu.findItem(R.id.class_icon).setVisible(true);
+      menu.findItem(R.id.class_icon).setIcon(classIcon);
     }
 
     return super.onCreateOptionsMenu(menu);
@@ -567,6 +575,12 @@ public class MainActivity extends AppCompatActivity implements
     currentClasses.add(className);
     currentClasses.add("Neutral");
     mClassSpinnerAdapter.notifyDataSetChanged();
+  }
+
+  @Override
+  public void updateClassIcon(int iconId) {
+    classIcon = iconId;
+    invalidateOptionsMenu();
   }
 
   @Override

@@ -5,6 +5,8 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.google.gson.JsonObject;
@@ -25,6 +27,7 @@ import edu.gvsu.cis.campbjos.hearthstonebuilder.FragmentView;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.JsonUtil;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.MainActivity;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.NetworkUtil;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.R;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.services.HearthService;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -128,9 +131,11 @@ public class MainActivityPresenter {
       }
       currentDeckObject = readFileStreamToJson(file, jsonParser);
       if (currentDeckObject != null) {
+        int id = currentDeckObject.get("id").getAsInt();
         mView.setNavigationMenuItem(
-            currentDeckObject.get("id").getAsInt(),
+            id,
             currentDeckObject.get("name").getAsString());
+       // mView.getNavigationView().getMenu().findItem(id).setIcon(R.drawable.druid_icon)
       }
     }
   }

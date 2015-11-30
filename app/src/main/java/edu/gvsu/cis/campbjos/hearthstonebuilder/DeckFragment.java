@@ -11,13 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import butterknife.ButterKnife;
-import butterknife.InjectView;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.CustomAdapters.CardDeckAdapter;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.CustomAdapters.DeckCatalogAdapter;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
@@ -25,11 +18,19 @@ import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Deck;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.UI.DividerItemDecoration;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.presenters.DeckFragmentPresenter;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 
 /**
  * A simple {@link Fragment} subclass. Activities that contain this fragment must implement the
- * {@link DeckFragment.DeckFragmentListener} interface to handle interaction events. Use
- * the {@link DeckFragment#newInstance} factory method to create an instance of this fragment.
+ * {@link DeckFragment.DeckFragmentListener} interface to handle interaction events. Use the {@link
+ * DeckFragment#newInstance} factory method to create an instance of this fragment.
  */
 public class DeckFragment extends Fragment implements FragmentView {
 
@@ -51,12 +52,13 @@ public class DeckFragment extends Fragment implements FragmentView {
   private int mType;
   private DeckCatalogAdapter catalogAdapter;
   private CardDeckAdapter deckAdapter;
-  
+
   private DeckFragmentListener hostActivity;
   private DeckFragmentPresenter mDeckFragmentPresenter;
   private List<Card> catalogCards;
   private Deck deck;
   private String deckName;
+  private static boolean setDelete;
 
   private static final String ARG_PARAM1 = "param1";
   private static final String ARG_PARAM2 = "param2";
@@ -104,6 +106,7 @@ public class DeckFragment extends Fragment implements FragmentView {
     hostActivity.updateSpinner(deck.getDeckClass());
     hostActivity.updateClassIcon(getClassIcon(deck.getDeckClass()));
     updateCount(deck.getCardList());
+    setDelete = false;
   }
 
   @Override
@@ -180,7 +183,7 @@ public class DeckFragment extends Fragment implements FragmentView {
   @Override
   public void onPause() {
     super.onPause();
-    mDeckFragmentPresenter.saveDeck(deck);
+    mDeckFragmentPresenter.saveDeck(deck, setDelete);
   }
 
   @Override
@@ -209,7 +212,7 @@ public class DeckFragment extends Fragment implements FragmentView {
 
   @Override
   public void setProgress(boolean isLoading) {
-    if (isLoading){
+    if (isLoading) {
       mLoadingView.setVisibility(View.VISIBLE);
       mEmptyTextView.setVisibility(View.GONE);
     } else {
@@ -236,7 +239,8 @@ public class DeckFragment extends Fragment implements FragmentView {
           count++;
           deck.getCardList().get(indexFound).setCardCount(count);
         } else if (card.getRarity().equals("Legendary")) {
-          Snackbar.make(mDeckFragmentView, "You can only have 1 " + card.getCardName(), Snackbar.LENGTH_SHORT).show();
+          Snackbar.make(mDeckFragmentView,
+              "You can only have 1 " + card.getCardName(), Snackbar.LENGTH_SHORT).show();
         } else {
           String message = "You can only have 2 " + card.getCardName();
           if (!message.substring(message.length()).equals("s"))
@@ -249,7 +253,6 @@ public class DeckFragment extends Fragment implements FragmentView {
         deck.getCardList().add(card);
       }
       Collections.sort(deck.getCardList(), HEARTHSTONE_ORDER);
-
       deckAdapter.notifyDataSetChanged();
       updateCount(deck.getCardList());
     } else {
@@ -287,7 +290,7 @@ public class DeckFragment extends Fragment implements FragmentView {
     public int compare(Card card1, Card card2) {
       if (card1.getCost() > card2.getCost())
         return 1;
-      else if (card2.getCost() > card1.getCost()){
+      else if (card2.getCost() > card1.getCost()) {
         return -1;
       }
       //Alphabetical order
@@ -311,6 +314,7 @@ public class DeckFragment extends Fragment implements FragmentView {
   public List<Card> getAdapterCards() {
     return catalogCards;
   }
+
   public Deck getFragmentDeck() {
     return deck;
   }
@@ -328,11 +332,16 @@ public class DeckFragment extends Fragment implements FragmentView {
     updateCount(deck.getCardList());
     deckAdapter.notifyDataSetChanged();
   }
+
   public interface DeckFragmentListener {
     public void getAllCards();
     public void updateSubtitle(String amount);
     public void updateSpinner(String className);
     public void updateClassIcon(int iconId);
     public void deleteDeck();
+  }
+
+  public void setForDeletion(boolean delete) {
+    this.setDelete = delete;
   }
 }

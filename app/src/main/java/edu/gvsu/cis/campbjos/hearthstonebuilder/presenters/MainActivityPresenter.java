@@ -1,18 +1,25 @@
 package edu.gvsu.cis.campbjos.hearthstonebuilder.presenters;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.os.Build;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -103,7 +110,9 @@ public class MainActivityPresenter {
       final FragmentView fragmentView = (FragmentView) mView.getActivityFragment();
       fragmentView.setProgress(false);
 
-      Snackbar.make(mView.getNavigationView(), "No network connection. Please reconnect and try again", Snackbar.LENGTH_INDEFINITE).setAction("Retry",
+      Snackbar.make(mView.getNavigationView(),
+          "No network connection. Please reconnect and try again",
+          Snackbar.LENGTH_INDEFINITE).setAction("Retry",
               new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -115,7 +124,6 @@ public class MainActivityPresenter {
     }
   }
 
-
   public void loadDecks(String[] fileList) {
     String[] files = fileList;
     Double fileId = 0D;
@@ -123,19 +131,19 @@ public class MainActivityPresenter {
     JsonParser jsonParser = new JsonParser();
     int fileSize = files.length;
     for (String file : files) {
-      try {
-        fileId = Double.parseDouble(file);
-      } catch (NumberFormatException numExcept) {
-        // Hm. That was weird. . .
+      if (!checkValidFilename(file)) {
         continue;
       }
+
       currentDeckObject = readFileStreamToJson(file, jsonParser);
-      int deckId = currentDeckObject.get("id").getAsInt();
-      if (currentDeckObject != null) {
-        mView.setNavigationMenuItem(
-            deckId,
-            currentDeckObject.get("name").getAsString());
+
+      if (currentDeckObject == null) {
+        continue;
       }
+      int deckId = currentDeckObject.get("id").getAsInt();
+      mView.setNavigationMenuItem(
+          deckId,
+          currentDeckObject.get("name").getAsString());
       //mView.getNavigationView().setItemIconTintList(null);
       switch (currentDeckObject.get("deckClass").getAsString()){
         case "Warrior":
@@ -168,7 +176,6 @@ public class MainActivityPresenter {
         default:
           break;
       }
-
 
       Drawable drawable = mView.getNavigationView().getMenu().findItem(deckId).getIcon();
       drawable.mutate();
@@ -222,5 +229,19 @@ public class MainActivityPresenter {
 
   public List<Card> getCardList() {
     return this.cardList;
+  }
+
+  public boolean deleteDeckFile(Context appContext, String filename) {
+    appContext.getFilesDir();
+    File deckFile = new File(appContext.getFilesDir(), filename);
+    if (deckFile.exists()) {
+      deckFile.delete();
+      return true;
+    }
+    return false;
+  }
+
+  private boolean checkValidFilename(String filename) {
+    return filename.matches("-?\\d+");
   }
 }

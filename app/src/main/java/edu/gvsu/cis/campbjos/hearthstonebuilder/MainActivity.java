@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements
   private static final int MENU_ITEM_CLEAR = R.id.clear_all;
   private static final int MENU_ITEM_RENAME = R.id.rename_deck;
   private static final int MENU_ITEM_SEARCH = R.id.action_search;
+  private static final int CATALOG_FRAGMENT_ID = R.id.nav_catalog;
 
   private DrawerLayout mDrawerLayout;
   private ActionBarDrawerToggle mDrawerToggle;
@@ -269,7 +270,7 @@ public class MainActivity extends AppCompatActivity implements
     currentDeckClass = "";
 
     mSpinnerView.setVisibility(View.GONE);
-    onNavigationItemSelected(mDrawerList.getMenu().findItem(R.id.nav_catalog));
+    onNavigationItemSelected(mDrawerList.getMenu().findItem(CATALOG_FRAGMENT_ID));
   }
 
   private void setSpinnerAdapter(Spinner currentSpinner, int arrayId) {
@@ -295,7 +296,7 @@ public class MainActivity extends AppCompatActivity implements
 
     // update the main content by replacing fragments
     switch (currentItem.getItemId()) {
-      case R.id.nav_catalog:
+      case CATALOG_FRAGMENT_ID:
         mMainActivityPresenter.resetFilter();
         mFragment = CardViewFragment.newInstance();
         if (mSpinnerView.getVisibility() == View.VISIBLE) {
@@ -441,7 +442,9 @@ public class MainActivity extends AppCompatActivity implements
         DeckFragment deckFragment = (DeckFragment) mFragment;
         deckFragment.clearDeck();
         return true;
-      // case MENU_ITEM_DELETE:
+      case MENU_ITEM_DELETE:
+        deleteDeck();
+        return true;
       case MENU_ITEM_RENAME:
         createRenameDialog();
         return true;
@@ -602,9 +605,14 @@ public class MainActivity extends AppCompatActivity implements
 
   @Override
   public void deleteDeck() {
-
+    DeckFragment deckFragment = (DeckFragment) mFragment;
+    deckFragment.setForDeletion(true);
+    int deckId = deckFragment.getFragmentDeck().getId();
+    String deckFilename = String.valueOf(deckId);
+    onNavigationItemSelected(mDrawerList.getMenu().findItem(CATALOG_FRAGMENT_ID));
+    mDrawerList.getMenu().findItem(R.id.navigation_deck_item).getSubMenu().removeItem(deckId);
+    mMainActivityPresenter.deleteDeckFile(this.getApplicationContext(), deckFilename);
   }
-
 
   public void setNotifyListEmpty() {
     if (mFragment.getClass() == CardViewFragment.class) {

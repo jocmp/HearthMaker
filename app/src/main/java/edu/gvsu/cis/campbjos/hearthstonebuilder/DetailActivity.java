@@ -260,7 +260,7 @@ public class DetailActivity extends AppCompatActivity {
   @Override
   protected void onDestroy() {
     Glide.get(this).clearMemory();
-    super.onStop();
+    super.onDestroy();
   }
 
   @Override

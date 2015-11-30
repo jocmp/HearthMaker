@@ -74,53 +74,13 @@ public class CardViewFragment extends Fragment implements FragmentView {
             new RecyclerItemClickListener.OnItemClickListener() {
               @Override
               public void onItemClick(View view, int position) {
-                Intent intent = new Intent(getActivity(), DetailActivity.class);
-                // Reduce the number of calls to the adapter
-                Card intentCard =  adapter.getPositionInfo(position);
-                //Important Intents
-                intent.putExtra("card",intentCard.getImageUrl());
-                intent.putExtra("name",intentCard.getCardName());
-                intent.putExtra("flavor",intentCard.getFlavor());
-                intent.putExtra("class",intentCard.getPlayerClass());
-                intent.putExtra("rarity",intentCard.getRarity());
-                intent.putExtra("set",intentCard.getCardSet());
-                intent.putExtra("type",intentCard.getType());
-
-                //Alt. Intents
-                intent.putExtra("health",intentCard.getHealth());
-                intent.putExtra("attack",intentCard.getAttack());
-                intent.putExtra("artist",intentCard.getArtist());
-                intent.putExtra("cost",intentCard.getCost());
-                intent.putExtra("text",intentCard.getText());
-                intent.putExtra("durability",intentCard.getDurability());
-                intent.putExtra("gold",intentCard.getGoldImageUrl());
-                startActivity(intent);
+                configureDetailIntent(adapter.getPositionInfo(position));
               }
 
               @Override
               public void onItemLongClick(View view, int position) {
-                // Reduce the number of calls to the adapter
-                Card intentCard =  adapter.getPositionInfo(position);
-
-                Intent intent = new Intent(getActivity(), DetailActivity.class);
-                intent.putExtra("card",intentCard.getImageUrl());
-                intent.putExtra("name",intentCard.getCardName());
-                intent.putExtra("flavor",intentCard.getFlavor());
-                intent.putExtra("class",intentCard.getPlayerClass());
-                intent.putExtra("rarity",intentCard.getRarity());
-                intent.putExtra("set",intentCard.getCardSet());
-                intent.putExtra("type",intentCard.getType());
-
-                //Alt. Intents
-                intent.putExtra("health",intentCard.getHealth());
-                intent.putExtra("attack",intentCard.getAttack());
-                intent.putExtra("artist",intentCard.getArtist());
-                intent.putExtra("mana",intentCard.getCost());
-                intent.putExtra("text",intentCard.getText());
-                intent.putExtra("gold",intentCard.getGoldImageUrl());
-                startActivity(intent);
+                configureDetailIntent(adapter.getPositionInfo(position));
               }
-
             }));
     mCategoryRecycler.addItemDecoration
             (new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
@@ -152,7 +112,7 @@ public class CardViewFragment extends Fragment implements FragmentView {
 
   @Override
   public void setProgress(boolean isLoading) {
-    if (isLoading){
+    if (isLoading) {
       mLoadingView.setVisibility(View.VISIBLE);
       mEmptyTextView.setVisibility(View.GONE);
     } else {
@@ -167,5 +127,27 @@ public class CardViewFragment extends Fragment implements FragmentView {
 
   public List<Card> getCards() {
     return cards;
+  }
+
+  public void configureDetailIntent(Card intentCard) {
+
+    Intent intent = new Intent(getActivity(), DetailActivity.class);
+
+    intent.putExtra("card",intentCard.getImageUrl());
+    intent.putExtra("name",intentCard.getCardName());
+    intent.putExtra("flavor",intentCard.getFlavor());
+    intent.putExtra("class",intentCard.getPlayerClass());
+    intent.putExtra("rarity",intentCard.getRarity());
+    intent.putExtra("set",intentCard.getCardSet());
+    intent.putExtra("type",intentCard.getType());
+
+    //Alt. Intents
+    intent.putExtra("health",intentCard.getHealth());
+    intent.putExtra("attack",intentCard.getAttack());
+    intent.putExtra("artist",intentCard.getArtist());
+    intent.putExtra("mana",intentCard.getCost());
+    intent.putExtra("text",intentCard.getText());
+    intent.putExtra("gold",intentCard.getGoldImageUrl());
+    startActivity(intent);
   }
 }

@@ -55,7 +55,10 @@ public class DeckFragmentPresenter {
     mView = fragment;
   }
 
-  public boolean saveDeck(Deck deck) {
+  public boolean saveDeck(Deck deck, boolean setDelete) {
+    if (setDelete) {
+      return true;
+    }
     FileOutputStream fos = null;
     try {
       fos = mView.getActivity().openFileOutput(String.valueOf(deck.getId()), Context.MODE_PRIVATE);

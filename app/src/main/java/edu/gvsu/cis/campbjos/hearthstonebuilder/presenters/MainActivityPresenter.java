@@ -130,20 +130,19 @@ public class MainActivityPresenter {
     JsonParser jsonParser = new JsonParser();
     int fileSize = files.length;
     for (String file : files) {
-      try {
-        fileId = Double.parseDouble(file);
-      } catch (NumberFormatException numExcept) {
-        // Hm. That was weird. . .
+      if (!checkValidFilename(file)) {
         continue;
       }
+
       currentDeckObject = readFileStreamToJson(file, jsonParser);
-      int deckId = currentDeckObject.get("id").getAsInt();
-      if (currentDeckObject != null) {
-        int id = currentDeckObject.get("id").getAsInt();
-        mView.setNavigationMenuItem(
-            deckId,
-            currentDeckObject.get("name").getAsString());
+
+      if (currentDeckObject == null) {
+        continue;
       }
+      int deckId = currentDeckObject.get("id").getAsInt();
+      mView.setNavigationMenuItem(
+          deckId,
+          currentDeckObject.get("name").getAsString());
       //mView.getNavigationView().setItemIconTintList(null);
       switch (currentDeckObject.get("deckClass").getAsString()){
         case "Warrior":
@@ -230,5 +229,9 @@ public class MainActivityPresenter {
 
   public List<Card> getCardList() {
     return this.cardList;
+  }
+
+  private boolean checkValidFilename(String filename) {
+    return filename.matches("-?\\d+");
   }
 }

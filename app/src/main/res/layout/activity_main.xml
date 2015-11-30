@@ -98,7 +98,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/expand_more_24dp"
                     android:paddingRight="20dp" />
-                <TextView
+                <View
                     android:layout_alignParentBottom="true"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/divider_height"

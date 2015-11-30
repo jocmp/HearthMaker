@@ -19,6 +19,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -176,7 +177,6 @@ public class MainActivityPresenter {
           break;
       }
 
-
       Drawable drawable = mView.getNavigationView().getMenu().findItem(deckId).getIcon();
       drawable.mutate();
       drawable.setColorFilter(0, PorterDuff.Mode.SRC_ATOP);
@@ -229,6 +229,16 @@ public class MainActivityPresenter {
 
   public List<Card> getCardList() {
     return this.cardList;
+  }
+
+  public boolean deleteDeckFile(Context appContext, String filename) {
+    appContext.getFilesDir();
+    File deckFile = new File(appContext.getFilesDir(), filename);
+    if (deckFile.exists()) {
+      deckFile.delete();
+      return true;
+    }
+    return false;
   }
 
   private boolean checkValidFilename(String filename) {

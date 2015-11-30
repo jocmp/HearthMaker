@@ -58,6 +58,7 @@ public class DeckFragment extends Fragment implements FragmentView {
   private List<Card> catalogCards;
   private Deck deck;
   private String deckName;
+  private static boolean setDelete;
 
   private static final String ARG_PARAM1 = "param1";
   private static final String ARG_PARAM2 = "param2";
@@ -105,6 +106,7 @@ public class DeckFragment extends Fragment implements FragmentView {
     hostActivity.updateSpinner(deck.getDeckClass());
     hostActivity.updateClassIcon(getClassIcon(deck.getDeckClass()));
     updateCount(deck.getCardList());
+    setDelete = false;
   }
 
   @Override
@@ -181,7 +183,7 @@ public class DeckFragment extends Fragment implements FragmentView {
   @Override
   public void onPause() {
     super.onPause();
-    mDeckFragmentPresenter.saveDeck(deck);
+    mDeckFragmentPresenter.saveDeck(deck, setDelete);
   }
 
   @Override
@@ -242,7 +244,8 @@ public class DeckFragment extends Fragment implements FragmentView {
           count++;
           deck.getCardList().get(indexFound).setCardCount(count);
         } else if (card.getRarity().equals("Legendary")) {
-          Snackbar.make(mDeckFragmentView, "You can only have 1 " + card.getCardName(), Snackbar.LENGTH_SHORT).show();
+          Snackbar.make(mDeckFragmentView,
+              "You can only have 1 " + card.getCardName(), Snackbar.LENGTH_SHORT).show();
         } else {
           String message = "You can only have 2 " + card.getCardName();
           if (!message.substring(message.length()).equals("s"))
@@ -341,5 +344,9 @@ public class DeckFragment extends Fragment implements FragmentView {
     public void updateClassIcon(int iconId);
     public void clearAllCards();
     public void deleteDeck();
+  }
+
+  public void setForDeletion(boolean delete) {
+    this.setDelete = delete;
   }
 }

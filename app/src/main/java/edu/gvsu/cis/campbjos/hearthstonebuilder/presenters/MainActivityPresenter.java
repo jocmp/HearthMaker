@@ -6,6 +6,8 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -135,12 +137,50 @@ public class MainActivityPresenter {
         continue;
       }
       currentDeckObject = readFileStreamToJson(file, jsonParser);
+      int deckId = currentDeckObject.get("id").getAsInt();
       if (currentDeckObject != null) {
         int id = currentDeckObject.get("id").getAsInt();
         mView.setNavigationMenuItem(
-            id,
+            deckId,
             currentDeckObject.get("name").getAsString());
       }
+      //mView.getNavigationView().setItemIconTintList(null);
+      switch (currentDeckObject.get("deckClass").getAsString()){
+        case "Warrior":
+          mView.getNavigationView().getMenu().findItem(deckId).setIcon(R.drawable.warrior_icon);
+          break;
+        case "Druid":
+          mView.getNavigationView().getMenu().findItem(deckId).setIcon(R.drawable.druid_icon);
+          break;
+        case "Hunter":
+          mView.getNavigationView().getMenu().findItem(deckId).setIcon(R.drawable.hunter_icon);
+          break;
+        case "Mage":
+          mView.getNavigationView().getMenu().findItem(deckId).setIcon(R.drawable.mage_icon);
+          break;
+        case "Paladin":
+          mView.getNavigationView().getMenu().findItem(deckId).setIcon(R.drawable.paladin_icon);
+          break;
+        case "Priest":
+          mView.getNavigationView().getMenu().findItem(deckId).setIcon(R.drawable.priest_icon);
+          break;
+        case "Rogue":
+          mView.getNavigationView().getMenu().findItem(deckId).setIcon(R.drawable.rogue_icon);
+          break;
+        case "Shaman":
+          mView.getNavigationView().getMenu().findItem(deckId).setIcon(R.drawable.shaman_icon);
+          break;
+        case "Warlock":
+          mView.getNavigationView().getMenu().findItem(deckId).setIcon(R.drawable.warlock_icon);
+          break;
+        default:
+          break;
+      }
+
+
+      Drawable drawable = mView.getNavigationView().getMenu().findItem(deckId).getIcon();
+      drawable.mutate();
+      drawable.setColorFilter(0, PorterDuff.Mode.SRC_ATOP);
     }
   }
 

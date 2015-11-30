@@ -7,7 +7,7 @@
         -->
     <item
         android:id="@+id/gold_card_button"
-        android:icon="@drawable/attack_minion"
+        android:icon="@drawable/star_icon_empty"
         android:title="Toggle Gold Card"
         app:showAsAction="always"/>
 

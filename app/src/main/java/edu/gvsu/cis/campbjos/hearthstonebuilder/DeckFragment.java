@@ -217,10 +217,6 @@ public class DeckFragment extends Fragment implements FragmentView {
       mEmptyTextView.setVisibility(View.VISIBLE);
     }
   }
-  public void clearAllCards(){
-    deck.getCardList().clear();
-    deckAdapter.notifyDataSetChanged();
-  }
 
   public void addDeckCard(Card card) {
     //is the deck full?
@@ -329,6 +325,7 @@ public class DeckFragment extends Fragment implements FragmentView {
 
   public void clearDeck() {
     deck.getCardList().clear();
+    updateCount(deck.getCardList());
     deckAdapter.notifyDataSetChanged();
   }
   public interface DeckFragmentListener {
@@ -336,7 +333,6 @@ public class DeckFragment extends Fragment implements FragmentView {
     public void updateSubtitle(String amount);
     public void updateSpinner(String className);
     public void updateClassIcon(int iconId);
-    public void clearAllCards();
     public void deleteDeck();
   }
 }

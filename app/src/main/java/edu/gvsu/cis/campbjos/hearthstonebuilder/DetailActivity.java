@@ -1,10 +1,6 @@
 package edu.gvsu.cis.campbjos.hearthstonebuilder;
 
-import android.content.ComponentCallbacks;
-import android.content.ComponentCallbacks2;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -18,14 +14,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.bitmap.Downsampler;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.squareup.picasso.Picasso;
 
 import butterknife.ButterKnife;
@@ -165,8 +156,9 @@ public class DetailActivity extends AppCompatActivity {
     setDetail.setText(cardSet);
     manaDetail.setText(String.valueOf(cardMana));
 
-    Glide.with(DetailActivity.this)
+    Glide.with(this)
             .load(goldURL)
+            .placeholder(R.drawable.placeholder_gold)
             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
             .into(gifImage);
 
@@ -263,6 +255,12 @@ public class DetailActivity extends AppCompatActivity {
       menu.findItem(R.id.gold_card_button).setIcon(STAR_FILLED);
     }
     return true;
+  }
+
+  @Override
+  protected void onDestroy() {
+    Glide.get(this).clearMemory();
+    super.onStop();
   }
 
   @Override

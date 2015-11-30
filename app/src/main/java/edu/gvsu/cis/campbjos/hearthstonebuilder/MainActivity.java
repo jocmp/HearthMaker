@@ -20,6 +20,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -110,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements
   private String currentDeckClass;
 
   private int classIcon;
+  private String cardCount;
 
   static {
     spinners = new ArrayList<>();
@@ -282,6 +285,11 @@ public class MainActivity extends AppCompatActivity implements
     for (Spinner spinner : spinners) {
       spinner.setSelection(0);
     }
+    // Reset Search View
+    if (mFragment != null) {
+      searchView.setQuery("", true);
+      searchView.onActionViewCollapsed();
+    }
     // Reset Subtitle
     updateSubtitle(null);
 
@@ -309,7 +317,7 @@ public class MainActivity extends AppCompatActivity implements
           currentDeckClass = "";
           if (mSpinnerView.getVisibility() == View.VISIBLE) {
             mSpinnerView.setVisibility(View.GONE);
-            getSupportActionBar().setSubtitle(null);
+            updateSubtitle(cardCount);
           }
         }
         break;
@@ -349,7 +357,10 @@ public class MainActivity extends AppCompatActivity implements
         ViewGroup.MarginLayoutParams.WRAP_CONTENT, ViewGroup.MarginLayoutParams.WRAP_CONTENT);
     image.setLayoutParams(layoutParams);
     image.setImageResource(R.drawable.ic_filter_list_24dp);
-    image.setPadding(50, 0, 50, 0);
+    int padding_in_dp = 16;
+    final float scale = getResources().getDisplayMetrics().density;
+    int padding_in_px = (int) (padding_in_dp * scale + 0.5f);
+    image.setPadding(padding_in_px, 0, padding_in_px, 0);
 
     image.setOnClickListener(new View.OnClickListener() {
                                @Override
@@ -414,7 +425,7 @@ public class MainActivity extends AppCompatActivity implements
           setListUpAnimation(mContentFrame);
           //mSpinnerView.setVisibility(View.INVISIBLE);
           mSpinnerView.setVisibility(View.GONE);
-          getSupportActionBar().setSubtitle(null);
+          updateSubtitle(cardCount);
         } else {
           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mSpinnerView.setElevation(0);
@@ -565,6 +576,7 @@ public class MainActivity extends AppCompatActivity implements
 
   @Override
   public void updateSubtitle(String amount) {
+    cardCount = amount;
     getSupportActionBar().setSubtitle(amount);
   }
 
@@ -586,12 +598,6 @@ public class MainActivity extends AppCompatActivity implements
   @Override
   public void getAllCards() {
     mMainActivityPresenter.loadCards();
-  }
-
-  @Override
-  public void clearAllCards() {
-    DeckFragment deckFragment = (DeckFragment) mFragment;
-    deckFragment.clearAllCards();
   }
 
   @Override
@@ -646,8 +652,51 @@ public class MainActivity extends AppCompatActivity implements
       editor.apply();
     }
     currentDeckClass = className;
+
     setNavigationMenuItem(deckId, deckName);
+
     onNavigationItemSelected(mDrawerList.getMenu().findItem(deckId));
+
+    //set class icon
+
+    switch (className){
+      case "Warrior":
+        getNavigationView().getMenu().findItem(deckId).setIcon(R.drawable.warrior_icon);
+        break;
+      case "Druid":
+        getNavigationView().getMenu().findItem(deckId).setIcon(R.drawable.druid_icon);
+        break;
+      case "Hunter":
+        getNavigationView().getMenu().findItem(deckId).setIcon(R.drawable.hunter_icon);
+        break;
+      case "Mage":
+        getNavigationView().getMenu().findItem(deckId).setIcon(R.drawable.mage_icon);
+        break;
+      case "Paladin":
+        getNavigationView().getMenu().findItem(deckId).setIcon(R.drawable.paladin_icon);
+        break;
+      case "Priest":
+        getNavigationView().getMenu().findItem(deckId).setIcon(R.drawable.priest_icon);
+        break;
+      case "Rogue":
+        getNavigationView().getMenu().findItem(deckId).setIcon(R.drawable.rogue_icon);
+        break;
+      case "Shaman":
+        getNavigationView().getMenu().findItem(deckId).setIcon(R.drawable.shaman_icon);
+        break;
+      case "Warlock":
+        getNavigationView().getMenu().findItem(deckId).setIcon(R.drawable.warlock_icon);
+        break;
+      default:
+        break;
+    }
+
+
+    Drawable drawable = getNavigationView().getMenu().findItem(deckId).getIcon();
+    drawable.mutate();
+    drawable.setColorFilter(0, PorterDuff.Mode.SRC_ATOP);
+
+
   }
 
   public MainActivityPresenter getPresenter() {

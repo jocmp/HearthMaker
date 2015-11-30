@@ -1,9 +1,13 @@
 package edu.gvsu.cis.campbjos.hearthstonebuilder.presenters;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.os.Build;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -103,7 +107,9 @@ public class MainActivityPresenter {
       final FragmentView fragmentView = (FragmentView) mView.getActivityFragment();
       fragmentView.setProgress(false);
 
-      Snackbar.make(mView.getNavigationView(), "No network connection. Please reconnect and try again", Snackbar.LENGTH_INDEFINITE).setAction("Retry",
+      Snackbar.make(mView.getNavigationView(),
+          "No network connection. Please reconnect and try again",
+          Snackbar.LENGTH_INDEFINITE).setAction("Retry",
               new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -114,7 +120,6 @@ public class MainActivityPresenter {
               }).show();
     }
   }
-
 
   public void loadDecks(String[] fileList) {
     String[] files = fileList;
@@ -135,7 +140,6 @@ public class MainActivityPresenter {
         mView.setNavigationMenuItem(
             id,
             currentDeckObject.get("name").getAsString());
-       // mView.getNavigationView().getMenu().findItem(id).setIcon(R.drawable.druid_icon)
       }
     }
   }

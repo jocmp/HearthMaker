@@ -1,27 +1,12 @@
 package edu.gvsu.cis.campbjos.hearthstonebuilder.presenters;
 
+import android.content.Context;
+import android.content.Intent;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
-import android.support.v4.app.Fragment;
-import android.util.Log;
-import android.view.View;
-
-import edu.gvsu.cis.campbjos.hearthstonebuilder.CardViewFragment;
-import edu.gvsu.cis.campbjos.hearthstonebuilder.DeckEncoder;
-import edu.gvsu.cis.campbjos.hearthstonebuilder.DeckFragment;
-import edu.gvsu.cis.campbjos.hearthstonebuilder.DetailActivity;
-import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
-import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Deck;
-import edu.gvsu.cis.campbjos.hearthstonebuilder.JsonUtil;
-import edu.gvsu.cis.campbjos.hearthstonebuilder.MainActivity;
-import edu.gvsu.cis.campbjos.hearthstonebuilder.services.HearthService;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -29,15 +14,14 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
-import rx.Observer;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.CardViewFragment;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.DeckEncoder;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.DeckFragment;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.DetailActivity;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Deck;
 
 /**
  * @author Josiah Campbell

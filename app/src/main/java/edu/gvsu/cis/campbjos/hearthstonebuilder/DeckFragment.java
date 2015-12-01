@@ -11,13 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import edu.gvsu.cis.campbjos.hearthstonebuilder.CustomAdapters.CardDeckAdapter;
-import edu.gvsu.cis.campbjos.hearthstonebuilder.CustomAdapters.DeckCatalogAdapter;
-import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
-import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Deck;
-import edu.gvsu.cis.campbjos.hearthstonebuilder.UI.DividerItemDecoration;
-import edu.gvsu.cis.campbjos.hearthstonebuilder.presenters.DeckFragmentPresenter;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -25,6 +18,12 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.CustomAdapters.CardDeckAdapter;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.CustomAdapters.DeckCatalogAdapter;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Deck;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.UI.DividerItemDecoration;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.presenters.DeckFragmentPresenter;
 
 
 /**

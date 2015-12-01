@@ -10,8 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +49,11 @@ public class CardViewFragment extends Fragment implements FragmentView {
     super.onViewCreated(view, savedInstanceState);
     //mLoadingView.setVisibility(View.VISIBLE);
     mListener.getAllCards();
+  }
 
+  @Override
+  public void onResume() {
+    super.onResume();
   }
 
   @Override

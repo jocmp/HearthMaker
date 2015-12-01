@@ -1,10 +1,5 @@
 package edu.gvsu.cis.campbjos.hearthstonebuilder;
 
-import android.content.ComponentCallbacks;
-import android.content.ComponentCallbacks2;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -18,28 +13,25 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.bitmap.Downsampler;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.squareup.picasso.Picasso;
+
+import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.UI.CardIconCrop;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import edu.gvsu.cis.campbjos.hearthstonebuilder.UI.CardIconCrop;
 
 public class DetailActivity extends AppCompatActivity {
 
-  String cardRarity;
-  String dustCost;
-  String cardSet;
+  private String cardRarity;
+  private String dustCost;
+  private String cardSet;
   private final static int STAR_EMPTY = R.drawable.star_icon_empty;
   private final static int STAR_FILLED = R.drawable.star_icon_filled;
-
+  private Card mCard;
   @InjectView(R.id.toolbar)
   Toolbar toolbar;
   @InjectView(R.id.cardView)
@@ -96,31 +88,32 @@ public class DetailActivity extends AppCompatActivity {
 
     Glide.get(this).clearMemory();
 
-    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    getSupportActionBar().setHomeButtonEnabled(true);
-    getSupportActionBar().setDisplayShowHomeEnabled(true);
+    if (getSupportActionBar() != null) {
+      getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
 
-    Intent intent = getIntent();
-    String imageURL = intent.getStringExtra("card");
-    String cardName = intent.getStringExtra("name");
-    String cardFlavor = intent.getStringExtra("flavor");
-    String cardClass = intent.getStringExtra("class");
-    cardRarity = intent.getStringExtra("rarity");
-    cardSet = intent.getStringExtra("set");
-    String cardType = intent.getStringExtra("type");
-    int cardHealth = intent.getIntExtra("health", 0);
-    int cardAttack = intent.getIntExtra("attack", 0);
-    String cardArtist = intent.getStringExtra("artist");
-    int cardMana = intent.getIntExtra("cost", 0);
-    int cardDura = intent.getIntExtra("durability", 0);
-    String cardText = intent.getStringExtra("text");
-    String goldURL = intent.getStringExtra("gold");
+    String cardJson = getIntent().getStringExtra("card");
+    mCard = JsonUtil.parseJsonToCard(cardJson);
+
+    String imageURL = mCard.getImageUrl();
+    String cardName = mCard.getCardName();
+    String cardFlavor = mCard.getFlavor();
+    String cardClass = mCard.getPlayerClass();
+    cardRarity = mCard.getRarity();
+    cardSet = mCard.getCardSet();
+    String cardType = mCard.getType();
+    int cardHealth = mCard.getHealth();
+    int cardAttack = mCard.getAttack();
+    String cardArtist = mCard.getArtist();
+    int cardMana = mCard.getCost();
+    int cardDurability = mCard.getDurability();
+    String cardText = mCard.getText();
+    String goldURL = mCard.getGoldImageUrl();
     dustCost = "N/A";
 
-    if(cardSet.equals("Basic") || cardSet.equals("Reward")) {
+    if (cardSet.equals("Basic") || cardSet.equals("Reward")) {
       dustCost = "Uncraftable";
-    }
-    else {
+    } else {
       switch (cardRarity) {
         case "Free":
           dustCost = "Uncraftable";
@@ -166,9 +159,9 @@ public class DetailActivity extends AppCompatActivity {
     manaDetail.setText(String.valueOf(cardMana));
 
     Glide.with(DetailActivity.this)
-            .load(goldURL)
-            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-            .into(gifImage);
+        .load(goldURL)
+        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+        .into(gifImage);
 
     Picasso.with(this).load(imageURL).into(cardImage);
     Picasso.with(this).load(imageURL).transform(CardIconCrop.getCardIconCrop()).into(cardIcon);
@@ -228,7 +221,7 @@ public class DetailActivity extends AppCompatActivity {
         break;
     }
 
-    switch(cardType) {
+    switch (cardType) {
       case ("Minion"):
         typeIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.minion_icon2));
         attackDetail.setText(String.valueOf(cardAttack));
@@ -245,21 +238,20 @@ public class DetailActivity extends AppCompatActivity {
         attackDetail.setText(String.valueOf(cardAttack));
         attackIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.attack_weapon_500));
         typeIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.weapon_icon2));
-        healthDetail.setText(String.valueOf(cardDura));
+        healthDetail.setText(String.valueOf(cardDurability));
         healthIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.durability_weapon_500));
         break;
     }
   }
-  
+
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     // Inflate the menu; this adds items to the action bar if it is present.
     getMenuInflater().inflate(R.menu.detail_toolbar, menu);
-    if(cardImage.getVisibility() == View.VISIBLE) {
+    if (cardImage.getVisibility() == View.VISIBLE) {
       menu.findItem(R.id.gold_card_button).setIcon(STAR_EMPTY);
-    }
-    else {
+    } else {
       menu.findItem(R.id.gold_card_button).setIcon(STAR_FILLED);
     }
     return true;
@@ -280,10 +272,9 @@ public class DetailActivity extends AppCompatActivity {
           cardImage.setVisibility(View.INVISIBLE);
           gifImage.setVisibility(View.VISIBLE);
 
-          if(cardSet.equals("Basic") || cardSet.equals("Reward")) {
+          if (cardSet.equals("Basic") || cardSet.equals("Reward")) {
             dustCost = "Uncraftable";
-          }
-          else {
+          } else {
             switch (cardRarity) {
               case "Free":
                 dustCost = "Uncraftable";
@@ -302,15 +293,13 @@ public class DetailActivity extends AppCompatActivity {
                 break;
             }
           }
-        }
-        else {
+        } else {
           cardImage.setVisibility(View.VISIBLE);
           gifImage.setVisibility(View.INVISIBLE);
 
-          if(cardSet.equals("Basic") || cardSet.equals("Reward")) {
+          if (cardSet.equals("Basic") || cardSet.equals("Reward")) {
             dustCost = "Uncraftable";
-          }
-          else {
+          } else {
             switch (cardRarity) {
               case "Free":
                 dustCost = "Uncraftable";

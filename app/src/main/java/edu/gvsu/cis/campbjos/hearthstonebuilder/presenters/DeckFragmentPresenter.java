@@ -125,20 +125,9 @@ public class DeckFragmentPresenter {
 
   public void startDetailIntent(Card card) {
     Intent intent = new Intent(mView.getActivity(), DetailActivity.class);
-    intent.putExtra("card", card.getImageUrl());
-    intent.putExtra("name", card.getCardName());
-    intent.putExtra("flavor", card.getFlavor());
-    intent.putExtra("class", card.getPlayerClass());
-    intent.putExtra("rarity", card.getRarity());
-    intent.putExtra("set",card.getCardSet());
-    intent.putExtra("type",card.getType());
-    // Alternate extras
-    intent.putExtra("health", card.getHealth());
-    intent.putExtra("attack", card.getAttack());
-    intent.putExtra("artist", card.getArtist());
-    intent.putExtra("mana", card.getCost());
-    intent.putExtra("text", card.getText());
-    intent.putExtra("gold",card.getGoldImageUrl());
+    Gson gson = new Gson();
+    String cardJson = gson.toJson(card);
+    intent.putExtra("card", cardJson);
     mView.startActivity(intent);
   }
 }

@@ -1,5 +1,7 @@
 package edu.gvsu.cis.campbjos.hearthstonebuilder;
 
+import com.google.gson.Gson;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -131,25 +133,11 @@ public class CardViewFragment extends Fragment implements FragmentView {
     return cards;
   }
 
-  public void configureDetailIntent(Card intentCard) {
-
+  public void configureDetailIntent(Card card) {
     Intent intent = new Intent(getActivity(), DetailActivity.class);
-
-    intent.putExtra("card",intentCard.getImageUrl());
-    intent.putExtra("name",intentCard.getCardName());
-    intent.putExtra("flavor",intentCard.getFlavor());
-    intent.putExtra("class",intentCard.getPlayerClass());
-    intent.putExtra("rarity",intentCard.getRarity());
-    intent.putExtra("set",intentCard.getCardSet());
-    intent.putExtra("type",intentCard.getType());
-
-    //Alt. Intents
-    intent.putExtra("health",intentCard.getHealth());
-    intent.putExtra("attack",intentCard.getAttack());
-    intent.putExtra("artist",intentCard.getArtist());
-    intent.putExtra("mana",intentCard.getCost());
-    intent.putExtra("text",intentCard.getText());
-    intent.putExtra("gold",intentCard.getGoldImageUrl());
+    Gson gson = new Gson();
+    String cardJson = gson.toJson(card);
+    intent.putExtra("card", cardJson);
     startActivity(intent);
   }
 }

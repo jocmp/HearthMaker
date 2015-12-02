@@ -336,8 +336,7 @@ public class MainActivity extends AppCompatActivity implements
   }
 
   public void createNewDeckDialog() {
-    NewDeckDialog dialog = new NewDeckDialog();
-    dialog.show(getSupportFragmentManager(), "newdeck");
+    new NewDeckDialog().show(getSupportFragmentManager(), "newdeck");
   }
 
   @Override

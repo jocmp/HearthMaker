@@ -1,13 +1,25 @@
 package edu.gvsu.cis.campbjos.hearthstonebuilder;
 
-import android.content.Intent;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.stream.JsonWriter;
+
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,17 +31,43 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.squareup.picasso.Picasso;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Deck;
 import edu.gvsu.cis.campbjos.hearthstonebuilder.UI.CardIconCrop;
 
-public class DetailActivity extends AppCompatActivity {
+import org.json.JSONObject;
 
-  String cardRarity;
-  String dustCost;
-  String cardSet;
-  private final static int STAR_EMPTY = R.drawable.star_icon_empty;
-  private final static int STAR_FILLED = R.drawable.star_icon_filled;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
+
+
+public class DetailActivity extends AppCompatActivity implements View.OnClickListener {
+
+  private String cardRarity;
+  private String dustCost;
+  private String cardSet;
+  private static final int STAR_EMPTY = R.drawable.star_icon_empty;
+  private static final int STAR_FILLED = R.drawable.star_icon_filled;
+  private String cardJson;
+  private Card mCard;
+  private boolean validAdd;
+  private String mFileName;
+  private String validReason;
 
   private final static int GOLD_ICON = R.drawable.gold_icon_24dp;
   private final static int NON_GOLD_ICON = R.drawable.non_gold_icon_24dp;
@@ -39,7 +77,9 @@ public class DetailActivity extends AppCompatActivity {
   @InjectView(R.id.cardView)
   ImageView cardImage;
   @InjectView(R.id.toolbar_layout)
-  CollapsingToolbarLayout cToolLayout;
+  CollapsingToolbarLayout mToolbarLayout;
+  @InjectView(R.id.detailCoordinatorView)
+  CoordinatorLayout detailCoordinatorView;
   @InjectView(R.id.flavor_text)
   TextView flavorText;
   @InjectView(R.id.class_name)
@@ -80,6 +120,8 @@ public class DetailActivity extends AppCompatActivity {
   ImageView cardIcon;
   @InjectView(R.id.gold_card)
   ImageView gifImage;
+  @InjectView(R.id.add_fab)
+  FloatingActionButton addFab;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -90,52 +132,53 @@ public class DetailActivity extends AppCompatActivity {
 
     Glide.get(this).clearMemory();
 
-    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    getSupportActionBar().setHomeButtonEnabled(true);
-    getSupportActionBar().setDisplayShowHomeEnabled(true);
+    if (getSupportActionBar() != null) {
+      getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
 
-    Intent intent = getIntent();
-    String imageURL = intent.getStringExtra("card");
-    String cardName = intent.getStringExtra("name");
-    String cardFlavor = intent.getStringExtra("flavor");
-    String cardClass = intent.getStringExtra("class");
-    cardRarity = intent.getStringExtra("rarity");
-    cardSet = intent.getStringExtra("set");
-    String cardType = intent.getStringExtra("type");
-    int cardHealth = intent.getIntExtra("health", 0);
-    int cardAttack = intent.getIntExtra("attack", 0);
-    String cardArtist = intent.getStringExtra("artist");
-    int cardMana = intent.getIntExtra("cost", 0);
-    int cardDura = intent.getIntExtra("durability", 0);
-    String cardText = intent.getStringExtra("text");
-    String goldURL = intent.getStringExtra("gold");
+    addFab.setOnClickListener(this);
+    cardJson = getIntent().getStringExtra("card");
+    mFileName = getIntent().getStringExtra("fileName");
+    validAdd = getIntent().getBooleanExtra("isValid", false);
+    validReason = getIntent().getStringExtra("validReason");
+    mCard = JsonUtil.parseJsonToCard(cardJson);
+    String imageURL = mCard.getImageUrl();
+    String cardName = mCard.getCardName();
+    String cardFlavor = mCard.getFlavor();
+    String cardClass = mCard.getPlayerClass();
+    cardRarity = mCard.getRarity();
+    cardSet = mCard.getCardSet();
+    String cardType = mCard.getType();
+    int cardHealth = mCard.getHealth();
+    int cardAttack = mCard.getAttack();
+    String cardArtist = mCard.getArtist();
+    int cardMana = mCard.getCost();
+    int cardDurability = mCard.getDurability();
+    String cardText = mCard.getText();
+    String goldURL = mCard.getGoldImageUrl();
     dustCost = "N/A";
 
-    if(cardSet.equals("Basic") || cardSet.equals("Reward")) {
-      dustCost = "Uncraftable";
-    }
-    else {
-      switch (cardRarity) {
-        case "Free":
+    switch (cardRarity) {
+      case "Free":
+        dustCost = "Uncraftable";
+        cardRarity = "Basic";
+        break;
+      case "Common":
+        dustCost = "40";
+        break;
+      case "Rare":
+        dustCost = "100";
+        break;
+      case "Epic":
+        dustCost = "400";
+        break;
+      case "Legendary":
+        dustCost = "1600";
+        break;
+      default:
+        if (cardSet.equals("Basic") || cardSet.equals("Reward")) {
           dustCost = "Uncraftable";
-          break;
-        case "Common":
-          dustCost = "40";
-          break;
-        case "Rare":
-          dustCost = "100";
-          break;
-        case "Epic":
-          dustCost = "400";
-          break;
-        case "Legendary":
-          dustCost = "1600";
-          break;
-      }
-    }
-
-    if (cardRarity != null && cardRarity.equals("Free")) {
-      cardRarity = "Basic";
+        }
     }
 
     cardText = cardText.replaceAll("[$#]", "");
@@ -144,18 +187,18 @@ public class DetailActivity extends AppCompatActivity {
       cardText = "No Card Text";
     }
 
-    cToolLayout.setExpandedTitleColor(Color.parseColor("#00FFFFFF"));
+    mToolbarLayout.setExpandedTitleColor(Color.parseColor("#00FFFFFF"));
 
     rarityDetail.setText(cardRarity);
     //get rid of html tags
     cardFlavor = Html.fromHtml(cardFlavor).toString();
-    flavorText.setText("-\"" + cardFlavor + "\"");
+    flavorText.setText(String.format("-\"%s\"", cardFlavor));
     className.setText(cardClass);
-    cToolLayout.setTitle(cardName);
+    mToolbarLayout.setTitle(cardName);
     typeDetail.setText(cardType);
     textDetail.setText(cardText);
     dustDetail.setText(dustCost);
-    artistDetail.setText("Artist: " + cardArtist);
+    artistDetail.setText(String.format("Artist: %s", cardArtist));
     setDetail.setText(cardSet);
     manaDetail.setText(String.valueOf(cardMana));
 
@@ -165,7 +208,6 @@ public class DetailActivity extends AppCompatActivity {
             //.placeholder(R.drawable.placeholder_gold)
             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
             .into(gifImage);
-
     Picasso.with(this).load(imageURL).into(cardImage);
     Picasso.with(this).load(imageURL).transform(CardIconCrop.getCardIconCrop()).into(cardIcon);
 
@@ -224,7 +266,7 @@ public class DetailActivity extends AppCompatActivity {
         break;
     }
 
-    switch(cardType) {
+    switch (cardType) {
       case ("Minion"):
         typeIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.minion_icon2));
         attackDetail.setText(String.valueOf(cardAttack));
@@ -241,12 +283,12 @@ public class DetailActivity extends AppCompatActivity {
         attackDetail.setText(String.valueOf(cardAttack));
         attackIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.attack_weapon_500));
         typeIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.weapon_icon2));
-        healthDetail.setText(String.valueOf(cardDura));
+        healthDetail.setText(String.valueOf(cardDurability));
         healthIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.durability_weapon_500));
         break;
     }
   }
-  
+
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
@@ -283,10 +325,9 @@ public class DetailActivity extends AppCompatActivity {
           cardImage.setVisibility(View.INVISIBLE);
           gifImage.setVisibility(View.VISIBLE);
 
-          if(cardSet.equals("Basic") || cardSet.equals("Reward")) {
+          if (cardSet.equals("Basic") || cardSet.equals("Reward")) {
             dustCost = "Uncraftable";
-          }
-          else {
+          } else {
             switch (cardRarity) {
               case "Free":
                 dustCost = "Uncraftable";
@@ -305,15 +346,13 @@ public class DetailActivity extends AppCompatActivity {
                 break;
             }
           }
-        }
-        else {
+        } else {
           cardImage.setVisibility(View.VISIBLE);
           gifImage.setVisibility(View.INVISIBLE);
 
-          if(cardSet.equals("Basic") || cardSet.equals("Reward")) {
+          if (cardSet.equals("Basic") || cardSet.equals("Reward")) {
             dustCost = "Uncraftable";
-          }
-          else {
+          } else {
             switch (cardRarity) {
               case "Free":
                 dustCost = "Uncraftable";
@@ -340,5 +379,92 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     return super.onOptionsItemSelected(item);
+  }
+
+  private void addCardToDeck(String filename) {
+    JsonParser jsonParser = new JsonParser();
+    JsonObject currentDeckObject = readFileStreamToJson(filename, jsonParser);
+    Gson gson = new Gson();
+    if (currentDeckObject == null) {
+      return;
+    }
+    JsonArray array = currentDeckObject.get("cards").getAsJsonArray();
+    boolean cardFound = false;
+    JsonObject currentObj;
+    for (int k = 0; k < array.size(); k++) {
+      currentObj = gson.fromJson(array.get(k).getAsString(), JsonObject.class);
+      if (currentObj.get("name").getAsString().equals(mCard.getCardName())) {
+        cardFound = true;
+        int count = currentObj.get("cardCount").getAsInt();
+        if (count < 2) {
+          count++;
+          currentDeckObject.get("cards")
+              .getAsJsonArray().remove(k);
+          mCard.setCardCount(count);
+          currentDeckObject
+              .get("cards").getAsJsonArray().add(new JsonPrimitive(gson.toJson(mCard)));
+        }
+      }
+    }
+    if (!cardFound) {
+      int cardCount = mCard.getCardCount();
+      mCard.setCardCount(cardCount += 1);
+      currentDeckObject.get("cards").getAsJsonArray().add(new JsonPrimitive(gson.toJson(mCard)));
+    }
+    try {
+      OutputStreamWriter outputStreamWriter
+          = new OutputStreamWriter(openFileOutput(filename, Context.MODE_PRIVATE));
+      outputStreamWriter.write(currentDeckObject.toString());
+      outputStreamWriter.close();
+    } catch (IOException e) {
+      Log.e("Exception", "File write failed: " + e.toString());
+    }
+  }
+
+  private JsonObject readFileStreamToJson(String fileName, JsonParser parser) {
+    FileInputStream fis = null;
+    JsonObject fileObject = new JsonObject();
+    try {
+      fis = this.openFileInput(fileName);
+      fileObject = parser.parse(getString(fis)).getAsJsonObject();
+      fis.close();
+    } catch (FileNotFoundException e) {
+      return null;
+    } catch (IOException e) {
+      return null;
+    }
+    return fileObject;
+  }
+
+  private static String getString(FileInputStream stream) throws IOException {
+
+    BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+    StringBuilder sb = new StringBuilder();
+
+    String line = null;
+    try {
+      while ((line = reader.readLine()) != null) {
+        sb.append(line).append("\n");
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    return sb.toString();
+  }
+
+  @Override
+  public void onClick(View view) {
+    if (view.getId() == R.id.add_fab) {
+      if (mFileName != null && validAdd && mCard.getCardCount() < 2) {
+        addCardToDeck(mFileName);
+        Snackbar.make(detailCoordinatorView,
+            String.format("%s added to deck", mCard.getCardName()), Snackbar.LENGTH_SHORT).show();
+      } else if (mFileName != null && mCard.getCardCount() < 2) {
+        Snackbar.make(detailCoordinatorView, validReason, Snackbar.LENGTH_SHORT).show();
+      } else {
+        Snackbar.make(detailCoordinatorView, "Invalid add", Snackbar.LENGTH_SHORT).show();
+      }
+    }
   }
 }

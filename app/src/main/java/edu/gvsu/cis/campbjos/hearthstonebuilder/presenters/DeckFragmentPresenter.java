@@ -2,6 +2,7 @@ package edu.gvsu.cis.campbjos.hearthstonebuilder.presenters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -70,6 +71,7 @@ public class DeckFragmentPresenter {
     }
     List<Card> tempList = mView.getFragmentDeck().getCardList();
     for (JsonElement elem : currentDeckObject.get("cards").getAsJsonArray()) {
+      Log.d("File to parse", elem.getAsString());
       JsonObject jsonObject = jsonParser.parse(elem.getAsString()).getAsJsonObject();
       tempList.add(gson.fromJson(jsonObject, Card.class));
     }
@@ -104,25 +106,23 @@ public class DeckFragmentPresenter {
     } catch (IOException e) {
       e.printStackTrace();
     }
+    Log.d("Filename", sb.toString());
     return sb.toString();
   }
 
   public void startDetailIntent(Card card) {
     Intent intent = new Intent(mView.getActivity(), DetailActivity.class);
-    intent.putExtra("card", card.getImageUrl());
-    intent.putExtra("name", card.getCardName());
-    intent.putExtra("flavor", card.getFlavor());
-    intent.putExtra("class", card.getPlayerClass());
-    intent.putExtra("rarity", card.getRarity());
-    intent.putExtra("set",card.getCardSet());
-    intent.putExtra("type",card.getType());
-    // Alternate extras
-    intent.putExtra("health", card.getHealth());
-    intent.putExtra("attack", card.getAttack());
-    intent.putExtra("artist", card.getArtist());
-    intent.putExtra("mana", card.getCost());
-    intent.putExtra("text", card.getText());
-    intent.putExtra("gold",card.getGoldImageUrl());
+    String cardJson = new Gson().toJson(card);
+    intent.putExtra("card", cardJson);
+    if (card.getCardCount() < 2 && mView.getFragmentDeck().getCardList().size() < 30) {
+      intent.putExtra("isValid", true);
+      intent.putExtra("cardCount", card.getCardCount());
+      intent.putExtra("fileName", String.valueOf(mView.getFragmentDeck().getId()));
+    } else if (card.getCardCount() == 2) {
+      intent.putExtra("validReason", String.format("You can only have 2 %s", card.getCardName()));
+    } else {
+      intent.putExtra("validReason", "Deck is full");
+    }
     mView.startActivity(intent);
   }
 }

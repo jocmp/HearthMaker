@@ -205,19 +205,12 @@ public class MainActivityPresenter {
   }
 
   private static String getString(FileInputStream stream) throws IOException {
-
     BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
     StringBuilder sb = new StringBuilder();
-
     String line = null;
-    try {
-      while ((line = reader.readLine()) != null) {
-        sb.append(line).append("\n");
-      }
-    } catch (IOException e) {
-      e.printStackTrace();
+    while ((line = reader.readLine()) != null) {
+      sb.append(line).append("\n");
     }
-    Log.d("getting FileInputStream", sb.toString());
     return sb.toString();
   }
 
@@ -228,11 +221,7 @@ public class MainActivityPresenter {
   public boolean deleteDeckFile(Context appContext, String filename) {
     appContext.getFilesDir();
     File deckFile = new File(appContext.getFilesDir(), filename);
-    if (deckFile.exists()) {
-      deckFile.delete();
-      return true;
-    }
-    return false;
+    return deckFile.exists() && deckFile.delete();
   }
 
   private boolean checkValidFilename(String filename) {

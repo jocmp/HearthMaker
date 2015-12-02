@@ -31,6 +31,9 @@ public class DetailActivity extends AppCompatActivity {
   private final static int STAR_EMPTY = R.drawable.star_icon_empty;
   private final static int STAR_FILLED = R.drawable.star_icon_filled;
 
+  private final static int GOLD_ICON = R.drawable.gold_icon_24dp;
+  private final static int NON_GOLD_ICON = R.drawable.non_gold_icon_24dp;
+
   @InjectView(R.id.toolbar)
   Toolbar toolbar;
   @InjectView(R.id.cardView)
@@ -158,7 +161,8 @@ public class DetailActivity extends AppCompatActivity {
 
     Glide.with(this)
             .load(goldURL)
-            .placeholder(R.drawable.placeholder_gold)
+            .thumbnail(0.1f)
+            //.placeholder(R.drawable.placeholder_gold)
             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
             .into(gifImage);
 
@@ -249,10 +253,10 @@ public class DetailActivity extends AppCompatActivity {
     // Inflate the menu; this adds items to the action bar if it is present.
     getMenuInflater().inflate(R.menu.detail_toolbar, menu);
     if(cardImage.getVisibility() == View.VISIBLE) {
-      menu.findItem(R.id.gold_card_button).setIcon(STAR_EMPTY);
+      menu.findItem(R.id.gold_card_button).setIcon(NON_GOLD_ICON);
     }
     else {
-      menu.findItem(R.id.gold_card_button).setIcon(STAR_FILLED);
+      menu.findItem(R.id.gold_card_button).setIcon(GOLD_ICON);
     }
     return true;
   }

@@ -17,6 +17,7 @@
 package edu.gvsu.cis.campbjos.hearthstonebuilder;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
@@ -31,6 +32,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -438,8 +440,7 @@ public class MainActivity extends AppCompatActivity implements
         }
         return true;
       case MENU_ITEM_CLEAR:
-        DeckFragment deckFragment = (DeckFragment) mFragment;
-        deckFragment.clearDeck();
+        clearDeck();
         return true;
       case MENU_ITEM_DELETE:
         deleteDeck();
@@ -558,13 +559,13 @@ public class MainActivity extends AppCompatActivity implements
     } else {
       DeckFragment deckFragment = (DeckFragment) mFragment;
       deckFragment.setCardList(CardFilter.deckFilterCards(list,
-          mClassSpinner.getSelectedItem().toString(),
-          mCostSpinner.getSelectedItem().toString(),
-          mTypeSpinner.getSelectedItem().toString(),
-          mRaritySpinner.getSelectedItem().toString(),
-          mSetSpinner.getSelectedItem().toString(),
-          searchView.getQuery().toString(),
-          deckFragment.getFragmentDeck().getDeckClass()));
+              mClassSpinner.getSelectedItem().toString(),
+              mCostSpinner.getSelectedItem().toString(),
+              mTypeSpinner.getSelectedItem().toString(),
+              mRaritySpinner.getSelectedItem().toString(),
+              mSetSpinner.getSelectedItem().toString(),
+              searchView.getQuery().toString(),
+              deckFragment.getFragmentDeck().getDeckClass()));
     }
   }
 
@@ -602,15 +603,51 @@ public class MainActivity extends AppCompatActivity implements
     mMainActivityPresenter.loadCards();
   }
 
+  public void clearDeck(){
+    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    builder.setMessage("Clear all cards?")
+            .setPositiveButton("Clear", new DialogInterface.OnClickListener() {
+              public void onClick(DialogInterface dialog, int id) {
+                DeckFragment deckFragment = (DeckFragment) mFragment;
+                deckFragment.clearDeck();
+              }
+            })
+            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+              public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+              }
+            });
+    // Create the AlertDialog object and return it
+    builder.create();
+    builder.show();
+  }
+
   @Override
   public void deleteDeck() {
-    DeckFragment deckFragment = (DeckFragment) mFragment;
-    deckFragment.setForDeletion(true);
-    int deckId = deckFragment.getFragmentDeck().getId();
-    String deckFilename = String.valueOf(deckId);
-    onNavigationItemSelected(mDrawerList.getMenu().findItem(CATALOG_FRAGMENT_ID));
-    mDrawerList.getMenu().findItem(R.id.navigation_deck_item).getSubMenu().removeItem(deckId);
-    mMainActivityPresenter.deleteDeckFile(this.getApplicationContext(), deckFilename);
+
+    final Context context = this.getApplicationContext();
+
+    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    builder.setMessage("Delete deck?")
+            .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+              public void onClick(DialogInterface dialog, int id) {
+                DeckFragment deckFragment = (DeckFragment) mFragment;
+                deckFragment.setForDeletion(true);
+                int deckId = deckFragment.getFragmentDeck().getId();
+                String deckFilename = String.valueOf(deckId);
+                onNavigationItemSelected(mDrawerList.getMenu().findItem(CATALOG_FRAGMENT_ID));
+                mDrawerList.getMenu().findItem(R.id.navigation_deck_item).getSubMenu().removeItem(deckId);
+                mMainActivityPresenter.deleteDeckFile(context, deckFilename);
+              }
+            })
+            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+              public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+              }
+            });
+    // Create the AlertDialog object and return it
+    builder.create();
+    builder.show();
   }
 
   public void setNotifyListEmpty() {

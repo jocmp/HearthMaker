@@ -69,6 +69,9 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
   private String mFileName;
   private String validReason;
 
+  private final static int GOLD_ICON = R.drawable.gold_icon_24dp;
+  private final static int NON_GOLD_ICON = R.drawable.non_gold_icon_24dp;
+
   @InjectView(R.id.toolbar)
   Toolbar toolbar;
   @InjectView(R.id.cardView)
@@ -200,11 +203,11 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     manaDetail.setText(String.valueOf(cardMana));
 
     Glide.with(this)
-        .load(goldURL)
-        .placeholder(R.drawable.placeholder_gold)
-        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-        .into(gifImage);
-
+            .load(goldURL)
+            .thumbnail(0.1f)
+            //.placeholder(R.drawable.placeholder_gold)
+            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+            .into(gifImage);
     Picasso.with(this).load(imageURL).into(cardImage);
     Picasso.with(this).load(imageURL).transform(CardIconCrop.getCardIconCrop()).into(cardIcon);
 
@@ -291,10 +294,11 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
   public boolean onCreateOptionsMenu(Menu menu) {
     // Inflate the menu; this adds items to the action bar if it is present.
     getMenuInflater().inflate(R.menu.detail_toolbar, menu);
-    if (cardImage.getVisibility() == View.VISIBLE) {
-      menu.findItem(R.id.gold_card_button).setIcon(STAR_EMPTY);
-    } else {
-      menu.findItem(R.id.gold_card_button).setIcon(STAR_FILLED);
+    if(cardImage.getVisibility() == View.VISIBLE) {
+      menu.findItem(R.id.gold_card_button).setIcon(NON_GOLD_ICON);
+    }
+    else {
+      menu.findItem(R.id.gold_card_button).setIcon(GOLD_ICON);
     }
     return true;
   }

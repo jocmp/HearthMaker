@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Hearthstone Card Colors -->
+    <!-- Hearthstone Card Colors
     <color name="neutral">#E0E0E0</color>
     <color name="druid">#66C79C6E</color>
     <color name="hunter">#44ABD473</color>
@@ -11,7 +11,8 @@
     <color name="shaman">#440070DE</color>
     <color name="warlock">#449482C9</color>
     <color name="warrior">#66C41f3B</color>
-    <!-- WoW Class Colors
+    -->
+    <!-- WoW Class Colors -->
     <color name="neutral">#E0E0E0</color>
     <color name="druid">#44FF7D0A</color>
     <color name="hunter">#44ABD473</color>
@@ -22,7 +23,7 @@
     <color name="shaman">#440070DE</color>
     <color name="warlock">#449482C9</color>
     <color name="warrior">#44C79C6E</color>
-    -->
+
     <color name="primary_material_light">#795548</color>
     <color name="primary_dark_material_light">#3e2723</color>
     <color name="black">#ffffff</color>

@@ -1,27 +1,13 @@
 package edu.gvsu.cis.campbjos.hearthstonebuilder.presenters;
 
+import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
-import android.support.v4.app.Fragment;
-import android.util.Log;
-import android.view.View;
-
-import edu.gvsu.cis.campbjos.hearthstonebuilder.CardViewFragment;
-import edu.gvsu.cis.campbjos.hearthstonebuilder.DeckEncoder;
-import edu.gvsu.cis.campbjos.hearthstonebuilder.DeckFragment;
-import edu.gvsu.cis.campbjos.hearthstonebuilder.DetailActivity;
-import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
-import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Deck;
-import edu.gvsu.cis.campbjos.hearthstonebuilder.JsonUtil;
-import edu.gvsu.cis.campbjos.hearthstonebuilder.MainActivity;
-import edu.gvsu.cis.campbjos.hearthstonebuilder.services.HearthService;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -29,15 +15,14 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
-import rx.Observer;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.CardViewFragment;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.DeckEncoder;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.DeckFragment;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.DetailActivity;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Card;
+import edu.gvsu.cis.campbjos.hearthstonebuilder.Entity.Deck;
 
 /**
  * @author Josiah Campbell
@@ -86,6 +71,7 @@ public class DeckFragmentPresenter {
     }
     List<Card> tempList = mView.getFragmentDeck().getCardList();
     for (JsonElement elem : currentDeckObject.get("cards").getAsJsonArray()) {
+      Log.d("File to parse", elem.getAsString());
       JsonObject jsonObject = jsonParser.parse(elem.getAsString()).getAsJsonObject();
       tempList.add(gson.fromJson(jsonObject, Card.class));
     }
@@ -120,14 +106,23 @@ public class DeckFragmentPresenter {
     } catch (IOException e) {
       e.printStackTrace();
     }
+    Log.d("Filename", sb.toString());
     return sb.toString();
   }
 
   public void startDetailIntent(Card card) {
     Intent intent = new Intent(mView.getActivity(), DetailActivity.class);
-    Gson gson = new Gson();
-    String cardJson = gson.toJson(card);
+    String cardJson = new Gson().toJson(card);
     intent.putExtra("card", cardJson);
+    if (card.getCardCount() < 2 && mView.getFragmentDeck().getCardList().size() < 30) {
+      intent.putExtra("isValid", true);
+      intent.putExtra("cardCount", card.getCardCount());
+      intent.putExtra("fileName", String.valueOf(mView.getFragmentDeck().getId()));
+    } else if (card.getCardCount() == 2) {
+      intent.putExtra("validReason", String.format("You can only have 2 %s", card.getCardName()));
+    } else {
+      intent.putExtra("validReason", "Deck is full");
+    }
     mView.startActivity(intent);
   }
 }

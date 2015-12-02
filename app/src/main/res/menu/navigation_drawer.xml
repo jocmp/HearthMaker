@@ -17,7 +17,9 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/class_icon" android:title="Class Icon" app:showAsAction="always"/>
+    <item android:id="@+id/class_icon"
+        android:title="Class Icon"
+        app:showAsAction="always"/>
     <item android:id="@+id/action_search"
         android:icon="@drawable/ic_filter_list_24dp"
         android:title="@string/action_search"

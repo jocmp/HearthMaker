@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
 
@@ -62,10 +63,10 @@ public class JsonUtil {
 
   /**
    * Convert JsonObject to Card directly.
-   * @param jsonCardObject The JsonObject which is a card
+   * @param json The JsonObject which is a card
    */
   public static Card parseJsonToCard(String json) {
-    JsonObject jsonCardObject = new JsonPrimitive(json).getAsJsonObject();
+    JsonObject jsonCardObject = new JsonParser().parse(json).getAsJsonObject();
     Card card = new Card();
     if (jsonCardObject.get("type").getAsString().equals("Hero")) {
       return card;
@@ -73,7 +74,7 @@ public class JsonUtil {
     try {
       card = gson.fromJson(jsonCardObject, Card.class);
     } catch (JsonSyntaxException syn) {
-
+      // Do nothing
     }
     if (card.getPlayerClass() == null) {
       card.setPlayerClass("Neutral");

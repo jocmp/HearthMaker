@@ -12,8 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +51,11 @@ public class CardViewFragment extends Fragment implements FragmentView {
     super.onViewCreated(view, savedInstanceState);
     //mLoadingView.setVisibility(View.VISIBLE);
     mListener.getAllCards();
+  }
 
+  @Override
+  public void onResume() {
+    super.onResume();
   }
 
   @Override
@@ -132,12 +134,10 @@ public class CardViewFragment extends Fragment implements FragmentView {
   }
 
   public void configureDetailIntent(Card card) {
-
     Intent intent = new Intent(getActivity(), DetailActivity.class);
     Gson gson = new Gson();
     String cardJson = gson.toJson(card);
     intent.putExtra("card", cardJson);
-    intent.putExtra("isValid", false);
     startActivity(intent);
   }
 }

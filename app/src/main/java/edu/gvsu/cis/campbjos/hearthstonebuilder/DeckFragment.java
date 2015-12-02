@@ -126,20 +126,20 @@ public class DeckFragment extends Fragment implements FragmentView {
     catalogAdapter = new DeckCatalogAdapter(catalogCards);
     mCatalogRecyclerView.setAdapter(catalogAdapter);
     mCatalogRecyclerView.addOnItemTouchListener(
-            new RecyclerItemClickListener(getActivity(), mCatalogRecyclerView,
-                    new RecyclerItemClickListener.OnItemClickListener() {
-                      @Override
-                      public void onItemClick(View view, int position) {
-                        addDeckCard(catalogAdapter.getPositionInfo(position));
-                      }
+        new RecyclerItemClickListener(getActivity(), mCatalogRecyclerView,
+            new RecyclerItemClickListener.OnItemClickListener() {
+              @Override
+              public void onItemClick(View view, int position) {
+                addDeckCard(catalogAdapter.getPositionInfo(position));
+              }
 
-                      @Override
-                      public void onItemLongClick(View view, int position) {
-                        mDeckFragmentPresenter.startDetailIntent(catalogAdapter.getPositionInfo(position));
-                      }
-                    }));
+              @Override
+              public void onItemLongClick(View view, int position) {
+                mDeckFragmentPresenter.startDetailIntent(catalogAdapter.getPositionInfo(position));
+              }
+            }));
     mCatalogRecyclerView.addItemDecoration
-            (new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+        (new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
     RecyclerView.LayoutManager mDeckLayoutManager = new LinearLayoutManager(getActivity(),
         LinearLayoutManager.VERTICAL, false);
     mDeckRecyclerView.setHasFixedSize(true);
@@ -148,28 +148,28 @@ public class DeckFragment extends Fragment implements FragmentView {
     deckAdapter = new CardDeckAdapter(deck.getCardList());
     mDeckRecyclerView.setAdapter(deckAdapter);
     mDeckRecyclerView.addOnItemTouchListener(
-            new RecyclerItemClickListener(getActivity(), mCatalogRecyclerView,
-                    new RecyclerItemClickListener.OnItemClickListener() {
-                      @Override
-                      public void onItemClick(View view, int position) {
-                        Card current = deck.getCardList().get(position);
-                        int count = current.getCardCount();
-                        if (count > 1) {
-                          count--;
-                          current.setCardCount(count);
-                          deckAdapter.notifyItemChanged(position);
-                        } else {
-                          deck.getCardList().remove(position);
-                          deckAdapter.notifyItemRemoved(position);
-                        }
-                        updateCount(deck.getCardList());
-                      }
+        new RecyclerItemClickListener(getActivity(), mCatalogRecyclerView,
+            new RecyclerItemClickListener.OnItemClickListener() {
+              @Override
+              public void onItemClick(View view, int position) {
+                Card current = deck.getCardList().get(position);
+                int count = current.getCardCount();
+                if (count > 1) {
+                  count--;
+                  current.setCardCount(count);
+                  deckAdapter.notifyItemChanged(position);
+                } else {
+                  deck.getCardList().remove(position);
+                  deckAdapter.notifyItemRemoved(position);
+                }
+                updateCount(deck.getCardList());
+              }
 
-                      @Override
-                      public void onItemLongClick(View view, int position) {
-                        // Do nothing
-                      }
-                    }));
+              @Override
+              public void onItemLongClick(View view, int position) {
+                // Do nothing
+              }
+            }));
     hostActivity.getAllCards();
     return mDeckFragmentView;
   }
@@ -221,14 +221,9 @@ public class DeckFragment extends Fragment implements FragmentView {
     }
   }
 
-  public void clearAllCards() {
-    deck.getCardList().clear();
-    deckAdapter.notifyDataSetChanged();
-  }
-
   public void addDeckCard(Card card) {
     //is the deck full?
-    if(deckCardCount < 30) {
+    if (deckCardCount < 30) {
       int indexFound = -1;
       int size = deck.getCardList().size();
       for (int k = 0; k < size; k++) {
@@ -265,8 +260,8 @@ public class DeckFragment extends Fragment implements FragmentView {
     }
   }
 
-  private int getClassIcon(String className){
-    switch (className){
+  private int getClassIcon(String className) {
+    switch (className) {
       case "Warrior":
         return R.drawable.warrior_icon;
       case "Druid":
@@ -286,19 +281,18 @@ public class DeckFragment extends Fragment implements FragmentView {
       case "Warlock":
         return R.drawable.warlock_icon;
       default:
-        break;
+        return R.drawable.placeholder;
     }
-    return R.drawable.placeholder;
   }
 
-  private static Comparator<Card> HEARTHSTONE_ORDER = new Comparator<Card>() {
+  private static final Comparator<Card> HEARTHSTONE_ORDER = new Comparator<Card>() {
     public int compare(Card card1, Card card2) {
-      if (card1.getCost() > card2.getCost())
+      if (card1.getCost() > card2.getCost()) {
         return 1;
-      else if (card2.getCost() > card1.getCost()) {
+      } else if (card2.getCost() > card1.getCost()) {
         return -1;
       }
-      //Alphabetical order
+      // Alphabetical order
       int res = String.CASE_INSENSITIVE_ORDER.compare(card1.getCardName(), card2.getCardName());
       if (res == 0) {
         res = card1.getCardName().compareTo(card2.getCardName());
@@ -307,13 +301,13 @@ public class DeckFragment extends Fragment implements FragmentView {
     }
   };
 
-  private void updateCount(List<Card> deck){
+  private void updateCount(List<Card> deck) {
     int count = 0;
     for (Card current : deck) {
       count += current.getCardCount();
     }
     deckCardCount = count;
-    hostActivity.updateSubtitle(String.valueOf(deckCardCount)  + " / 30");
+    hostActivity.updateSubtitle(String.format("%d / 30", deckCardCount));
   }
 
   public List<Card> getAdapterCards() {
@@ -332,21 +326,28 @@ public class DeckFragment extends Fragment implements FragmentView {
     deck.setDeckName(name);
   }
 
+  /**
+   * Clear deck from menu prompt.
+   */
   public void clearDeck() {
     deck.getCardList().clear();
+    updateCount(deck.getCardList());
     deckAdapter.notifyDataSetChanged();
   }
 
   public interface DeckFragmentListener {
-    public void getAllCards();
-    public void updateSubtitle(String amount);
-    public void updateSpinner(String className);
-    public void updateClassIcon(int iconId);
-    public void clearAllCards();
-    public void deleteDeck();
+    void getAllCards();
+
+    void updateSubtitle(String amount);
+
+    void updateSpinner(String className);
+
+    void updateClassIcon(int iconId);
+
+    void deleteDeck();
   }
 
   public void setForDeletion(boolean delete) {
-    this.setDelete = delete;
+    setDelete = delete;
   }
 }

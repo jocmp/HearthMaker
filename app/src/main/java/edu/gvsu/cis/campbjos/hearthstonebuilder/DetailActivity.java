@@ -377,15 +377,17 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     return super.onOptionsItemSelected(item);
   }
 
-  private void addCardToDeck(String filename) {
+  private String addCardToDeck(String filename) {
     JsonParser jsonParser = new JsonParser();
     JsonObject currentDeckObject = readFileStreamToJson(filename, jsonParser);
+
     Gson gson = new Gson();
     if (currentDeckObject == null) {
-      return;
+      return "Invalid add";
     }
     JsonArray array = currentDeckObject.get("cards").getAsJsonArray();
     boolean cardFound = false;
+    String message = "";
     JsonObject currentObj;
     for (int k = 0; k < array.size(); k++) {
       currentObj = gson.fromJson(array.get(k).getAsString(), JsonObject.class);
@@ -399,6 +401,9 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
           mCard.setCardCount(count);
           currentDeckObject
               .get("cards").getAsJsonArray().add(new JsonPrimitive(gson.toJson(mCard)));
+          message = String.format("Added %s to deck", mCard.getCardName());
+        } else {
+          message = String.format("You can only have 2 %s", mCard.getCardName());
         }
       }
     }
@@ -406,6 +411,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
       int cardCount = mCard.getCardCount();
       mCard.setCardCount(cardCount += 1);
       currentDeckObject.get("cards").getAsJsonArray().add(new JsonPrimitive(gson.toJson(mCard)));
+      message = String.format("Added %s to deck", mCard.getCardName());
     }
     try {
       OutputStreamWriter outputStreamWriter
@@ -413,8 +419,9 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
       outputStreamWriter.write(currentDeckObject.toString());
       outputStreamWriter.close();
     } catch (IOException e) {
-      Log.e("Exception", "File write failed: " + e.toString());
+      return "Failed to add card to deck";
     }
+    return message;
   }
 
   private JsonObject readFileStreamToJson(String fileName, JsonParser parser) {
@@ -452,11 +459,10 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
   @Override
   public void onClick(View view) {
     if (view.getId() == R.id.add_fab) {
-      if (mFileName != null && validAdd && mCard.getCardCount() < 2) {
-        addCardToDeck(mFileName);
-        Snackbar.make(detailCoordinatorView,
-            String.format("%s added to deck", mCard.getCardName()), Snackbar.LENGTH_SHORT).show();
-      } else if (mFileName != null && mCard.getCardCount() < 2) {
+      if (mFileName != null && validAdd) {
+        String message = addCardToDeck(mFileName);
+        Snackbar.make(detailCoordinatorView, message, Snackbar.LENGTH_SHORT).show();
+      } else if (mFileName != null) {
         Snackbar.make(detailCoordinatorView, validReason, Snackbar.LENGTH_SHORT).show();
       } else {
         Snackbar.make(detailCoordinatorView, "Invalid add", Snackbar.LENGTH_SHORT).show();

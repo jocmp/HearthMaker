@@ -71,7 +71,6 @@ public class DeckFragmentPresenter {
     }
     List<Card> tempList = mView.getFragmentDeck().getCardList();
     for (JsonElement elem : currentDeckObject.get("cards").getAsJsonArray()) {
-      Log.d("File to parse", elem.getAsString());
       JsonObject jsonObject = jsonParser.parse(elem.getAsString()).getAsJsonObject();
       tempList.add(gson.fromJson(jsonObject, Card.class));
     }
@@ -104,9 +103,8 @@ public class DeckFragmentPresenter {
         sb.append(line).append("\n");
       }
     } catch (IOException e) {
-      e.printStackTrace();
+      return null;
     }
-    Log.d("Filename", sb.toString());
     return sb.toString();
   }
 
@@ -114,15 +112,7 @@ public class DeckFragmentPresenter {
     Intent intent = new Intent(mView.getActivity(), DetailActivity.class);
     String cardJson = new Gson().toJson(card);
     intent.putExtra("card", cardJson);
-    if (card.getCardCount() < 2 && mView.getFragmentDeck().getCardList().size() < 30) {
-      intent.putExtra("isValid", true);
-      intent.putExtra("cardCount", card.getCardCount());
-      intent.putExtra("fileName", String.valueOf(mView.getFragmentDeck().getId()));
-    } else if (card.getCardCount() == 2) {
-      intent.putExtra("validReason", String.format("You can only have 2 %s", card.getCardName()));
-    } else {
-      intent.putExtra("validReason", "Deck is full");
-    }
+    intent.putExtra("fileName", String.valueOf(mView.getFragmentDeck().getId()));
     mView.startActivity(intent);
   }
 }

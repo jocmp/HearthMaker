@@ -106,6 +106,7 @@ public class DeckFragment extends Fragment implements FragmentView {
     hostActivity.updateSpinner(deck.getDeckClass());
     hostActivity.updateClassIcon(getClassIcon(deck.getDeckClass()));
     updateCount(deck.getCardList());
+    Collections.sort(deck.getCardList(), HEARTHSTONE_ORDER);
     setDelete = false;
   }
 

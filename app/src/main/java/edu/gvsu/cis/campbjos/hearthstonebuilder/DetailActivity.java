@@ -61,16 +61,14 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
   private String cardRarity;
   private String dustCost;
   private String cardSet;
-  private static final int STAR_EMPTY = R.drawable.star_icon_empty;
-  private static final int STAR_FILLED = R.drawable.star_icon_filled;
   private String cardJson;
   private Card mCard;
-  private boolean validAdd;
   private String mFileName;
   private String validReason;
 
   private final static int GOLD_ICON = R.drawable.gold_icon_24dp;
   private final static int NON_GOLD_ICON = R.drawable.non_gold_icon_24dp;
+  private static final String TAG = "DetailActivity";
 
   @InjectView(R.id.toolbar)
   Toolbar toolbar;
@@ -139,8 +137,6 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     addFab.setOnClickListener(this);
     cardJson = getIntent().getStringExtra("card");
     mFileName = getIntent().getStringExtra("fileName");
-    validAdd = getIntent().getBooleanExtra("isValid", false);
-    validReason = getIntent().getStringExtra("validReason");
     mCard = JsonUtil.parseJsonToCard(cardJson);
     String imageURL = mCard.getImageUrl();
     String cardName = mCard.getCardName();
@@ -393,29 +389,39 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     boolean cardFound = false;
     String message = "";
     JsonObject currentObj;
+    int currentObjCardCount = 0;
+    int deckSize = 0;
     for (int k = 0; k < array.size(); k++) {
       currentObj = gson.fromJson(array.get(k).getAsString(), JsonObject.class);
+      deckSize += currentObj.get("cardCount").getAsInt();
       if (currentObj.get("name").getAsString().equals(mCard.getCardName())) {
         cardFound = true;
-        int count = currentObj.get("cardCount").getAsInt();
-        if (count < 2) {
-          count++;
+        currentObjCardCount = currentObj.get("cardCount").getAsInt();
+        if (currentObj.get("rarity").getAsString().equals("Legendary")
+            && currentObjCardCount == 1) {
+          return String.format("You can only have 1 %s", mCard.getCardName());
+        }
+        if (currentObjCardCount == 2) {
+          return String.format("You can only have 2 %ss", mCard.getCardName());
+        }
+        if (currentObjCardCount < 2 && deckSize < 30) {
+          currentObjCardCount++;
           currentDeckObject.get("cards")
               .getAsJsonArray().remove(k);
-          mCard.setCardCount(count);
+          mCard.setCardCount(currentObjCardCount);
           currentDeckObject
               .get("cards").getAsJsonArray().add(new JsonPrimitive(gson.toJson(mCard)));
           message = String.format("Added %s to deck", mCard.getCardName());
-        } else {
-          message = String.format("You can only have 2 %s", mCard.getCardName());
+          break;
         }
       }
     }
-    if (!cardFound) {
-      int cardCount = mCard.getCardCount();
-      mCard.setCardCount(cardCount += 1);
+    if (!cardFound && deckSize < 30) {
+      mCard.setCardCount(1);
       currentDeckObject.get("cards").getAsJsonArray().add(new JsonPrimitive(gson.toJson(mCard)));
       message = String.format("Added %s to deck", mCard.getCardName());
+    } else if (deckSize == 30) {
+      return "Deck is full";
     }
     try {
       OutputStreamWriter outputStreamWriter
@@ -463,11 +469,9 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
   @Override
   public void onClick(View view) {
     if (view.getId() == R.id.add_fab) {
-      if (mFileName != null && validAdd) {
+      if (mFileName != null) {
         String message = addCardToDeck(mFileName);
         Snackbar.make(detailCoordinatorView, message, Snackbar.LENGTH_SHORT).show();
-      } else if (mFileName != null) {
-        Snackbar.make(detailCoordinatorView, validReason, Snackbar.LENGTH_SHORT).show();
       } else {
         Snackbar.make(detailCoordinatorView, "Invalid add", Snackbar.LENGTH_SHORT).show();
       }

@@ -48,7 +48,6 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
   private String cardJson;
   private Card mCard;
   private String mFileName;
-  private String validReason;
 
   private final static int GOLD_ICON = R.drawable.gold_icon_24dp;
   private final static int NON_GOLD_ICON = R.drawable.non_gold_icon_24dp;
@@ -138,6 +137,9 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     String goldURL = mCard.getGoldImageUrl();
     dustCost = "N/A";
 
+    if (mFileName == null) {
+      addFab.setVisibility(View.INVISIBLE);
+    }
     switch (cardRarity) {
       case "Free":
         dustCost = "Uncraftable";
@@ -298,8 +300,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     getMenuInflater().inflate(R.menu.detail_toolbar, menu);
     if(cardImage.getVisibility() == View.VISIBLE) {
       menu.findItem(R.id.gold_card_button).setIcon(NON_GOLD_ICON);
-    }
-    else {
+    } else {
       menu.findItem(R.id.gold_card_button).setIcon(GOLD_ICON);
     }
     return true;
@@ -385,47 +386,45 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
   private String addCardToDeck(String filename) {
     JsonParser jsonParser = new JsonParser();
-    JsonObject currentDeckObject = readFileStreamToJson(filename, jsonParser);
+    JsonObject jsonDeck = readFileStreamToJson(filename, jsonParser);
 
     Gson gson = new Gson();
-    if (currentDeckObject == null) {
+    if (jsonDeck == null) {
       return "Invalid add";
     }
-    JsonArray array = currentDeckObject.get("cards").getAsJsonArray();
-    boolean cardFound = false;
-    String message = "";
+    JsonArray array = jsonDeck.get("cards").getAsJsonArray();
     JsonObject currentObj;
-    JsonObject cardFoundObject;
-    int currentObjCardCount = 0;
+    JsonObject foundObject = null;
+    String message = "";
     int deckSize = 0;
+    int foundIndex = -1;
+    int foundCount = -1;
     for (int k = 0; k < array.size(); k++) {
       currentObj = gson.fromJson(array.get(k).getAsString(), JsonObject.class);
       deckSize += currentObj.get("cardCount").getAsInt();
       if (currentObj.get("name").getAsString().equals(mCard.getCardName())) {
-        cardFound = true;
-        currentObjCardCount = currentObj.get("cardCount").getAsInt();
-        cardFoundObject = currentObj;
+        foundObject = currentObj;
+        foundIndex = k;
       }
     }
-    if (cardFound && cardFoundObject.get("rarity").getAsString().equals("Legendary")
-        && currentObjCardCount == 1) {
-      return String.format("You can only have 1 %s", mCard.getCardName());
-    }
-    if (currentObjCardCount == 2) {
-      return String.format("You can only have 2 %ss", mCard.getCardName());
-    }
-    if (currentObjCardCount < 2 && deckSize < 30) {
-      currentObjCardCount++;
-      currentDeckObject.get("cards")
-          .getAsJsonArray().remove(k);
-      mCard.setCardCount(currentObjCardCount);
-      currentDeckObject
-          .get("cards").getAsJsonArray().add(new JsonPrimitive(gson.toJson(mCard)));
-      message = String.format("Added %s to deck", mCard.getCardName());
-    }
-    if (!cardFound && deckSize < 30) {
+    if (foundObject != null) {
+      foundCount = foundObject.get("cardCount").getAsInt();
+      if (foundObject.get("rarity").getAsString().equals("Legendary") && foundCount == 1) {
+        return String.format("You can only have 1 %s", mCard.getCardName());
+      }
+      if (foundCount == 2) {
+        return String.format("You can only have 2 %ss", mCard.getCardName());
+      }
+      if (foundCount < 2 && deckSize < 30) {
+        foundCount++;
+        mCard.setCardCount(foundCount);
+        jsonDeck.get("cards").getAsJsonArray().remove(foundIndex);
+        jsonDeck.get("cards").getAsJsonArray().add(new JsonPrimitive(gson.toJson(mCard)));
+        message = String.format("Added %s to deck", mCard.getCardName());
+      }
+    } else if (deckSize < 30) {
       mCard.setCardCount(1);
-      currentDeckObject.get("cards").getAsJsonArray().add(new JsonPrimitive(gson.toJson(mCard)));
+      jsonDeck.get("cards").getAsJsonArray().add(new JsonPrimitive(gson.toJson(mCard)));
       message = String.format("Added %s to deck", mCard.getCardName());
     } else if (deckSize == 30) {
       return "Deck is full";
@@ -433,7 +432,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     try {
       OutputStreamWriter outputStreamWriter
           = new OutputStreamWriter(openFileOutput(filename, Context.MODE_PRIVATE));
-      outputStreamWriter.write(currentDeckObject.toString());
+      outputStreamWriter.write(jsonDeck.toString());
       outputStreamWriter.close();
     } catch (IOException e) {
       return "Failed to add card to deck";

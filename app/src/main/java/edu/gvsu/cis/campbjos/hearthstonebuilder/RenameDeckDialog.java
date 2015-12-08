@@ -25,7 +25,7 @@ public class RenameDeckDialog extends DialogFragment {
     // Set the dialog title
     builder.setTitle("Rename deck...")
         .setView(R.layout.dialog_rename_deck)
-        .setPositiveButton("Create", new DialogInterface.OnClickListener() {
+        .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
           @Override
           public void onClick(DialogInterface dialog, int id) {
             final EditText editText = (EditText) getDialog().findViewById(R.id.renameEditText);

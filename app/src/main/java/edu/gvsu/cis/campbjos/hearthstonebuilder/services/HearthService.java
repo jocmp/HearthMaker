@@ -2,6 +2,18 @@ package edu.gvsu.cis.campbjos.hearthstonebuilder.services;
 
 import com.google.gson.JsonObject;
 
+import android.util.Log;
+
+import com.squareup.okhttp.Cache;
+import com.squareup.okhttp.Interceptor;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Response;
+
+import edu.gvsu.cis.campbjos.hearthstonebuilder.HearthApplication;
+
+import java.io.File;
+import java.io.IOException;
+
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
 import retrofit.http.GET;
@@ -15,8 +27,7 @@ import rx.Observable;
  */
 public class HearthService {
 
-  private static final String MASHAPE_API =
-      "https://omgvamp-hearthstone-v1.p.mashape.com";
+  private static final String MASHAPE_API = "https://omgvamp-hearthstone-v1.p.mashape.com";
   private HearthApi mHearthApi;
 
   /**

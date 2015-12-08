@@ -389,6 +389,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     boolean cardFound = false;
     String message = "";
     JsonObject currentObj;
+    JsonObject cardFoundObject;
     int currentObjCardCount = 0;
     int deckSize = 0;
     for (int k = 0; k < array.size(); k++) {
@@ -397,24 +398,24 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
       if (currentObj.get("name").getAsString().equals(mCard.getCardName())) {
         cardFound = true;
         currentObjCardCount = currentObj.get("cardCount").getAsInt();
-        if (currentObj.get("rarity").getAsString().equals("Legendary")
-            && currentObjCardCount == 1) {
-          return String.format("You can only have 1 %s", mCard.getCardName());
-        }
-        if (currentObjCardCount == 2) {
-          return String.format("You can only have 2 %ss", mCard.getCardName());
-        }
-        if (currentObjCardCount < 2 && deckSize < 30) {
-          currentObjCardCount++;
-          currentDeckObject.get("cards")
-              .getAsJsonArray().remove(k);
-          mCard.setCardCount(currentObjCardCount);
-          currentDeckObject
-              .get("cards").getAsJsonArray().add(new JsonPrimitive(gson.toJson(mCard)));
-          message = String.format("Added %s to deck", mCard.getCardName());
-          break;
-        }
+        cardFoundObject = currentObj;
       }
+    }
+    if (cardFound && cardFoundObject.get("rarity").getAsString().equals("Legendary")
+        && currentObjCardCount == 1) {
+      return String.format("You can only have 1 %s", mCard.getCardName());
+    }
+    if (currentObjCardCount == 2) {
+      return String.format("You can only have 2 %ss", mCard.getCardName());
+    }
+    if (currentObjCardCount < 2 && deckSize < 30) {
+      currentObjCardCount++;
+      currentDeckObject.get("cards")
+          .getAsJsonArray().remove(k);
+      mCard.setCardCount(currentObjCardCount);
+      currentDeckObject
+          .get("cards").getAsJsonArray().add(new JsonPrimitive(gson.toJson(mCard)));
+      message = String.format("Added %s to deck", mCard.getCardName());
     }
     if (!cardFound && deckSize < 30) {
       mCard.setCardCount(1);

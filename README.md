@@ -1,7 +1,6 @@
 # HearthstoneBuilder
 
-This example illustrates a common usage of the DrawerLayout widget in the Android
-support library.
+This is a project for CIS350: Software Engineering.
 
 Pre-requisites
 --------------
@@ -9,11 +8,6 @@ Pre-requisites
 - Android SDK v23
 - Android Build Tools v23.0.1
 - Android Support Repository
-
-Background
----------------
-
-This is a project for CIS350: Software Engineering.
 
 ### Generating Test Reports ###
 

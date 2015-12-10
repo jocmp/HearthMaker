@@ -29,6 +29,11 @@ Your report will be complete if you see the following:
 BUILD SUCCESSFUL</code></pre>
 5. Go to `app/build/reports/..` to view the individual outputs from index.html files.
 
+Contributors
+-----------
+* Chad Teitsma
+* Nathan Allvin
+* Josiah Campbell
 
 License
 -------

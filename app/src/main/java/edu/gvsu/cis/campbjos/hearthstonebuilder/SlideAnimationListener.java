@@ -1,5 +1,7 @@
 package edu.gvsu.cis.campbjos.hearthstonebuilder;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.support.v7.app.ActionBar;
 import android.view.View;
 import android.view.animation.Animation;
@@ -32,7 +34,9 @@ public class SlideAnimationListener implements Animation.AnimationListener {
         //set margins back so the view can be scrolled to the bottom
         rlParams.setMargins(0, 0, 0, 0);
         bar.setElevation(0);
-        spinners.setElevation(10);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            spinners.setElevation(10);
+        }
         viewToAnimate.requestLayout();
     }
 

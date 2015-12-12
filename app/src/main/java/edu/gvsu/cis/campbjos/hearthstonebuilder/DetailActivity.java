@@ -407,7 +407,9 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         foundIndex = k;
       }
     }
-    if (foundObject != null) {
+    if (deckSize == 30) {
+      return "Deck is full";
+    } else if (foundObject != null) {
       foundCount = foundObject.get("cardCount").getAsInt();
       if (foundObject.get("rarity").getAsString().equals("Legendary") && foundCount == 1) {
         return String.format("You can only have 1 %s", mCard.getCardName());
@@ -415,19 +417,17 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
       if (foundCount == 2) {
         return String.format("You can only have 2 %ss", mCard.getCardName());
       }
-      if (foundCount < 2 && deckSize < 30) {
+      if (foundCount < 2) {
         foundCount++;
         mCard.setCardCount(foundCount);
         jsonDeck.get("cards").getAsJsonArray().remove(foundIndex);
         jsonDeck.get("cards").getAsJsonArray().add(new JsonPrimitive(gson.toJson(mCard)));
         message = String.format("Added %s to deck", mCard.getCardName());
       }
-    } else if (deckSize < 30) {
+    } else {
       mCard.setCardCount(1);
       jsonDeck.get("cards").getAsJsonArray().add(new JsonPrimitive(gson.toJson(mCard)));
       message = String.format("Added %s to deck", mCard.getCardName());
-    } else if (deckSize == 30) {
-      return "Deck is full";
     }
     try {
       OutputStreamWriter outputStreamWriter

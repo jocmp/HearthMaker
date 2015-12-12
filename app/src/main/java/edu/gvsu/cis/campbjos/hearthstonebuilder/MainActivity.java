@@ -117,10 +117,10 @@ public class MainActivity extends AppCompatActivity implements
   private int classIcon;
   private String cardCount;
 
-  static {
-    spinners = new ArrayList<>();
-    idArray = new int[]{R.array.cost, R.array.card_type, R.array.rarity, R.array.card_set};
-  }
+//  static {
+//    spinners = new ArrayList<>();
+//    idArray = new int[]{R.array.cost, R.array.card_type, R.array.rarity, R.array.card_set};
+//  }
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -128,6 +128,10 @@ public class MainActivity extends AppCompatActivity implements
     setContentView(R.layout.activity_main);
     ButterKnife.inject(this);
     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+    spinners = new ArrayList<>();
+    idArray = new int[]{R.array.cost, R.array.card_type, R.array.rarity, R.array.card_set};
+
     mTitle = mDrawerTitle = getTitle();
     mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
     Toolbar mToolbar = (Toolbar) findViewById(R.id.activity_toolbar);
@@ -179,30 +183,7 @@ public class MainActivity extends AppCompatActivity implements
       }
     });
 
-    searchView = (SearchView) findViewById(R.id.searchView);
-    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-      @Override
-      public boolean onQueryTextSubmit(String query) {
-        mMainActivityPresenter.getCardFilter(
-            mClassSpinner.getSelectedItem().toString(),
-            mCostSpinner.getSelectedItem().toString(),
-            mTypeSpinner.getSelectedItem().toString(),
-            mRaritySpinner.getSelectedItem().toString(),
-            mSetSpinner.getSelectedItem().toString(), query);
-        return false;
-      }
 
-      @Override
-      public boolean onQueryTextChange(String newText) {
-        mMainActivityPresenter.getCardFilter(
-            mClassSpinner.getSelectedItem().toString(),
-            mCostSpinner.getSelectedItem().toString(),
-            mTypeSpinner.getSelectedItem().toString(),
-            mRaritySpinner.getSelectedItem().toString(),
-            mSetSpinner.getSelectedItem().toString(), newText);
-        return false;
-      }
-    });
 
     clearAll = (ImageView) findViewById(R.id.clear_all);
     clearAll.setOnClickListener(new View.OnClickListener() {
@@ -247,6 +228,8 @@ public class MainActivity extends AppCompatActivity implements
         getSupportActionBar().setTitle(mDrawerTitle);
         invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
       }
+
+
     };
 
     mDrawerLayout.setDrawerListener(mDrawerToggle);
@@ -254,7 +237,6 @@ public class MainActivity extends AppCompatActivity implements
     dialogClasses = getResources().getStringArray(R.array.card_class_dialog);
     currentClasses = new ArrayList<>();
     currentClasses.addAll(Arrays.asList(dialogClasses));
-
     mClassSpinnerAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item, currentClasses);
     mClassSpinnerAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
     mClassSpinner.setAdapter(mClassSpinnerAdapter);
@@ -266,6 +248,31 @@ public class MainActivity extends AppCompatActivity implements
     for (int k = 0; k < 4; k++) {
       setSpinnerAdapter(spinners.get(k), idArray[k]);
     }
+
+    searchView = (SearchView) findViewById(R.id.searchView);
+    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+      @Override
+      public boolean onQueryTextSubmit(String query) {
+        mMainActivityPresenter.getCardFilter(
+                mClassSpinner.getSelectedItem().toString(),
+                mCostSpinner.getSelectedItem().toString(),
+                mTypeSpinner.getSelectedItem().toString(),
+                mRaritySpinner.getSelectedItem().toString(),
+                mSetSpinner.getSelectedItem().toString(), query);
+        return false;
+      }
+
+      @Override
+      public boolean onQueryTextChange(String newText) {
+        mMainActivityPresenter.getCardFilter(
+                mClassSpinner.getSelectedItem().toString(),
+                mCostSpinner.getSelectedItem().toString(),
+                mTypeSpinner.getSelectedItem().toString(),
+                mRaritySpinner.getSelectedItem().toString(),
+                mSetSpinner.getSelectedItem().toString(), newText);
+        return false;
+      }
+    });
 
     mCollectibleOption = "1";
     mManifestHearthApiKey = "hearthstone_api_key";
@@ -490,27 +497,27 @@ public class MainActivity extends AppCompatActivity implements
   @OnItemSelected({R.id.spinner_class, R.id.spinner_cost, R.id.spinner_type, R.id.spinner_rarity,
       R.id.spinner_set})
   public void onSpinnerItemSelected() {
-    if (mFragment.getClass() == DeckFragment.class) {
-      DeckFragment deckFragment = (DeckFragment) mFragment;
-      mMainActivityPresenter.getCardFilter(
-          mClassSpinner.getSelectedItem().toString(),
-          mCostSpinner.getSelectedItem().toString(),
-          mTypeSpinner.getSelectedItem().toString(),
-          mRaritySpinner.getSelectedItem().toString(),
-          mSetSpinner.getSelectedItem().toString(),
-          searchView.getQuery().toString(),
-          deckFragment.getFragmentDeck().getDeckClass()
-      );
-    } else {
-      mMainActivityPresenter.getCardFilter(
-          mClassSpinner.getSelectedItem().toString(),
-          mCostSpinner.getSelectedItem().toString(),
-          mTypeSpinner.getSelectedItem().toString(),
-          mRaritySpinner.getSelectedItem().toString(),
-          mSetSpinner.getSelectedItem().toString(),
-          searchView.getQuery().toString()
-      );
-    }
+      if (mFragment.getClass() == DeckFragment.class) {
+        DeckFragment deckFragment = (DeckFragment) mFragment;
+        mMainActivityPresenter.getCardFilter(
+                mClassSpinner.getSelectedItem().toString(),
+                mCostSpinner.getSelectedItem().toString(),
+                mTypeSpinner.getSelectedItem().toString(),
+                mRaritySpinner.getSelectedItem().toString(),
+                mSetSpinner.getSelectedItem().toString(),
+                searchView.getQuery().toString(),
+                deckFragment.getFragmentDeck().getDeckClass()
+        );
+      } else {
+        mMainActivityPresenter.getCardFilter(
+                mClassSpinner.getSelectedItem().toString(),
+                mCostSpinner.getSelectedItem().toString(),
+                mTypeSpinner.getSelectedItem().toString(),
+                mRaritySpinner.getSelectedItem().toString(),
+                mSetSpinner.getSelectedItem().toString(),
+               searchView.getQuery().toString()
+        );
+      }
     if (mSetSpinner.getSelectedItem().toString().equals("CLEAR")) {
       mSetSpinner.setVisibility(View.INVISIBLE);
       setExpand.setVisibility(View.VISIBLE);

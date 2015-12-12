@@ -49,8 +49,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
   private Card mCard;
   private String mFileName;
 
-  private final static int GOLD_ICON = R.drawable.gold_icon_24dp;
-  private final static int NON_GOLD_ICON = R.drawable.non_gold_icon_24dp;
+  private final static int GOLD_ICON = R.drawable.ic_radio_button_on_24dp;
+  private final static int NON_GOLD_ICON = R.drawable.ic_radio_button_off_24dp;
   private static final String TAG = "DetailActivity";
 
   @InjectView(R.id.toolbar)

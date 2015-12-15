@@ -94,7 +94,7 @@
                 android:layout_height="17dp"
                 android:gravity="center"
                 android:src="@drawable/mana_crystal"/>
-            <edu.gvsu.cis.campbjos.hearthstonebuilder.UI.BelweBoldTextView
+            <com.teitsmch.hearthmaker.UI.BelweBoldTextView
                 android:id="@+id/mana_cost"
                 android:layout_width="wrap_content"
                 android:layout_height="17dp"
@@ -118,7 +118,7 @@
             android:layout_marginTop="1dp"
             android:layout_gravity="center"/>
 
-        <edu.gvsu.cis.campbjos.hearthstonebuilder.UI.BelweBoldTextView
+        <com.teitsmch.hearthmaker.UI.BelweBoldTextView
             android:id="@+id/attack"
             android:layout_width="25dp"
             android:layout_height="25dp"
@@ -143,7 +143,7 @@
                 android:id="@+id/health_image"
                 android:layout_width="19dp"
                 android:layout_height="25dp" />
-            <edu.gvsu.cis.campbjos.hearthstonebuilder.UI.BelweBoldTextView
+            <com.teitsmch.hearthmaker.UI.BelweBoldTextView
                 android:id="@+id/health"
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"

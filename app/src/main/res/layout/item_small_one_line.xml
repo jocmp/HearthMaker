@@ -28,7 +28,7 @@
     android:background="?android:attr/selectableItemBackground"
     android:clickable="true">
 
-        <edu.gvsu.cis.campbjos.hearthstonebuilder.UI.BelweBoldTextView
+        <com.teitsmch.hearthmaker.UI.BelweBoldTextView
             android:id="@+id/mana_cost_deck"
             android:layout_width="16dp"
             android:layout_height="match_parent"

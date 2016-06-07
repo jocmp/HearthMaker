@@ -28,7 +28,6 @@ Contributors
 * Chad Teitsma
 * Nathan Allvin
 * Josiah Campbell
-* Jaxon Wright
 
 License
 -------
